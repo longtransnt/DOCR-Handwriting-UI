@@ -74,9 +74,6 @@ function App() {
         //New Put to API
         var updatedUpload = {
           "id" : image[currId].id,
-          // "file_name" : image[currId].file_name,
-          // "image_id": image[currId].image_id,
-          // "thumbnail_id": image[currId].thumbnail_id,
           "ground_truth": annotation,
           "confidence": 100,
           "is_verified": checked
@@ -92,9 +89,6 @@ function App() {
         const newList = annotationList.concat(image[currId] + "\t" + annotation + "\n")
         setAnnotationList(newList);
       }
-    // Move to next image
-    // setAnnotation('')
-    // setCurrId(currId + 1);
     } else {
       setUpdateState(0);
       notiSaving(); // not allow to save if no annotation
