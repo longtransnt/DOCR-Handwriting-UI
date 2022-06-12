@@ -15,7 +15,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Scrollbars } from 'react-custom-scrollbars'
 import { Dropdown } from 'react-bootstrap'
 import { IoChevronDown } from 'react-icons/io5'
-import{getImageList, updateUploadById} from './service';
+import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
 
@@ -53,7 +53,7 @@ function App() {
   const [confidenceState, setConfidenceState] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const fetchUploads = useCallback(() => {
-    getImageList().then(data => {setImage(data)})
+    UploadService.getImageList().then(data => {setImage(data)})
       .catch(console.error)
   }, []);
 
@@ -75,21 +75,19 @@ function App() {
         console.log(annotationList);
         console.log(verified);
         console.log(confidenceValue);
-
-        // var extracted_confidence = parseInt(confidenceValue[0].split("%")[0]);
         //New Put to API
         var updatedUpload = {
           "id" : image[currId].id,
-          // "file_name" : image[currId].file_name,
-          // "image_id": image[currId].image_id,
-          // "thumbnail_id": image[currId].thumbnail_id,
           "ground_truth": annotation,
           "confidence": 100,
           "is_verified": checked
         }
         console.log(updatedUpload);
 
-        const put_response = updateUploadById(updatedUpload.id, updatedUpload)
+        UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
+          console.log(res)
+          window.location.reload();
+        })
         // console.log(put_response)
         setUpdateState(0);
       }
@@ -98,9 +96,6 @@ function App() {
         const newList = annotationList.concat(image[currId] + "\t" + annotation + "\n")
         setAnnotationList(newList);
       }
-    // Move to next image
-    // setAnnotation('')
-    // setCurrId(currId + 1);
     } else {
       setUpdateState(0);
       notiSaving(); // not allow to save if no annotation
