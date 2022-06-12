@@ -1,6 +1,7 @@
 import './App.css';
 import 'react-dropdown/style.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-dropzone-uploader/dist/styles.css'
 
 import Form from 'react-bootstrap/Form'
 import React, { useState, useCallback, useEffect } from "react";
@@ -15,6 +16,8 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import { Dropdown } from 'react-bootstrap'
 import { IoChevronDown } from 'react-icons/io5'
 import UploadService from './services/UploadService';
+import Popup from './components/Popup';
+import Upload from "./components/Upload";
 
 let verified = {};
 let confidenceValue = {}
@@ -48,12 +51,15 @@ function App() {
   const [checked, setChecked] = useState(false);
   const [image, setImage] = useState([]);
   const [confidenceState, setConfidenceState] = useState('');
-
-  
+  const [isOpen, setIsOpen] = useState(false);
   const fetchUploads = useCallback(() => {
     UploadService.getImageList().then(data => {setImage(data)})
       .catch(console.error)
   }, []);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
 
   useEffect(() => {
     fetchUploads();
@@ -110,7 +116,6 @@ function App() {
       //Default confidence
       setConfidenceState('100%');
      }
-     
   }
 
   function WriteToFile() {
@@ -143,7 +148,20 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
-        <button className='upload-btn'>Upload</button>
+        <input
+          className="upload-btn"
+          type="button"
+          value="Upload"
+          onClick={togglePopup}
+        />
+        {isOpen && <Popup
+          content={<>
+            <div className="upload-container">
+              <Upload fetchUploads={fetchUploads} />
+            </div>
+          </>}
+          handleClose={togglePopup}
+        />}
         <Container>
           <Row xs={1} md={2}>
             <Col>
