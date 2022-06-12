@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Scrollbars } from 'react-custom-scrollbars'
 import { Dropdown } from 'react-bootstrap'
 import { IoChevronDown } from 'react-icons/io5'
-import{getImageList, updateUploadById} from './service';
+import UploadService from './services/UploadService';
 
 let verified = {};
 let confidenceValue = {}
@@ -51,7 +51,7 @@ function App() {
 
   
   const fetchUploads = useCallback(() => {
-    getImageList().then(data => {setImage(data)})
+    UploadService.getImageList().then(data => {setImage(data)})
       .catch(console.error)
   }, []);
 
@@ -69,8 +69,6 @@ function App() {
         console.log(annotationList);
         console.log(verified);
         console.log(confidenceValue);
-
-        // var extracted_confidence = parseInt(confidenceValue[0].split("%")[0]);
         //New Put to API
         var updatedUpload = {
           "id" : image[currId].id,
@@ -80,7 +78,10 @@ function App() {
         }
         console.log(updatedUpload);
 
-        const put_response = updateUploadById(updatedUpload.id, updatedUpload)
+        UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
+          console.log(res)
+          window.location.reload();
+        })
         // console.log(put_response)
         setUpdateState(0);
       }
