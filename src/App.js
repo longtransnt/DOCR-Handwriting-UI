@@ -1,6 +1,7 @@
 import './App.css';
 import 'react-dropdown/style.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-dropzone-uploader/dist/styles.css'
 
 import Form from 'react-bootstrap/Form'
 import React, { useState, useCallback, useEffect } from "react";
@@ -14,7 +15,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Scrollbars } from 'react-custom-scrollbars'
 import { Dropdown } from 'react-bootstrap'
 import { IoChevronDown } from 'react-icons/io5'
-import{getImageList, updateUploadById} from './service';
+import UploadService from './services/UploadService';
+import Popup from './components/Popup';
+import Upload from "./components/Upload";
 
 let verified = {};
 let confidenceValue = {};
@@ -41,13 +44,22 @@ function App() {
   const [updateState, setUpdateState] = useState(0);
   const [checked, setChecked] = useState(false);
   const [image, setImage] = useState([]);
+<<<<<<< HEAD
   const [confidenceState, setConfidenceState] = useState(100);
   const [downloadOption, setDownloadOption] = useState('');
   
+=======
+  const [confidenceState, setConfidenceState] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+>>>>>>> main
   const fetchUploads = useCallback(() => {
-    getImageList().then(data => {setImage(data)})
+    UploadService.getImageList().then(data => {setImage(data)})
       .catch(console.error)
   }, []);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
 
   useEffect(() => {
     fetchUploads();
@@ -63,21 +75,19 @@ function App() {
         console.log(annotationList);
         console.log(verified);
         console.log(confidenceValue);
-
-        // var extracted_confidence = parseInt(confidenceValue[0].split("%")[0]);
         //New Put to API
         var updatedUpload = {
           "id" : image[currId].id,
-          // "file_name" : image[currId].file_name,
-          // "image_id": image[currId].image_id,
-          // "thumbnail_id": image[currId].thumbnail_id,
           "ground_truth": annotation,
           "confidence": confidenceState,
           "is_verified": checked
         }
         console.log(updatedUpload);
 
-        const put_response = updateUploadById(updatedUpload.id, updatedUpload)
+        UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
+          console.log(res)
+          window.location.reload();
+        })
         // console.log(put_response)
         setUpdateState(0);
       }
@@ -86,9 +96,6 @@ function App() {
         const newList = annotationList.concat(image[currId].file_name + "\t" + annotation + "\n")
         setAnnotationList(newList);
       }
-    // Move to next image
-    // setAnnotation('')
-    // setCurrId(currId + 1);
     } else {
       setUpdateState(0);
       notiSaving(); // not allow to save if no annotation
@@ -109,7 +116,6 @@ function App() {
       //Default confidence
       setConfidenceState(100);
      }
-     
   }
 
   function WriteToFile(eventKey) {
@@ -168,7 +174,20 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
-        <button className='upload-btn'>Upload</button>
+        <input
+          className="upload-btn"
+          type="button"
+          value="Upload"
+          onClick={togglePopup}
+        />
+        {isOpen && <Popup
+          content={<>
+            <div className="upload-container">
+              <Upload fetchUploads={fetchUploads} />
+            </div>
+          </>}
+          handleClose={togglePopup}
+        />}
         <Container>
           <Row xs={1} md={2}>
             <Col>
