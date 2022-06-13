@@ -17,9 +17,8 @@ import { IoChevronDown } from 'react-icons/io5'
 import{getImageList, updateUploadById} from './service';
 
 let verified = {};
-let confidenceValue = {}
-
-const notiSaving = () => toast.warn('Please input annotation before saving!', {
+let confidenceValue = {};
+let notiFormat = {
   position: "top-right",
   autoClose: 2000,
   hideProgressBar: false,
@@ -27,17 +26,12 @@ const notiSaving = () => toast.warn('Please input annotation before saving!', {
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-});
+};
 
-const notiDownload = () => toast.warn('Required at least 1 annotation to download!', {
-  position: "top-right",
-  autoClose: 2000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-});
+// Warning notifications
+const notiSaving = () => toast.warn('Please input annotation before saving!', notiFormat);
+const notiDownload = () => toast.warn('Required at least 1 annotation to download!', notiFormat);
+
 // Main application
 function App() {
   const [currId, setCurrId] = useState(0);
@@ -47,8 +41,8 @@ function App() {
   const [updateState, setUpdateState] = useState(0);
   const [checked, setChecked] = useState(false);
   const [image, setImage] = useState([]);
-  const [confidenceState, setConfidenceState] = useState('');
-
+  const [confidenceState, setConfidenceState] = useState(100);
+  const [downloadOption, setDownloadOption] = useState('');
   
   const fetchUploads = useCallback(() => {
     getImageList().then(data => {setImage(data)})
@@ -63,7 +57,7 @@ function App() {
     console.log(updateState);
     if (annotation !==  '') {
       if (updateState === 1 ) {
-        annotationList[currId] = image[currId] + "\t" + annotation + "\n";
+        annotationList[currId] = image[currId].file_name + "\t" + annotation + "\n";
         verified[currId] = checked;
         confidenceValue[currId] = confidenceState;
         console.log(annotationList);
@@ -78,7 +72,7 @@ function App() {
           // "image_id": image[currId].image_id,
           // "thumbnail_id": image[currId].thumbnail_id,
           "ground_truth": annotation,
-          "confidence": 100,
+          "confidence": confidenceState,
           "is_verified": checked
         }
         console.log(updatedUpload);
@@ -89,7 +83,7 @@ function App() {
       }
       else {
         // Put function to save new annotation here
-        const newList = annotationList.concat(image[currId] + "\t" + annotation + "\n")
+        const newList = annotationList.concat(image[currId].file_name + "\t" + annotation + "\n")
         setAnnotationList(newList);
       }
     // Move to next image
@@ -113,27 +107,53 @@ function App() {
       setConfidenceState(image[id].confidence)   
      } else {
       //Default confidence
-      setConfidenceState('100%');
+      setConfidenceState(100);
      }
      
   }
 
-  function WriteToFile() {
+  function WriteToFile(eventKey) {
     const element = document.createElement("a");
-    console.log(annotationList);
-    if (annotationList.length === 0) {
-      notiDownload()
+    console.log(image);
+    let temp = [];
+    // setDownloadOption(eventKey);
+    console.log(eventKey)
+    if (image.length === 0) {
+      notiDownload();
     } else {
-      var data = annotationList.filter(function( element ) {
-        return (element !== undefined && verified[annotationList.indexOf(element)]); // only verified annotation can be downloaded
-      });
-      const file = new Blob(data, {
-        type: "text/plain"
-      });
-      element.href = URL.createObjectURL(file);
-      element.download = "annotation.txt";
-      document.body.appendChild(element);
-      element.click();
+      switch (eventKey) {
+        case 25:
+          for (let i = 0; i < image.length; i++) {
+            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === 25) {
+              temp[i] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
+            }
+          }
+          var data = temp;
+          console.log(data);
+          const file25 = new Blob(data, {
+            type: "text/plain"
+          });
+          element.href = URL.createObjectURL(file25);
+          element.download = "annotation-25.txt";
+          document.body.appendChild(element);
+          element.click();
+          break;
+      default:
+        for (let i = 0; i < image.length; i++) {
+          if (image[i].ground_truth !== undefined && image[i].is_verified === true) {
+            temp[i] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
+          }
+        }
+        var data = temp;
+        console.log(data);
+        const fileAll = new Blob(data, {
+          type: "text/plain"
+        });
+        element.href = URL.createObjectURL(fileAll);
+        element.download = "annotation-all.txt";
+        document.body.appendChild(element);
+        element.click();
+      }
     }
   }
 
@@ -153,7 +173,7 @@ function App() {
           <Row xs={1} md={2}>
             <Col>
               {/* Displaying Image */}
-              <p style={{textAlign: 'center'}}>Current Image</p>
+              <p style={{textAlign: 'center', fontWeight: 'bold'}}>Current Image</p>
               <Stack gap={4} className="col-md-11 mx-auto">
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                   <img 
@@ -162,10 +182,10 @@ function App() {
                     src={currImagePath}
                   />
                 </div>
-                <p style={{fontSize: '22px'}}>Annotation Preview: 
-                  <span style={{fontSize: '18px', paddingLeft: '5px'}}>
+                <p style={{fontSize: '22px', fontWeight: 'bold'}}>Annotation Preview: 
+                  <span style={{fontSize: '22px', fontWeight:'100', paddingLeft: '5px'}}>
                     {/* Preview annotation */}
-                    {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId] + "\t") : annotation !== '' ? annotation : "None"}
+                    {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation !== '' ? annotation : "None"}
                   </span>
                 </p>
                 <Form onSubmit={handleAdd}>
@@ -187,15 +207,15 @@ function App() {
                           </div>
                           <div>
                             <Dropdown onSelect={handleConfidenceSelect}>
-                              <Dropdown.Toggle id="dropdown-split-basic">
-                                {confidenceState === '' ? '100%' : confidenceState}
+                              <Dropdown.Toggle style={{minWidth: '100% !important', textAlign: 'right'}} id="dropdown-split-basic">
+                                {confidenceState}
                                 <IoChevronDown style={{width: '1rem', height: '1rem', marginLeft: '5px'}}/>
                               </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                <Dropdown.Item className='dropdown-item' eventKey="100%">100%</Dropdown.Item>
-                                <Dropdown.Item className='dropdown-item' eventKey="75%">75%</Dropdown.Item>
-                                <Dropdown.Item className='dropdown-item' eventKey="50%">50%</Dropdown.Item>
-                                <Dropdown.Item className='dropdown-item' eventKey="25%">25%</Dropdown.Item>
+                              <Dropdown.Menu style={{position: 'absolute', minWidth: '100%', textAlign: 'center'}}>
+                                <Dropdown.Item className='dropdown-item' eventKey="100">100</Dropdown.Item>
+                                <Dropdown.Item className='dropdown-item' eventKey="75">75</Dropdown.Item>
+                                <Dropdown.Item className='dropdown-item' eventKey="50">50</Dropdown.Item>
+                                <Dropdown.Item className='dropdown-item' eventKey="25">25</Dropdown.Item>
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
@@ -220,7 +240,7 @@ function App() {
             </Col>
             <Col>
               {/* Image List */}
-              <p style={{textAlign: 'center'}}>Image List</p>
+              <p style={{textAlign: 'center', fontWeight: 'bold'}}>Image List</p>
               <Scrollbars>
                 <div id="image-list">
                   {image.map((im, id) => (
@@ -254,18 +274,18 @@ function App() {
             <div style={{float: 'right', marginRight: '46px'}}>
               <button className='save-btn' onClick={handleAdd}>Save the annotation</button>{' '}
               <div style={{float: 'right'}}>
-                <Dropdown>
+                <Dropdown onSelect={WriteToFile}>
                   <Dropdown.Toggle id="dropdown-basic-button">
                     DOWNLOAD
                     <IoChevronDown style={{width: '1.5rem', height: '1.5rem', marginLeft: '5px'}}/>
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item className='dropdown-item' eventKey="25%">25% Confidence</Dropdown.Item>
-                    <Dropdown.Item className='dropdown-item' eventKey="50%">50% Confidence</Dropdown.Item>
-                    <Dropdown.Item className='dropdown-item' eventKey="75%">75% Confidence</Dropdown.Item>
-                    <Dropdown.Item className='dropdown-item' eventKey="100%">100% Confidence</Dropdown.Item>
+                  <Dropdown.Menu style={{position: 'absolute', minWidth: '100%', textAlign: 'center'}}>
+                    <Dropdown.Item className='dropdown-item' eventKey="25">25% Confidence</Dropdown.Item>
+                    <Dropdown.Item className='dropdown-item' eventKey="50">50% Confidence</Dropdown.Item>
+                    <Dropdown.Item className='dropdown-item' eventKey="75">75% Confidence</Dropdown.Item>
+                    <Dropdown.Item className='dropdown-item' eventKey="100">100% Confidence</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item className='dropdown-item' eventKey="Download all" onClick={WriteToFile}>Download All</Dropdown.Item>
+                    <Dropdown.Item className='dropdown-item' eventKey="Download all">Download All</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
