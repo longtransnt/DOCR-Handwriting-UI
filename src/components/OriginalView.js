@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 
-function ImageUpload() {
+function OriginalView(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState()
+  const selectedImage = props.selectedImage
   const [preview, setPreview] = useState()
 
     // create a preview as a side effect, whenever selected file is changed
@@ -18,14 +18,6 @@ function ImageUpload() {
         // free memory when ever this component is unmounted
         return () => URL.revokeObjectURL(objectUrl)
     }, [selectedImage])
-
-    const onSelectFile = e => {
-        if (!e.target.files || e.target.files.length === 0) {
-            setSelectedImage(undefined)
-            return
-        }
-        setSelectedImage(e.target.files[0])
-    }
 
   return (
     <div>
@@ -41,4 +33,4 @@ function ImageUpload() {
   );
 }
 
-export default ImageUpload
+export default OriginalView
