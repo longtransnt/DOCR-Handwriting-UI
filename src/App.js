@@ -99,7 +99,10 @@ function App() {
      setCurrId(id);
      console.log(id)
      setCurrImagePath(image[id].imageUrl)
-     setAnnotation(image[id].ground_truth);
+     if (image[id].ground_truth === null)
+      setAnnotation("");
+     else
+      setAnnotation(image[id].ground_truth);
      setUpdateState(1);
      setChecked(image[id].is_verified);
      if(image[id].confidence != null){
