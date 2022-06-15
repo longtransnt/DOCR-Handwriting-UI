@@ -105,8 +105,7 @@ function App() {
      if(image[id].confidence != null){
       setConfidenceState(image[id].confidence)   
      } else {
-      //Default confidence
-      setConfidenceState(100);
+      setConfidenceState(100); // Default confidence
      }
   }
 
@@ -123,7 +122,7 @@ function App() {
       switch (eventKey) {
         case '25':
           for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '25') {
+            if (image[i].ground_truth !== null && image[i].is_verified && image[i].confidence === '25') {
               temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
               j++;
             }
@@ -140,7 +139,7 @@ function App() {
           break;
         case '50':
           for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '50') {
+            if (image[i].ground_truth !== null && image[i].is_verified && image[i].confidence === '50') {
               temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
               j++;
             }
@@ -157,7 +156,7 @@ function App() {
           break;
         case '75':
           for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '75') {
+            if (image[i].ground_truth !== null && image[i].is_verified && image[i].confidence === '75') {
               temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
               j++;
             }
@@ -174,7 +173,7 @@ function App() {
           break;
         case '100':
           for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '100') {
+            if (image[i].ground_truth !== null && image[i].is_verified && image[i].confidence === '100') {
               temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
               j++;
             }
@@ -191,7 +190,7 @@ function App() {
           break;
       default:
         for (let i = 0; i < image.length; i++) {
-          if (image[i].ground_truth !== undefined && image[i].is_verified === true) {
+          if (image[i].ground_truth !== null && image[i].is_verified === true) {
             temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
               j++;
           }
@@ -250,7 +249,7 @@ function App() {
                 <p style={{fontSize: '22px', fontWeight: 'bold'}}>Annotation Preview: 
                   <span style={{fontSize: '22px', fontWeight:'100', paddingLeft: '5px'}}>
                     {/* Preview annotation */}
-                    {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation !== '' ? annotation : "None"}
+                    {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation === '' ? "None" : annotation !== null ? annotation : "None"}
                   </span>
                 </p>
                 <Form onSubmit={handleAdd}>
