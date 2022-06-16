@@ -73,7 +73,7 @@ function App() {
 
         UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
           console.log(res)
-          window.location.reload();
+          fetchUploads();
         })
         // console.log(put_response)
         setUpdateState(0);
