@@ -10,7 +10,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Stack from 'react-bootstrap/Stack'
-import ImageUpload from './components/ImageUpload';
+import OriginalView from './components/OriginalView';
 import { ToastContainer, toast } from 'react-toastify';
 import { Scrollbars } from 'react-custom-scrollbars'
 import { Dropdown } from 'react-bootstrap'
@@ -19,8 +19,6 @@ import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
 
-let verified = {};
-let confidenceValue = {};
 let notiFormat = {
   position: "top-right",
   autoClose: 2000,
@@ -64,9 +62,6 @@ function App() {
     console.log(updateState);
     if (annotation !==  '') {
       if (updateState === 1 ) {
-        // annotationList[currId] = image[currId].file_name + "\t" + annotation + "\n";
-        // verified[currId] = checked;
-        // confidenceValue[currId] = confidenceState;
         //New Put to API
         var updatedUpload = {
           "id" : image[currId].id,
@@ -78,15 +73,10 @@ function App() {
 
         UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
           console.log(res)
-          window.location.reload();
+          fetchUploads();
         })
         // console.log(put_response)
         setUpdateState(0);
-      }
-      else {
-        // Put function to save new annotation here
-        // const newList = annotationList.concat(image[currId].file_name + "\t" + annotation + "\n")
-        // setAnnotationList(newList);
       }
     } else {
       setUpdateState(0);
@@ -336,7 +326,7 @@ function App() {
         <Row style={{marginTop: '7rem'}}>
           <Col style={{position : 'fixed', bottom: 0, marginBottom: '1rem'}}>
             <div style={{float: 'left'}}>
-              <ImageUpload />
+              <OriginalView/>
             </div>
             <div style={{float: 'right', marginRight: '46px'}}>
               <button className='save-btn' onClick={handleAdd}>Save the annotation</button>{' '}
