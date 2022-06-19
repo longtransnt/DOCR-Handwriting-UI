@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-dropzone-uploader/dist/styles.css'
 
 import Form from 'react-bootstrap/Form'
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -46,8 +46,19 @@ function App() {
   const [confidenceState, setConfidenceState] = useState(100);
   const [isOpen, setIsOpen] = useState(false);
 
+  const useDidMountEffect = (func, deps) => {
+    const didMount = useRef(false);
+
+    useEffect(() => {
+        if (didMount.current) func();
+        else didMount.current = true;
+    }, deps);
+}
+
   const fetchUploads = useCallback(() => {
-    UploadService.getImageList().then(data => {setImage(data)})
+    UploadService.getImageList().then(data => {
+      setImage(data)
+    })
       .catch(console.error)
   }, []);
 
@@ -58,6 +69,12 @@ function App() {
   useEffect(() => {
     fetchUploads();
   }, [fetchUploads])
+
+  useDidMountEffect(() => {
+    if (image.length > 0) {
+      handleListClick(currId);
+    }
+  }, [image]);
 
   const handleAdd = () => {
     console.log(updateState);
@@ -71,12 +88,10 @@ function App() {
           "is_verified": checked
         }
         console.log(updatedUpload);
-
         UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
           console.log(res)
-          fetchUploads();
+          fetchUploads()
         })
-        // console.log(put_response)
         setUpdateState(0);
       }
       notiSuccess();
@@ -89,7 +104,6 @@ function App() {
   const handleListClick = (id) => {
      // Move to this image
      setCurrId(id);
-     console.log(id)
      setCurrImagePath(image[id].imageUrl)
      if (image[id].ground_truth === null)
       setAnnotation("");
