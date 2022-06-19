@@ -18,6 +18,7 @@ import { IoChevronDown } from 'react-icons/io5'
 import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
+import Coordinate from "./components/Coordinate";
 
 let notiFormat = {
   position: "top-right",
@@ -346,6 +347,9 @@ function App() {
                     <Dropdown.Item className='dropdown-item' eventKey="Download all">Download All</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+                <Coordinate>
+                  
+                </Coordinate>
               </div>
             </div>
           </Col>
