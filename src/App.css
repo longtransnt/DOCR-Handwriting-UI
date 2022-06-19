@@ -237,3 +237,17 @@ input[type="checkbox"]:focus{
   border: 1px solid #999;
   font-size: 20px;
 }
+
+.zoom-btn {
+  margin: .3rem;
+  padding: 2px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.zoom-btn:hover {
+  background-color: #005477;
+  color: #ffffff;
+  border-radius: 5px;
+  transition: .3s;
+}

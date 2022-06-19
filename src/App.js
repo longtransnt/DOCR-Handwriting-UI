@@ -29,9 +29,10 @@ let notiFormat = {
   progress: undefined,
 };
 
-// Warning notifications
+// Notifications
 const notiSaving = () => toast.warn('Please input annotation before saving!', notiFormat);
 const notiDownload = () => toast.warn('Required at least 1 annotation to download!', notiFormat);
+const notiSuccess = () => toast.success('Annotation saved.', notiFormat);
 
 // Main application
 function App() {
@@ -78,6 +79,7 @@ function App() {
         // console.log(put_response)
         setUpdateState(0);
       }
+      notiSuccess();
     } else {
       setUpdateState(0);
       notiSaving(); // not allow to save if no annotation
@@ -102,13 +104,38 @@ function App() {
      }
   }
 
-  function WriteToFile(eventKey) {
+  function createFile(eventKey, data) {
     const element = document.createElement("a");
+    const file = new Blob(data, {
+      type: "text/plain"
+    });
+    element.href = URL.createObjectURL(file);
+    switch (eventKey) {
+      case '25':
+        element.download = "annotation-25.txt";
+        break;
+      case '50':
+        element.download = "annotation-50.txt";
+        break;
+      case '75':
+        element.download = "annotation-75.txt";
+        break;
+      case '100':
+        element.download = "annotation-100.txt";
+        break;
+      case 'all':
+        element.download = "annotation-all.txt";
+        break;
+    }
+    document.body.appendChild(element);
+    element.click();
+  }
+
+  function WriteToFile(eventKey) {
     console.log(image);
+    console.log(eventKey)
     let temp = [];
     let j = 0;
-    // setDownloadOption(eventKey);
-    console.log(eventKey)
     if (image.length === 0) {
       notiDownload();
     } else {
@@ -120,15 +147,7 @@ function App() {
               j++;
             }
           }
-          var data = temp;
-          console.log(data);
-          const file_25 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_25);
-          element.download = "annotation-25.txt";
-          document.body.appendChild(element);
-          element.click();
+          createFile(eventKey, temp)
           break;
         case '50':
           for (let i = 0; i < image.length; i++) {
@@ -137,15 +156,7 @@ function App() {
               j++;
             }
           }
-          var data = temp;
-          console.log(data);
-          const file_50 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_50);
-          element.download = "annotation-50.txt";
-          document.body.appendChild(element);
-          element.click();
+          createFile(eventKey, temp)
           break;
         case '75':
           for (let i = 0; i < image.length; i++) {
@@ -154,15 +165,7 @@ function App() {
               j++;
             }
           }
-          var data = temp;
-          console.log(data);
-          const file_75 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_75);
-          element.download = "annotation-75.txt";
-          document.body.appendChild(element);
-          element.click();
+          createFile(eventKey, temp)
           break;
         case '100':
           for (let i = 0; i < image.length; i++) {
@@ -171,15 +174,7 @@ function App() {
               j++;
             }
           }
-          var data = temp;
-          console.log(data);
-          const file_100 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_100);
-          element.download = "annotation-100.txt";
-          document.body.appendChild(element);
-          element.click();
+          createFile(eventKey, temp)
           break;
       default:
         for (let i = 0; i < image.length; i++) {
@@ -188,15 +183,7 @@ function App() {
               j++;
           }
         }
-        var data = temp;
-        console.log(data);
-        const fileAll = new Blob(data, {
-          type: "text/plain"
-        });
-        element.href = URL.createObjectURL(fileAll);
-        element.download = "annotation-all.txt";
-        document.body.appendChild(element);
-        element.click();
+        createFile(eventKey, temp)
       }
     }
   }
@@ -342,7 +329,7 @@ function App() {
                     <Dropdown.Item className='dropdown-item' eventKey="75">75% Confidence</Dropdown.Item>
                     <Dropdown.Item className='dropdown-item' eventKey="100">100% Confidence</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item className='dropdown-item' eventKey="Download all">Download All</Dropdown.Item>
+                    <Dropdown.Item className='dropdown-item' eventKey="all">Download All</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
