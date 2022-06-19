@@ -1,5 +1,5 @@
 import axios from "axios";
-import DEPLOYED_UPLOAD_URL from "../constant"
+import {DEPLOYED_UPLOAD_URL, DEPLOYED_UPLOAD_UNANNOTATED_URL} from "../constant"
 
 let axiosConfig = {
     headers: {
@@ -9,7 +9,7 @@ let axiosConfig = {
   };
 
 async function getImageList() {
-    const image = await axios.get(DEPLOYED_UPLOAD_URL, axiosConfig);
+    const image = await axios.get(DEPLOYED_UPLOAD_UNANNOTATED_URL, axiosConfig);
     console.log('Image List: ', image.data);
     return image.data;
 }
