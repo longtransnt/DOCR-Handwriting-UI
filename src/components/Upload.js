@@ -7,7 +7,7 @@ function Upload({ fetchUploads }) {
     const body = new FormData()
     body.append('image', file)
     return {
-      url: 'http://annotationnode-env.eba-iv5i9cmp.us-west-2.elasticbeanstalk.com/api/uploads',
+      url: 'http://localhost:8080/api/originals',
       body
     };
   }
