@@ -122,8 +122,23 @@ function App() {
       setConfidenceState(100);
      }
   }
-
-
+  function writeToFile(document, element, equivalenceValue, temp, j){
+    for (let i = 0; i < image.length; i++) {
+      if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === equivalenceValue) {
+        temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
+        j++;
+      }
+    }
+    var data = temp;
+    console.log(data);
+    const file = new Blob(data, {
+      type: "text/plain"
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "annotation"+ equivalenceValue + ".txt";
+    document.body.appendChild(element);
+    element.click();
+  }
 
   function handleDownload(eventKey) {
     const element = document.createElement("a");
@@ -137,72 +152,16 @@ function App() {
     } else {
       switch (eventKey) {
         case '25':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '25') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_25 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_25);
-          element.download = "annotation-25.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'25', temp, j)
           break;
         case '50':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '50') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_50 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_50);
-          element.download = "annotation-50.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'50', temp, j)
           break;
         case '75':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '75') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_75 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_75);
-          element.download = "annotation-75.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'75', temp, j)
           break;
         case '100':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '100') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_100 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_100);
-          element.download = "annotation-100.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'100', temp, j)
           break;
       default:
         for (let i = 0; i < image.length; i++) {
