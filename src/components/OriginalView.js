@@ -7,6 +7,7 @@ import ImageMapping from './ImageMapping';
 import image from "./2q.000382 (1)pd.jpg"
 import image2 from "./21.000211 (24)pd.jpg"
 import InnerImageZoom from 'react-inner-image-zoom'
+import data from "../data.json"
 
 
 function OriginalView(props) {
@@ -34,7 +35,6 @@ function OriginalView(props) {
     const { offsetHeight, offsetWidth } = img;
     console.log(offsetHeight, offsetWidth);
   };
-    
 
   return (
     <div>

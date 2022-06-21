@@ -124,9 +124,7 @@ function App() {
      }
   }
 
-
-
-  function handleDownload(eventKey) {
+  function handleCase(eventKey, data) {
     const element = document.createElement("a");
     const file = new Blob(data, {
       type: "text/plain"
@@ -153,7 +151,7 @@ function App() {
     element.click();
   }
 
-  function WriteToFile(eventKey) {
+  function handleDownload(eventKey) {
     console.log(image);
     console.log(eventKey)
     let temp = [];
@@ -169,7 +167,7 @@ function App() {
               j++;
             }
           }
-          createFile(eventKey, temp)
+          handleCase(eventKey, temp)
           break;
         case '50':
           for (let i = 0; i < image.length; i++) {
@@ -178,7 +176,7 @@ function App() {
               j++;
             }
           }
-          createFile(eventKey, temp)
+          handleCase(eventKey, temp)
           break;
         case '75':
           for (let i = 0; i < image.length; i++) {
@@ -187,7 +185,7 @@ function App() {
               j++;
             }
           }
-          createFile(eventKey, temp)
+          handleCase(eventKey, temp)
           break;
         case '100':
           for (let i = 0; i < image.length; i++) {
@@ -196,7 +194,7 @@ function App() {
               j++;
             }
           }
-          createFile(eventKey, temp)
+          handleCase(eventKey, temp)
           break;
       default:
         for (let i = 0; i < image.length; i++) {
@@ -205,7 +203,7 @@ function App() {
               j++;
           }
         }
-        createFile(eventKey, temp)
+        handleCase(eventKey, temp)
       }
     }
   }
