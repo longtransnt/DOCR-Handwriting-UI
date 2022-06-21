@@ -7,7 +7,7 @@ function Upload({ fetchUploads }) {
     const body = new FormData()
     body.append('image', file)
     return {
-      url: 'http://localhost:8080/api/upload/originals',
+      url: 'http://localhost:8080/api/originals',
       body
     };
   }
