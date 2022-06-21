@@ -10,8 +10,8 @@ let axiosConfig = {
 
 async function getImageList() {
     const image = await axios.get(DEPLOYED_UPLOAD_UNANNOTATED_URL, axiosConfig);
-    console.log('Image List: ', image.data);
-    return image.data;
+    console.log('Image List: ', image.data.rows);
+    return image.data.rows;
 }
 
 const updateUploadById = (id, data) => {

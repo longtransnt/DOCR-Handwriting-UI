@@ -18,6 +18,7 @@ import { IoChevronDown } from 'react-icons/io5'
 import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
+import Coordinate from "./components/Coordinate";
 
 let notiFormat = {
   position: "top-right",
@@ -46,6 +47,11 @@ function App() {
   const [confidenceState, setConfidenceState] = useState(100);
   const [isOpen, setIsOpen] = useState(false);
 
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
+
+  // Use Effect after Mount
   const useDidMountEffect = (func, deps) => {
     const didMount = useRef(false);
 
@@ -55,16 +61,13 @@ function App() {
     }, deps);
 }
 
+  // Fetch image list related functions
   const fetchUploads = useCallback(() => {
     UploadService.getImageList().then(data => {
       setImage(data)
     })
       .catch(console.error)
   }, []);
-
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
-  }
 
   useEffect(() => {
     fetchUploads();
@@ -76,7 +79,9 @@ function App() {
     }
   }, [image]);
 
-  const handleAdd = () => {
+
+   // Handle when user click "Save Annotations"
+  const handleClickSave = () => {
     console.log(updateState);
     if (annotation !==  '') {
       if (updateState === 1 ) {
@@ -101,6 +106,7 @@ function App() {
     }
   }
 
+  // Handle when user click image on list
   const handleListClick = (id) => {
      // Move to this image
      setCurrId(id);
@@ -118,7 +124,13 @@ function App() {
      }
   }
 
+<<<<<<< HEAD
   function createFile(eventKey, data) {
+=======
+
+
+  function handleDownload(eventKey) {
+>>>>>>> main
     const element = document.createElement("a");
     const file = new Blob(data, {
       type: "text/plain"
@@ -202,10 +214,12 @@ function App() {
     }
   }
 
+  //Handle click OUCRU verified
   const handleChecked = () => {
     setChecked(!checked)
   };
 
+    //Handle elect confidence
   const handleConfidenceSelect = (value) => {
     setConfidenceState(value)
   };
@@ -246,7 +260,7 @@ function App() {
                     {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation === '' ? "None" : annotation !== null ? annotation : "None"}
                   </span>
                 </p>
-                <Form onSubmit={handleAdd}>
+                <Form onSubmit={handleClickSave}>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control 
                     as="textarea" 
@@ -330,9 +344,9 @@ function App() {
               <OriginalView/>
             </div>
             <div style={{float: 'right', marginRight: '46px'}}>
-              <button className='save-btn' onClick={handleAdd}>Save the annotation</button>{' '}
+              <button className='save-btn' onClick={handleClickSave}>Save the annotation</button>{' '}
               <div style={{float: 'right'}}>
-                <Dropdown onSelect={WriteToFile}>
+                <Dropdown onSelect={handleDownload}>
                   <Dropdown.Toggle id="dropdown-basic-button">
                     DOWNLOAD
                     <IoChevronDown style={{width: '1.5rem', height: '1.5rem', marginLeft: '5px'}}/>
@@ -346,6 +360,9 @@ function App() {
                     <Dropdown.Item className='dropdown-item' eventKey="all">Download All</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+                <Coordinate>
+                  
+                </Coordinate>
               </div>
             </div>
           </Col>
