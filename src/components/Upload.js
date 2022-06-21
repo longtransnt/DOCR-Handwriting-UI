@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Dropzone from "react-dropzone-uploader";
 import 'react-dropzone-uploader/dist/styles.css'
+import {DEPLOYED_UPLOAD_URL, DEPLOYED_COORDINATE_URL} from "../constant"
 
 function Upload({ fetchUploads }) {
   const [originalUpload, setOriginalUpload] = useState(false)
   
   const getUploadParams = ({ file }) => {
 
-    var fixed_path = 'http://annotationnode-env.eba-iv5i9cmp.us-west-2.elasticbeanstalk.com'
     var path = ''
     if (originalUpload === true) 
-      path = fixed_path + '/api/originals'
+      path = DEPLOYED_UPLOAD_URL
     else
-      path = fixed_path + '/api/uploads'
+      path = DEPLOYED_COORDINATE_URL
 
     const body = new FormData()
     body.append('image', file)

@@ -123,7 +123,10 @@ function App() {
       setConfidenceState(100); // Default confidence
      }
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
   function writeToFile(document, element, equivalenceValue, temp, j){
     for (let i = 0; i < image.length; i++) {
       if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === equivalenceValue) {
