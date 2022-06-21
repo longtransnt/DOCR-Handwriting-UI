@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Dropzone from "react-dropzone-uploader";
 import 'react-dropzone-uploader/dist/styles.css'
-import {DEPLOYED_UPLOAD_URL, DEPLOYED_COORDINATE_URL} from "../constant"
+import {DEPLOYED_UPLOAD_URL, DEPLOYED_ORIGINALS_URL} from "../constant"
 
 function Upload({ fetchUploads }) {
   const [originalUpload, setOriginalUpload] = useState(false)
@@ -10,9 +10,9 @@ function Upload({ fetchUploads }) {
 
     var path = ''
     if (originalUpload === true) 
-      path = DEPLOYED_UPLOAD_URL
+      path = DEPLOYED_ORIGINALS_URL
     else
-      path = DEPLOYED_COORDINATE_URL
+      path = DEPLOYED_UPLOAD_URL
 
     const body = new FormData()
     body.append('image', file)

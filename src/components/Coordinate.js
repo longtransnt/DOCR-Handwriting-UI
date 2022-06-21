@@ -20,7 +20,7 @@ function Coordinate() {
                     min_y:obj.min_y
                 })
             };
-            fetch('http://localhost:8080/api/coordinate', requestOptions)
+            fetch('http://annotationnode-env.eba-iv5i9cmp.us-west-2.elasticbeanstalk.com/api/coordinate', requestOptions)
                 .then(response => response.json())
                 .then(data => console.log(data));
         }
