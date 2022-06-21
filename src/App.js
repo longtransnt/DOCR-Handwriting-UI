@@ -124,13 +124,9 @@ function App() {
      }
   }
 
-<<<<<<< HEAD
-  function createFile(eventKey, data) {
-=======
 
 
   function handleDownload(eventKey) {
->>>>>>> main
     const element = document.createElement("a");
     const file = new Blob(data, {
       type: "text/plain"
