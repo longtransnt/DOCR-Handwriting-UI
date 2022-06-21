@@ -46,6 +46,11 @@ function App() {
   const [confidenceState, setConfidenceState] = useState(100);
   const [isOpen, setIsOpen] = useState(false);
 
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
+
+  // Use Effect after Mount
   const useDidMountEffect = (func, deps) => {
     const didMount = useRef(false);
 
@@ -55,16 +60,13 @@ function App() {
     }, deps);
 }
 
+  // Fetch image list related functions
   const fetchUploads = useCallback(() => {
     UploadService.getImageList().then(data => {
       setImage(data)
     })
       .catch(console.error)
   }, []);
-
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
-  }
 
   useEffect(() => {
     fetchUploads();
@@ -76,7 +78,9 @@ function App() {
     }
   }, [image]);
 
-  const handleAdd = () => {
+
+   // Handle when user click "Save Annotations"
+  const handleClickSave = () => {
     console.log(updateState);
     if (annotation !==  '') {
       if (updateState === 1 ) {
@@ -100,6 +104,7 @@ function App() {
     }
   }
 
+  // Handle when user click image on list
   const handleListClick = (id) => {
      // Move to this image
      setCurrId(id);
@@ -118,7 +123,9 @@ function App() {
      }
   }
 
-  function WriteToFile(eventKey) {
+
+
+  function handleDownload(eventKey) {
     const element = document.createElement("a");
     console.log(image);
     let temp = [];
@@ -217,10 +224,12 @@ function App() {
     }
   }
 
+  //Handle click OUCRU verified
   const handleChecked = () => {
     setChecked(!checked)
   };
 
+    //Handle elect confidence
   const handleConfidenceSelect = (value) => {
     setConfidenceState(value)
   };
@@ -261,7 +270,7 @@ function App() {
                     {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation !== '' ? annotation : "None"}
                   </span>
                 </p>
-                <Form onSubmit={handleAdd}>
+                <Form onSubmit={handleClickSave}>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control 
                     as="textarea" 
@@ -345,9 +354,9 @@ function App() {
               <OriginalView/>
             </div>
             <div style={{float: 'right', marginRight: '46px'}}>
-              <button className='save-btn' onClick={handleAdd}>Save the annotation</button>{' '}
+              <button className='save-btn' onClick={handleClickSave}>Save the annotation</button>{' '}
               <div style={{float: 'right'}}>
-                <Dropdown onSelect={WriteToFile}>
+                <Dropdown onSelect={handleDownload}>
                   <Dropdown.Toggle id="dropdown-basic-button">
                     DOWNLOAD
                     <IoChevronDown style={{width: '1.5rem', height: '1.5rem', marginLeft: '5px'}}/>
