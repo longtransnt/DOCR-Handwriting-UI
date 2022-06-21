@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import Popup from './Popup';
@@ -13,8 +13,20 @@ import data from "../data.json"
 function OriginalView(props) {
   const [isOpen, setIsOpen] = useState(false);
   const selectedImage = props.selectedImage
-  const [preview, setPreview] = useState()
+  const [preview, setPreview] = useState();
+  const targetRef = useRef();
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  
+  useEffect(() => {
+    if (targetRef.current) {
+      setDimensions({
+        width: targetRef.current.offsetWidth,
+        height: targetRef.current.offsetHeight
+      });
+    }
+  }, []);
 
+  console.log(dimensions.width)
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
       if (!selectedImage) {
