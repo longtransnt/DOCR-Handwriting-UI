@@ -106,7 +106,9 @@ function App() {
 
   // Handle when user click image on list
   const handleListClick = (id) => {
-     // Move to this image
+    console.log(image.length)
+    if (id <= image.length - 1) {
+      // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)
      if (image[id].ground_truth === null)
@@ -121,6 +123,12 @@ function App() {
       //Default confidence
       setConfidenceState(100);
      }
+    } else{
+      setCurrId(null);
+      setCurrImagePath(null)
+      setChecked(null);
+      setAnnotation(null);
+    }
   }
   function writeToFile(document, element, equivalenceValue, temp, j){
     for (let i = 0; i < image.length; i++) {
