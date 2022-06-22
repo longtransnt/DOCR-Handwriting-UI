@@ -1,5 +1,5 @@
 import axios from "axios";
-import {DEPLOYED_UPLOAD_URL, DEPLOYED_UPLOAD_UNANNOTATED_URL} from "../constant"
+import {DEPLOYED_UPLOAD_URL, DEPLOYED_UPLOAD_UNANNOTATED_URL, LOCAL_UNANNOTATE, LOCAL_UPLOAD} from "../constant"
 
 let axiosConfig = {
     headers: {
@@ -26,5 +26,11 @@ const updateUploadById = (id, data) => {
     return put_request.then(response => response.data)
 }
 
-export default {getImageList: getUnannotatedImageList, updateUploadById}
+async function getPage(pageNum, size) {
+    const image = await axios.get(DEPLOYED_UPLOAD_UNANNOTATED_URL + `?page=${pageNum}&size=${size}`, axiosConfig);
+    console.log('Image List By Page: ', image.data);
+    return image.data;
+}
+
+export default {getImageList: getUnannotatedImageList, updateUploadById, getPage}
 

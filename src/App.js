@@ -3,8 +3,9 @@ import 'react-dropdown/style.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-dropzone-uploader/dist/styles.css'
 
+
 import Form from 'react-bootstrap/Form'
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef, useContext } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -19,6 +20,8 @@ import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
 import Coordinate from "./components/Coordinate";
+import ReactPaginate  from "react-paginate";
+
 
 let notiFormat = {
   position: "top-right",
@@ -30,9 +33,10 @@ let notiFormat = {
   progress: undefined,
 };
 
-// Warning notifications
+// Notifications
 const notiSaving = () => toast.warn('Please input annotation before saving!', notiFormat);
 const notiDownload = () => toast.warn('Required at least 1 annotation to download!', notiFormat);
+const notiSuccess = () => toast.success('Annotation saved.', notiFormat);
 
 // Main application
 function App() {
@@ -45,6 +49,10 @@ function App() {
   const [image, setImage] = useState([]);
   const [confidenceState, setConfidenceState] = useState(100);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setToTalPage] = useState(10);
+
+  const prevPage = useRef();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -62,8 +70,9 @@ function App() {
 
   // Fetch image list related functions
   const fetchUploads = useCallback(() => {
-    UploadService.getImageList().then(data => {
-      setImage(data)
+    UploadService.getPage(0, 10).then(data => {
+      setImage(data.rows)
+      setToTalPage(data.totalPages)
     })
       .catch(console.error)
   }, []);
@@ -74,10 +83,27 @@ function App() {
 
   useDidMountEffect(() => {
     if (image.length > 0) {
-      handleListClick(currId);
+      if (prevPage.current !== currentPage){
+        handleListClick(0);
+      } else {
+        handleListClick(currId);
+      }
+      
     }
+    prevPage.current = currentPage;
   }, [image]);
 
+
+
+  const changePage = ({ selected: selectedPage }) => {
+    console.log(selectedPage) 
+    setCurrentPage(selectedPage)
+    UploadService.getPage(selectedPage, 10).then(data => {
+      setImage(data.rows)
+      setToTalPage(data.totalPages)
+    })
+      .catch(console.error)
+  };
 
    // Handle when user click "Save Annotations"
   const handleClickSave = () => {
@@ -98,6 +124,7 @@ function App() {
         })
         setUpdateState(0);
       }
+      notiSuccess();
     } else {
       setUpdateState(0);
       notiSaving(); // not allow to save if no annotation
@@ -120,8 +147,7 @@ function App() {
      if(image[id].confidence != null){
       setConfidenceState(image[id].confidence)   
      } else {
-      //Default confidence
-      setConfidenceState(100);
+      setConfidenceState(100); // Default confidence
      }
     } else{
       setCurrId(null);
@@ -130,6 +156,7 @@ function App() {
       setAnnotation(null);
     }
   }
+
   function writeToFile(document, element, equivalenceValue, temp, j){
     for (let i = 0; i < image.length; i++) {
       if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === equivalenceValue) {
@@ -234,7 +261,7 @@ function App() {
                 <p style={{fontSize: '22px', fontWeight: 'bold'}}>Annotation Preview: 
                   <span style={{fontSize: '22px', fontWeight:'100', paddingLeft: '5px'}}>
                     {/* Preview annotation */}
-                    {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation !== '' ? annotation : "None"}
+                    {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation === '' ? "None" : annotation !== null ? annotation : "None"}
                   </span>
                 </p>
                 <Form onSubmit={handleClickSave}>
@@ -312,9 +339,16 @@ function App() {
                   ))}
                 </div>
               </Scrollbars>
+              <ReactPaginate className='pagination'
+                previousLabel={"←"}
+                nextLabel={"→"}
+                pageCount = {totalPage}
+                onPageChange={changePage}
+              />
             </Col> 
           </Row>
         </Container>
+
         <Row style={{marginTop: '7rem'}}>
           <Col style={{position : 'fixed', bottom: 0, marginBottom: '1rem'}}>
             <div style={{float: 'left'}}>
@@ -334,7 +368,7 @@ function App() {
                     <Dropdown.Item className='dropdown-item' eventKey="75">75% Confidence</Dropdown.Item>
                     <Dropdown.Item className='dropdown-item' eventKey="100">100% Confidence</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item className='dropdown-item' eventKey="Download all">Download All</Dropdown.Item>
+                    <Dropdown.Item className='dropdown-item' eventKey="all">Download All</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
                 <Coordinate>
