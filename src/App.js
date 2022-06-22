@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-dropzone-uploader/dist/styles.css'
 
 import Form from 'react-bootstrap/Form'
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef, useContext } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -19,6 +19,7 @@ import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
 import Coordinate from "./components/Coordinate";
+import Pagination from "react-pagination-library";
 
 let notiFormat = {
   position: "top-right",
@@ -46,6 +47,8 @@ function App() {
   const [image, setImage] = useState([]);
   const [confidenceState, setConfidenceState] = useState(100);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setToTalPage] = useState(10);
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -63,7 +66,7 @@ function App() {
 
   // Fetch image list related functions
   const fetchUploads = useCallback(() => {
-    UploadService.getImageList().then(data => {
+    UploadService.getPage(currentPage, 5).then(data => {
       setImage(data)
     })
       .catch(console.error)
@@ -79,6 +82,9 @@ function App() {
     }
   }, [image]);
 
+  const changePage = () => {
+    setCurrentPage(currentPage)
+  };
 
    // Handle when user click "Save Annotations"
   const handleClickSave = () => {
@@ -305,6 +311,11 @@ function App() {
                   ))}
                 </div>
               </Scrollbars>
+              <Pagination className="pagination"
+                currentPage={currentPage}
+                totalPages={totalPage}
+                changeCurrentPage={changePage}
+              />
             </Col> 
           </Row>
         </Container>
