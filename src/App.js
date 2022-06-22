@@ -90,13 +90,10 @@ function App() {
       }
       
     }
+    prevPage.current = currentPage;
   }, [image]);
 
-  // useEffect(() => {
-  //   if (image.length > 0) {
-  //     handleListClick(0);
-  //   }
-  // },[currentPage])
+
 
   const changePage = ({ selected: selectedPage }) => {
     console.log(selectedPage) 
