@@ -3,6 +3,7 @@ import 'react-dropdown/style.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-dropzone-uploader/dist/styles.css'
 
+
 import Form from 'react-bootstrap/Form'
 import React, { useState, useCallback, useEffect, useRef, useContext } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
@@ -19,7 +20,8 @@ import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
 import Coordinate from "./components/Coordinate";
-import Pagination from "react-pagination-library";
+import ReactPaginate  from "react-paginate";
+
 
 let notiFormat = {
   position: "top-right",
@@ -50,6 +52,8 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setToTalPage] = useState(10);
 
+  const prevPage = useRef();
+
   const togglePopup = () => {
     setIsOpen(!isOpen);
   }
@@ -66,8 +70,9 @@ function App() {
 
   // Fetch image list related functions
   const fetchUploads = useCallback(() => {
-    UploadService.getPage(1, 5).then(data => {
-      setImage(data)
+    UploadService.getPage(0, 10).then(data => {
+      setImage(data.rows)
+      setToTalPage(data.totalPages)
     })
       .catch(console.error)
   }, []);
@@ -78,12 +83,29 @@ function App() {
 
   useDidMountEffect(() => {
     if (image.length > 0) {
-      handleListClick(currId);
+      if (prevPage.current !== currentPage){
+        handleListClick(0);
+      } else {
+        handleListClick(currId);
+      }
+      
     }
   }, [image]);
 
-  const changePage = () => {
-    setCurrentPage(currentPage)
+  // useEffect(() => {
+  //   if (image.length > 0) {
+  //     handleListClick(0);
+  //   }
+  // },[currentPage])
+
+  const changePage = ({ selected: selectedPage }) => {
+    console.log(selectedPage) 
+    setCurrentPage(selectedPage)
+    UploadService.getPage(selectedPage, 10).then(data => {
+      setImage(data.rows)
+      setToTalPage(data.totalPages)
+    })
+      .catch(console.error)
   };
 
    // Handle when user click "Save Annotations"
@@ -129,6 +151,7 @@ function App() {
       setConfidenceState(100); // Default confidence
      }
   }
+
   function writeToFile(document, element, equivalenceValue, temp, j){
     for (let i = 0; i < image.length; i++) {
       if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === equivalenceValue) {
@@ -311,14 +334,16 @@ function App() {
                   ))}
                 </div>
               </Scrollbars>
-              <Pagination className="pagination"
-                currentPage={currentPage}
-                totalPages={totalPage}
-                changeCurrentPage={changePage}
+              <ReactPaginate className='pagination'
+                previousLabel={"←"}
+                nextLabel={"→"}
+                pageCount = {totalPage}
+                onPageChange={changePage}
               />
             </Col> 
           </Row>
         </Container>
+
         <Row style={{marginTop: '7rem'}}>
           <Col style={{position : 'fixed', bottom: 0, marginBottom: '1rem'}}>
             <div style={{float: 'left'}}>

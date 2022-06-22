@@ -9,27 +9,27 @@ let axiosConfig = {
   };
 
 async function getUnannotatedImageList() {
-    const image = await axios.get(LOCAL_UNANNOTATE, axiosConfig);
+    const image = await axios.get(DEPLOYED_UPLOAD_UNANNOTATED_URL, axiosConfig);
     console.log('Image List: ', image.data.rows);
     return image.data.rows;
 }
 
 async function getImageList() {
-    const image = await axios.get(LOCAL_UPLOAD, axiosConfig);
+    const image = await axios.get(DEPLOYED_UPLOAD_URL, axiosConfig);
     console.log('Image List: ', image.data);
     return image.data;
 }
 
 
 const updateUploadById = (id, data) => {
-    const put_request =  axios.put(LOCAL_UPLOAD + '/' + id, data, axiosConfig)
+    const put_request =  axios.put(DEPLOYED_UPLOAD_URL + '/' + id, data, axiosConfig)
     return put_request.then(response => response.data)
 }
 
 async function getPage(pageNum, size) {
-    const image = await axios.get(LOCAL_UNANNOTATE + `?page=${pageNum}&size=${size}`, axiosConfig);
-    console.log('Image List By Page: ', image.data.rows);
-    return image.data.rows;
+    const image = await axios.get(DEPLOYED_UPLOAD_UNANNOTATED_URL + `?page=${pageNum}&size=${size}`, axiosConfig);
+    console.log('Image List By Page: ', image.data);
+    return image.data;
 }
 
 export default {getImageList: getUnannotatedImageList, updateUploadById, getPage}
