@@ -66,7 +66,7 @@ function App() {
 
   // Fetch image list related functions
   const fetchUploads = useCallback(() => {
-    UploadService.getPage(currentPage, 5).then(data => {
+    UploadService.getPage(1, 5).then(data => {
       setImage(data)
     })
       .catch(console.error)
