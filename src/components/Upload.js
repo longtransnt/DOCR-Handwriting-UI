@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropzone from "react-dropzone-uploader";
 import 'react-dropzone-uploader/dist/styles.css'
+import {DEPLOYED_UPLOAD_URL, DEPLOYED_ORIGINALS_URL} from "../constant"
 
 function Upload({ fetchUploads }) {
+  const [originalUpload, setOriginalUpload] = useState(false)
+  
   const getUploadParams = ({ file }) => {
+
+    var path = ''
+    if (originalUpload === true) 
+      path = DEPLOYED_ORIGINALS_URL
+    else
+      path = DEPLOYED_UPLOAD_URL
+
     const body = new FormData()
     body.append('image', file)
-    return {
-      url: 'http://annotationnode-env.eba-iv5i9cmp.us-west-2.elasticbeanstalk.com/api/uploads',
-      body
-    };
+      return {
+        url: path,
+        body
+      };
+    
   }
 
   const handleSubmit = (files, allFiles) => {
@@ -29,6 +40,12 @@ function Upload({ fetchUploads }) {
           dropzone: { minHeight: 200, maxHeight: 250 }
         }}
       />
+      <label>
+        <input type="checkbox"
+          defaultChecked={originalUpload}
+          onChange={() => setOriginalUpload(!originalUpload)}
+        />Upload Original Image
+      </label>
     </div>
   );
 }

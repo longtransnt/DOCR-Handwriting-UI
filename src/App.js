@@ -18,6 +18,7 @@ import { IoChevronDown } from 'react-icons/io5'
 import UploadService from './services/UploadService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
+import Coordinate from "./components/Coordinate";
 
 let notiFormat = {
   position: "top-right",
@@ -45,6 +46,11 @@ function App() {
   const [confidenceState, setConfidenceState] = useState(100);
   const [isOpen, setIsOpen] = useState(false);
 
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
+
+  // Use Effect after Mount
   const useDidMountEffect = (func, deps) => {
     const didMount = useRef(false);
 
@@ -54,16 +60,13 @@ function App() {
     }, deps);
 }
 
+  // Fetch image list related functions
   const fetchUploads = useCallback(() => {
     UploadService.getImageList().then(data => {
       setImage(data)
     })
       .catch(console.error)
   }, []);
-
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
-  }
 
   useEffect(() => {
     fetchUploads();
@@ -75,7 +78,9 @@ function App() {
     }
   }, [image]);
 
-  const handleAdd = () => {
+
+   // Handle when user click "Save Annotations"
+  const handleClickSave = () => {
     console.log(updateState);
     if (annotation !==  '') {
       if (updateState === 1 ) {
@@ -99,6 +104,7 @@ function App() {
     }
   }
 
+  // Handle when user click image on list
   const handleListClick = (id) => {
     console.log(image.length)
     if (id <= image.length - 1) {
@@ -124,8 +130,25 @@ function App() {
       setAnnotation(null);
     }
   }
+  function writeToFile(document, element, equivalenceValue, temp, j){
+    for (let i = 0; i < image.length; i++) {
+      if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === equivalenceValue) {
+        temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
+        j++;
+      }
+    }
+    var data = temp;
+    console.log(data);
+    const file = new Blob(data, {
+      type: "text/plain"
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "annotation"+ equivalenceValue + ".txt";
+    document.body.appendChild(element);
+    element.click();
+  }
 
-  function WriteToFile(eventKey) {
+  function handleDownload(eventKey) {
     const element = document.createElement("a");
     console.log(image);
     let temp = [];
@@ -137,72 +160,16 @@ function App() {
     } else {
       switch (eventKey) {
         case '25':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '25') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_25 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_25);
-          element.download = "annotation-25.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'25', temp, j)
           break;
         case '50':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '50') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_50 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_50);
-          element.download = "annotation-50.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'50', temp, j)
           break;
         case '75':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '75') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_75 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_75);
-          element.download = "annotation-75.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'75', temp, j)
           break;
         case '100':
-          for (let i = 0; i < image.length; i++) {
-            if (image[i].ground_truth !== undefined && image[i].is_verified && image[i].confidence === '100') {
-              temp[j] = image[i].file_name + '\t' + image[i].ground_truth + '\n';
-              j++;
-            }
-          }
-          var data = temp;
-          console.log(data);
-          const file_100 = new Blob(data, {
-            type: "text/plain"
-          });
-          element.href = URL.createObjectURL(file_100);
-          element.download = "annotation-100.txt";
-          document.body.appendChild(element);
-          element.click();
+          writeToFile(document, element,'100', temp, j)
           break;
       default:
         for (let i = 0; i < image.length; i++) {
@@ -224,10 +191,12 @@ function App() {
     }
   }
 
+  //Handle click OUCRU verified
   const handleChecked = () => {
     setChecked(!checked)
   };
 
+    //Handle elect confidence
   const handleConfidenceSelect = (value) => {
     setConfidenceState(value)
   };
@@ -268,7 +237,7 @@ function App() {
                     {annotationList[currId] !== undefined ? annotationList[currId].split(image[currId].file_name + "\t") : annotation !== '' ? annotation : "None"}
                   </span>
                 </p>
-                <Form onSubmit={handleAdd}>
+                <Form onSubmit={handleClickSave}>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control 
                     as="textarea" 
@@ -352,9 +321,9 @@ function App() {
               <OriginalView/>
             </div>
             <div style={{float: 'right', marginRight: '46px'}}>
-              <button className='save-btn' onClick={handleAdd}>Save the annotation</button>{' '}
+              <button className='save-btn' onClick={handleClickSave}>Save the annotation</button>{' '}
               <div style={{float: 'right'}}>
-                <Dropdown onSelect={WriteToFile}>
+                <Dropdown onSelect={handleDownload}>
                   <Dropdown.Toggle id="dropdown-basic-button">
                     DOWNLOAD
                     <IoChevronDown style={{width: '1.5rem', height: '1.5rem', marginLeft: '5px'}}/>
@@ -368,6 +337,9 @@ function App() {
                     <Dropdown.Item className='dropdown-item' eventKey="Download all">Download All</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+                <Coordinate>
+                  
+                </Coordinate>
               </div>
             </div>
           </Col>
