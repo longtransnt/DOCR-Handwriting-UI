@@ -68,18 +68,22 @@ function App() {
     }, deps);
 }
 
-  // Fetch image list related functions
-  const fetchUploads = useCallback(() => {
-    UploadService.getPage(0, 10).then(data => {
+  function getPage(page){
+    UploadService.getPage(page,10).then(data => {
       setImage(data.rows)
       setToTalPage(data.totalPages)
     })
       .catch(console.error)
+  }
+  // Fetch image list related functions
+  const fetchInitialUploads = useCallback(() => {
+    console.log('This part');
+    getPage(0)
   }, []);
 
   useEffect(() => {
-    fetchUploads();
-  }, [fetchUploads])
+    fetchInitialUploads();
+  }, [fetchInitialUploads])
 
   useDidMountEffect(() => {
     if (image.length > 0) {
@@ -88,9 +92,13 @@ function App() {
       } else {
         handleListClick(currId);
       }
-      
+      prevPage.current = currentPage;
+    } else {
+      setCurrId(null);
+      setCurrImagePath(null)
+      setChecked(null);
+      setAnnotation(null);
     }
-    prevPage.current = currentPage;
   }, [image]);
 
 
@@ -98,11 +106,7 @@ function App() {
   const changePage = ({ selected: selectedPage }) => {
     console.log(selectedPage) 
     setCurrentPage(selectedPage)
-    UploadService.getPage(selectedPage, 10).then(data => {
-      setImage(data.rows)
-      setToTalPage(data.totalPages)
-    })
-      .catch(console.error)
+    getPage(selectedPage)
   };
 
    // Handle when user click "Save Annotations"
@@ -120,7 +124,7 @@ function App() {
         console.log(updatedUpload);
         UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
           console.log(res)
-          fetchUploads()
+          getPage(currentPage)
         })
         setUpdateState(0);
       }
@@ -134,7 +138,6 @@ function App() {
   // Handle when user click image on list
   const handleListClick = (id) => {
     console.log(image.length)
-    if (id <= image.length - 1) {
       // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)
@@ -149,12 +152,6 @@ function App() {
      } else {
       setConfidenceState(100); // Default confidence
      }
-    } else{
-      setCurrId(null);
-      setCurrImagePath(null)
-      setChecked(null);
-      setAnnotation(null);
-    }
   }
 
   function writeToFile(document, element, equivalenceValue, temp, j){
@@ -240,7 +237,7 @@ function App() {
         {isOpen && <Popup
           content={<>
             <div className="upload-container">
-              <Upload fetchUploads={fetchUploads} />
+              <Upload fetchUploads={fetchInitialUploads} />
             </div>
           </>}
           handleClose={togglePopup}
@@ -344,6 +341,8 @@ function App() {
                 nextLabel={"→"}
                 pageCount = {totalPage}
                 onPageChange={changePage}
+                disabledClassName={"pagination__link--disabled"}
+                activeClassName={"pagination__link--active"}
               />
             </Col> 
           </Row>
