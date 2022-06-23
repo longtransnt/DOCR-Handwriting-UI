@@ -49,8 +49,8 @@ function App() {
   const [image, setImage] = useState([]);
   const [confidenceState, setConfidenceState] = useState(100);
   const [isOpen, setIsOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setToTalPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPage, setToTalPage] = useState(0);
 
   const prevPage = useRef();
 
@@ -69,6 +69,8 @@ function App() {
 }
 
   function getPage(page){
+    console.log("get page: " + page);
+    console.log("current page: " + currentPage)
     UploadService.getPage(page,10).then(data => {
       setImage(data.rows)
       setToTalPage(data.totalPages)
@@ -94,6 +96,9 @@ function App() {
       }
       prevPage.current = currentPage;
     } else {
+      if (totalPage > 0 ){
+        setCurrentPage(currentPage -1)
+      }
       setCurrId(null);
       setCurrImagePath(null)
       setChecked(null);
@@ -102,12 +107,14 @@ function App() {
   }, [image]);
 
 
-
   const changePage = ({ selected: selectedPage }) => {
-    console.log(selectedPage) 
+    console.log("Selected page: " + selectedPage) 
     setCurrentPage(selectedPage)
-    getPage(selectedPage)
   };
+
+  useEffect(() => {
+    getPage(currentPage)
+  }, [currentPage]);
 
    // Handle when user click "Save Annotations"
   const handleClickSave = () => {
@@ -138,20 +145,31 @@ function App() {
   // Handle when user click image on list
   const handleListClick = (id) => {
     console.log(image.length)
-      // Move to this image
+    if (id <= image.length - 1) {
+       // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)
+
+     //Get the ground truth and default value for ground truth
      if (image[id].ground_truth === null)
       setAnnotation("");
      else
       setAnnotation(image[id].ground_truth);
      setUpdateState(1);
      setChecked(image[id].is_verified);
+
+     //Setting confidence
      if(image[id].confidence != null){
       setConfidenceState(image[id].confidence)   
      } else {
       setConfidenceState(100); // Default confidence
      }
+    } else{
+      setCurrId(null);
+      setCurrImagePath(null)
+      setChecked(null);
+      setAnnotation(null);
+    }
   }
 
   function writeToFile(document, element, equivalenceValue, temp, j){
