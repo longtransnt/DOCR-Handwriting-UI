@@ -108,7 +108,7 @@ function App() {
 
 
   const changePage = ({ selected: selectedPage }) => {
-    console.log("Selected page: " + selectedPage) 
+    // console.log(selectedPage) 
     setCurrentPage(selectedPage)
   };
 
@@ -118,7 +118,7 @@ function App() {
 
    // Handle when user click "Save Annotations"
   const handleClickSave = () => {
-    console.log(updateState);
+    // console.log(updateState);
     if (annotation !==  '') {
       if (updateState === 1 ) {
         //New Put to API
@@ -128,7 +128,7 @@ function App() {
           "confidence": confidenceState,
           "is_verified": checked
         }
-        console.log(updatedUpload);
+        // console.log(updatedUpload);
         UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
           console.log(res)
           getPage(currentPage)
@@ -144,7 +144,7 @@ function App() {
 
   // Handle when user click image on list
   const handleListClick = (id) => {
-    console.log(image.length)
+    // console.log(image.length)
     if (id <= image.length - 1) {
        // Move to this image
      setCurrId(id);
@@ -180,7 +180,7 @@ function App() {
       }
     }
     var data = temp;
-    console.log(data);
+    // console.log(data);
     const file = new Blob(data, {
       type: "text/plain"
     });
@@ -192,11 +192,11 @@ function App() {
 
   function handleDownload(eventKey) {
     const element = document.createElement("a");
-    console.log(image);
+    // console.log(image);
     let temp = [];
     let j = 0;
     // setDownloadOption(eventKey);
-    console.log(eventKey)
+    // console.log(eventKey)
     if (image.length === 0) {
       notiDownload();
     } else {
@@ -221,7 +221,7 @@ function App() {
           }
         }
         var data = temp;
-        console.log(data);
+        // console.log(data);
         const fileAll = new Blob(data, {
           type: "text/plain"
         });
@@ -369,7 +369,7 @@ function App() {
         <Row style={{marginTop: '7rem'}}>
           <Col style={{position : 'fixed', bottom: 0, marginBottom: '1rem'}}>
             <div style={{float: 'left'}}>
-              <OriginalView/>
+              <OriginalView url={originalUrl} coord={coordinate}/>
             </div>
             <div style={{float: 'right', marginRight: '46px'}}>
               <button className='save-btn' onClick={handleClickSave}>Save the annotation</button>{' '}

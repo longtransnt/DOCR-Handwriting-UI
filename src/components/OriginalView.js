@@ -11,12 +11,20 @@ import data from "../data.json"
 
 
 function OriginalView(props) {
+  // Using 'let' here because the component will render unlimited time when using Hook (?)
+  // let imageSource = '';
+  // let coordinates = [];
+
+  // console.log('URL: ' + props.url);
+  // console.log('Props: ' + props.coord);
+
   const [isOpen, setIsOpen] = useState(false);
   const selectedImage = props.selectedImage
   const [preview, setPreview] = useState();
   const targetRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   
+
   useEffect(() => {
     if (targetRef.current) {
       setDimensions({
@@ -26,7 +34,7 @@ function OriginalView(props) {
     }
   }, []);
 
-  console.log(dimensions.width)
+  // console.log(dimensions.width)
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
       if (!selectedImage) {
@@ -45,7 +53,7 @@ function OriginalView(props) {
 
   const onImgLoad = ({ target: img }) => {
     const { offsetHeight, offsetWidth } = img;
-    console.log(offsetHeight, offsetWidth);
+    // console.log(offsetHeight, offsetWidth);
   };
 
   return (
@@ -64,12 +72,12 @@ function OriginalView(props) {
             <div>
               <ImageMapping
                 active={true}
-                width={500} imgWidth={572} // imgWidth: original image width
-                src={image2}
+                imgWidth={600} // imgWidth: original image width
+                src={props.url}
                 map={{
                     name: 'my-map',
                     areas: [
-                      { shape: 'rect', coords: [68, 1468, 462, 1401] },
+                      { shape: 'rect', coords: props.coord },
                       // { shape: 'rect', coords: [78, 1220, 192, 1290] },
                       // { shape: 'rect', coords: [856, 1258, 1026, 1368] },
                       // { shape: 'rect', coords: [868, 1594, 1152, 1512] }, // [top-left-X,top-left-Y,bottom-right-X,bottom-right-Y] Top left x,y(x_min, y_max); Bottom right x,y (x_max, y_min)
