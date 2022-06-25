@@ -292,3 +292,8 @@ input[type="checkbox"]:focus{
 .pagination__link--disabled a {
   color: rgb(198, 197, 202);
 }
+
+.pagination__link--disabled a:hover {
+  cursor: not-allowed;
+  color: rgb(198, 197, 202);
+}
