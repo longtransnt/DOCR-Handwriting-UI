@@ -17,6 +17,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import { Dropdown } from 'react-bootstrap'
 import { IoChevronDown } from 'react-icons/io5'
 import UploadService from './services/UploadService';
+import OriginalService from './services/OriginalService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
 import Coordinate from "./components/Coordinate";
@@ -51,6 +52,10 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setToTalPage] = useState(0);
+  // let originalUrl = '';
+  // let coordinate = [];
+  const [originalUrl, setOriginalUrl] = useState('');
+  const [coordinate, setCoordinate] = useState([]);
 
   const prevPage = useRef();
 
@@ -106,6 +111,16 @@ function App() {
     }
   }, [image]);
 
+  const fetchOriginal = (upload_id, original_id) => {
+    OriginalService.getCoordinatesById(upload_id).then(data => {
+      setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
+    })
+    .catch(console.error)
+    OriginalService.getOriginalImageById(original_id).then(data => {
+      setOriginalUrl(data[0].imageUrl)
+    })
+    .catch(console.error)
+  };
 
   const changePage = ({ selected: selectedPage }) => {
     // console.log(selectedPage) 
@@ -146,11 +161,17 @@ function App() {
   const handleListClick = (id) => {
     // console.log(image.length)
     if (id <= image.length - 1) {
-       // Move to this image
+      // // Testing only
+      // setOriginalUrl('https://images.unsplash.com/photo-1655960557052-6c746fc47034?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'); 
+      // setCoordinate([78, 1220, 192, 1290]);
+
+      
+
+      // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)
-
-     //Get the ground truth and default value for ground truth
+     fetchOriginal(image[id].image_id, image[id].original_image_id)
+     
      if (image[id].ground_truth === null)
       setAnnotation("");
      else
