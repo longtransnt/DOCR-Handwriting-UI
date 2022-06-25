@@ -52,8 +52,8 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setToTalPage] = useState(0);
-  const [originalUrl, setOriginalUrl] = useState('');
-  const [coordinate, setCoordinate] = useState([]);
+  const [originalImageId, setOriginalImageId] = useState('');
+  const [chosenImageId, setChosenImageId] = useState('');
 
   const prevPage = useRef();
 
@@ -108,16 +108,16 @@ function App() {
     }
   }, [image]);
 
-  const fetchOriginal = (upload_id, original_id) => {
-    OriginalService.getCoordinatesById(upload_id).then(data => {
-      setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
-    })
-    .catch(console.error)
-    OriginalService.getOriginalImageById(original_id).then(data => {
-      setOriginalUrl(data[0].imageUrl)
-    })
-    .catch(console.error)
-  };
+  // const fetchOriginal = (upload_id, original_id) => {
+  //   OriginalService.getCoordinatesById(upload_id).then(data => {
+  //     setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
+  //   })
+  //   .catch(console.error)
+  //   OriginalService.getOriginalImageById(original_id).then(data => {
+  //     setOriginalUrl(data[0].imageUrl)
+  //   })
+  //   .catch(console.error)
+  // };
 
   const changePage = ({ selected: selectedPage }) => {
     // console.log(selectedPage) 
@@ -162,7 +162,8 @@ function App() {
       // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)
-    //  fetchOriginal(image[id].image_id, image[id].original_image_id)
+     setOriginalImageId( image[id].original_image_id)
+     setChosenImageId(image[id].image_id)
      
      if (image[id].ground_truth === null)
       setAnnotation("");
@@ -382,7 +383,8 @@ function App() {
         <Row style={{marginTop: '7rem'}}>
           <Col style={{position : 'fixed', bottom: 0, marginBottom: '1rem'}}>
             <div style={{float: 'left'}}>
-              <OriginalView image_id = {image[currId].image_id} original_image_id = {image[currId].original_image_id}
+              <OriginalView image_id = {chosenImageId}
+                original_image_id = {originalImageId}
               // url={originalUrl} coord={coordinate}
               />
             </div>

@@ -4,12 +4,10 @@ import 'react-image-lightbox/style.css';
 import Popup from './Popup';
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from "react-icons/ai";
 import ImageMapping from './ImageMapping';
-import image from "./2q.000382 (1)pd.jpg"
-import image2 from "./21.000211 (24)pd.jpg"
 import InnerImageZoom from 'react-inner-image-zoom'
 import data from "../data.json"
 import { Resizable, ResizableBox } from 'react-resizable';
-
+import OriginalService from '../services/OriginalService';
 function OriginalView(props) {
   const [isOpen, setIsOpen] = useState(false);
   // const [selectedImage, setSelectedImage] = props.selectedImage
@@ -43,22 +41,27 @@ function OriginalView(props) {
   }, []);
 
   console.log(dimensions.width)
+  
   // create a preview as a side effect, whenever selected file is changed
-  useEffect(() => {
-      if (!OriginalUrl) {
-          setPreview(undefined)
-          return
-      }
-      const objectUrl = URL.createObjectURL(OriginalUrl)
-      setPreview(objectUrl)
-      // free memory when ever this component is unmounted
-      return () => URL.revokeObjectURL(objectUrl)
-  }, [OriginalUrl])
+  // useEffect(() => {
+  //     console.log("original_url: " + originalUrl);
+  //     if (originalUrl == '') {
+  //         setPreview(undefined)
+  //         return
+  //     }
+  //     const objectUrl = URL.createObjectURL(originalUrl)
+  //     setPreview(objectUrl)
+  //     // free memory when ever this component is unmounted
+  //     return () => URL.revokeObjectURL(objectUrl)
+  // }, [originalUrl])
 
  
 
   useEffect(() => {
-    fetchOriginal(imageId, originalImageId)
+    if (imageId !== '' && originalImageId !== '') {
+      console.log("here")
+      fetchOriginal(imageId, originalImageId)
+    }
   }, [isOpen])
 
 
@@ -81,11 +84,11 @@ function OriginalView(props) {
                   <ImageMapping
                     active={true}
                     imgWidth={700} // imgWidth: original image width
-                    src={props.url}
+                    src={originalUrl}
                     map={{
                         name: 'my-map',
                         areas: [
-                          { shape: 'rect', coords: props.coord },
+                          { shape: 'rect', coords: coordinate },
                         ]
                     }}
                   />
