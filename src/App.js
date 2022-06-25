@@ -52,8 +52,6 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setToTalPage] = useState(0);
-  // let originalUrl = '';
-  // let coordinate = [];
   const [originalUrl, setOriginalUrl] = useState('');
   const [coordinate, setCoordinate] = useState([]);
 
@@ -84,7 +82,6 @@ function App() {
   }
   // Fetch image list related functions
   const fetchInitialUploads = useCallback(() => {
-    console.log('This part');
     getPage(0)
   }, []);
 
@@ -162,11 +159,6 @@ function App() {
     // console.log(image.length)
     if (id <= image.length - 1) {
       // // Testing only
-      // setOriginalUrl('https://images.unsplash.com/photo-1655960557052-6c746fc47034?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'); 
-      // setCoordinate([78, 1220, 192, 1290]);
-
-      
-
       // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)

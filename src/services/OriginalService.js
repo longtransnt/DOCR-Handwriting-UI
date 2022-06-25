@@ -9,13 +9,13 @@ let axiosConfig = {
   };
 
 async function getCoordinatesById(id) {
-    const coordinates = await axios.get(LOCAL_COORDINATE + id, axiosConfig);
+    const coordinates = await axios.get(DEPLOYED_COORDINATE_URL +"/" + id, axiosConfig);
     console.log('Coordinates: ', coordinates.data);
     return coordinates.data;
 }
 
 async function getOriginalImageById(id) {
-    const image_original = await axios.get(LOCAL_ORIGINAL + id, axiosConfig);
+    const image_original = await axios.get(DEPLOYED_ORIGINALS_URL +"/" + id, axiosConfig);
     console.log('Original Image: ', image_original.data);
     return image_original.data;
 }
