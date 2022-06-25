@@ -12,11 +12,26 @@ import { Resizable, ResizableBox } from 'react-resizable';
 
 function OriginalView(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const selectedImage = props.selectedImage
+  // const [selectedImage, setSelectedImage] = props.selectedImage
+  const imageId = props.image_id
+  const originalImageId = props.original_image_id
   const [preview, setPreview] = useState();
   const targetRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  
+  const [originalUrl, setOriginalUrl] = useState('');
+  const [coordinate, setCoordinate] = useState([]);
+
+
+  const fetchOriginal = (imageId, originalImageId) => {
+    OriginalService.getCoordinatesById(imageId).then(data => {
+      setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
+    })
+    .catch(console.error)
+    OriginalService.getOriginalImageById(originalImageId).then(data => {
+      setOriginalUrl(data[0].imageUrl)
+    })
+    .catch(console.error)
+  };
 
   useEffect(() => {
     if (targetRef.current) {
@@ -30,15 +45,22 @@ function OriginalView(props) {
   console.log(dimensions.width)
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
-      if (!selectedImage) {
+      if (!OriginalUrl) {
           setPreview(undefined)
           return
       }
-      const objectUrl = URL.createObjectURL(selectedImage)
+      const objectUrl = URL.createObjectURL(OriginalUrl)
       setPreview(objectUrl)
       // free memory when ever this component is unmounted
       return () => URL.revokeObjectURL(objectUrl)
-  }, [selectedImage])
+  }, [OriginalUrl])
+
+ 
+
+  useEffect(() => {
+    fetchOriginal(imageId, originalImageId)
+  }, [isOpen])
+
 
   const togglePopup = () => {
     setIsOpen(!isOpen);

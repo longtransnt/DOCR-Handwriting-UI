@@ -162,7 +162,7 @@ function App() {
       // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)
-     fetchOriginal(image[id].image_id, image[id].original_image_id)
+    //  fetchOriginal(image[id].image_id, image[id].original_image_id)
      
      if (image[id].ground_truth === null)
       setAnnotation("");
@@ -382,7 +382,9 @@ function App() {
         <Row style={{marginTop: '7rem'}}>
           <Col style={{position : 'fixed', bottom: 0, marginBottom: '1rem'}}>
             <div style={{float: 'left'}}>
-              <OriginalView url={originalUrl} coord={coordinate}/>
+              <OriginalView image_id = {image[currId].image_id} original_image_id = {image[currId].original_image_id}
+              // url={originalUrl} coord={coordinate}
+              />
             </div>
             <div style={{float: 'right', marginRight: '46px'}}>
               <button className='save-btn' onClick={handleClickSave}>Save the annotation</button>{' '}
