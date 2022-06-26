@@ -69,7 +69,7 @@ function App() {
         if (didMount.current) func();
         else didMount.current = true;
     }, deps);
-}
+  }
 
   function getPage(page){
     console.log("get page: " + page);
@@ -89,7 +89,7 @@ function App() {
     fetchInitialUploads();
   }, [fetchInitialUploads])
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     if (image.length > 0) {
       if (prevPage.current !== currentPage){
         handleListClick(0);
@@ -125,7 +125,9 @@ function App() {
   };
 
   useEffect(() => {
-    getPage(currentPage)
+    if (totalPage > 0) {
+      getPage(currentPage)
+    }
   }, [currentPage]);
 
    // Handle when user click "Save Annotations"
