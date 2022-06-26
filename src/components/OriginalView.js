@@ -18,15 +18,20 @@ function OriginalView(props) {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [originalUrl, setOriginalUrl] = useState('');
   const [coordinate, setCoordinate] = useState([]);
+  const [updateLimit, setUpdateLimit] = useState(false);
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+  //const forceUpdate = React.useReducer(() => ({}))[1]
+  //const forceUpdate = React.useState()[1].bind(null, {})  // see NOTE above
 
-
-  const fetchOriginal = (imageId, originalImageId) => {
-    OriginalService.getCoordinatesById(imageId).then(data => {
-      setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
+  const fetchOriginal = async (imageId, originalImageId) => {
+   await OriginalService.getOriginalImageById(originalImageId).then(data => {
+      setOriginalUrl(data[0].imageUrl)
     })
     .catch(console.error)
-    OriginalService.getOriginalImageById(originalImageId).then(data => {
-      setOriginalUrl(data[0].imageUrl)
+
+   await OriginalService.getCoordinatesById(imageId).then(data => {
+      setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
     })
     .catch(console.error)
   };
@@ -42,36 +47,38 @@ function OriginalView(props) {
 
   console.log(dimensions.width)
   
-
-
- 
-
   useEffect(() => {
     if (imageId !== '' && originalImageId !== '') {
       console.log("here")
       fetchOriginal(imageId, originalImageId)
     }
   }, [isOpen])
-
-
+  
   const togglePopup = () => {
     setIsOpen(!isOpen);
   }
 
-  const onImgLoad = ({ target: img }) => {
-    const { offsetHeight, offsetWidth } = img;
-    // console.log(offsetHeight, offsetWidth);
-  };
+  const onImgLoad = () => {
+    if (updateLimit === false) {
+      console.log("Update Limit " + updateLimit)
+      forceUpdate()
+      setUpdateLimit(true);
+    }
+  }
 
   return (
     <div> 
-          <button className='view-image-btn' onClick={() => setIsOpen(true)}>View the original image</button>
+          <button className='view-image-btn' onClick={() => {
+            setIsOpen(true)
+            setUpdateLimit(false)
+          }}>View the original image</button>
           {isOpen && <Popup
             content={<>
-              <ResizableBox width={600} height={900}>
+              <ResizableBox width={800} height={1000}>
                 <div>
                   <ImageMapping
-                    active={true}
+                    active={true} 
+                    onLoad={onImgLoad}
                     imgWidth={700} // imgWidth: original image width
                     src={originalUrl}
                     map={{
