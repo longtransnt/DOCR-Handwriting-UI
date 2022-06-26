@@ -71,15 +71,6 @@ function App() {
     }, deps);
   }
 
-  function getPage(page){
-    console.log("get page: " + page);
-    console.log("current page: " + currentPage)
-    UploadService.getPage(page,10).then(data => {
-      setImage(data.rows)
-      setToTalPage(data.totalPages)
-    })
-      .catch(console.error)
-  }
   // Fetch image list related functions
   const fetchInitialUploads = useCallback(() => {
     getPage(0)
@@ -118,6 +109,15 @@ function App() {
   //   })
   //   .catch(console.error)
   // };
+  function getPage(page){
+    console.log("get page: " + page);
+    console.log("current page: " + currentPage)
+    UploadService.getPage(page,10).then(data => {
+      setImage(data.rows)
+      setToTalPage(data.totalPages)
+    })
+      .catch(console.error)
+  }
 
   const changePage = ({ selected: selectedPage }) => {
     // console.log(selectedPage) 
