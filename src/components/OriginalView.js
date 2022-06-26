@@ -4,19 +4,33 @@ import 'react-image-lightbox/style.css';
 import Popup from './Popup';
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from "react-icons/ai";
 import ImageMapping from './ImageMapping';
-import image from "./2q.000382 (1)pd.jpg"
-import image2 from "./21.000211 (24)pd.jpg"
 import InnerImageZoom from 'react-inner-image-zoom'
 import data from "../data.json"
-
-
+import { Resizable, ResizableBox } from 'react-resizable';
+import OriginalService from '../services/OriginalService';
 function OriginalView(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const selectedImage = props.selectedImage
+  // const [selectedImage, setSelectedImage] = props.selectedImage
+  const imageId = props.image_id
+  const originalImageId = props.original_image_id
   const [preview, setPreview] = useState();
   const targetRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  
+  const [originalUrl, setOriginalUrl] = useState('');
+  const [coordinate, setCoordinate] = useState([]);
+
+
+  const fetchOriginal = (imageId, originalImageId) => {
+    OriginalService.getCoordinatesById(imageId).then(data => {
+      setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
+    })
+    .catch(console.error)
+    OriginalService.getOriginalImageById(originalImageId).then(data => {
+      setOriginalUrl(data[0].imageUrl)
+    })
+    .catch(console.error)
+  };
+
   useEffect(() => {
     if (targetRef.current) {
       setDimensions({
@@ -27,17 +41,18 @@ function OriginalView(props) {
   }, []);
 
   console.log(dimensions.width)
-  // create a preview as a side effect, whenever selected file is changed
+  
+
+
+ 
+
   useEffect(() => {
-      if (!selectedImage) {
-          setPreview(undefined)
-          return
-      }
-      const objectUrl = URL.createObjectURL(selectedImage)
-      setPreview(objectUrl)
-      // free memory when ever this component is unmounted
-      return () => URL.revokeObjectURL(objectUrl)
-  }, [selectedImage])
+    if (imageId !== '' && originalImageId !== '') {
+      console.log("here")
+      fetchOriginal(imageId, originalImageId)
+    }
+  }, [isOpen])
+
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -45,43 +60,35 @@ function OriginalView(props) {
 
   const onImgLoad = ({ target: img }) => {
     const { offsetHeight, offsetWidth } = img;
-    console.log(offsetHeight, offsetWidth);
+    // console.log(offsetHeight, offsetWidth);
   };
 
   return (
-    <div>
-        {/* <input type='file' onChange={onSelectFile} /> */}
-        {/* <button className='view-image-btn' onClick={() => setIsOpen(true)}>View the original image</button>
-        {isOpen && (
-        <Lightbox
-            mainSrc={preview}
-            onCloseRequest={() => setIsOpen(false)}
-        />
-        )} */}
-        <button className='view-image-btn' onClick={() => setIsOpen(true)}>View the original image</button>
-        {isOpen && <Popup
-          content={<>
-            <div>
-              <ImageMapping
-                active={true}
-                width={500} imgWidth={572} // imgWidth: original image width
-                src={image2}
-                map={{
-                    name: 'my-map',
-                    areas: [
-                      { shape: 'rect', coords: [68, 1468, 462, 1401] },
-                      // { shape: 'rect', coords: [78, 1220, 192, 1290] },
-                      // { shape: 'rect', coords: [856, 1258, 1026, 1368] },
-                      // { shape: 'rect', coords: [868, 1594, 1152, 1512] }, // [top-left-X,top-left-Y,bottom-right-X,bottom-right-Y] Top left x,y(x_min, y_max); Bottom right x,y (x_max, y_min)
-                    ]
-                }}
-              />
-            </div>
-          </>}
-          handleClose={togglePopup}
-          />
-        }
-    </div>
+    <div> 
+          <button className='view-image-btn' onClick={() => setIsOpen(true)}>View the original image</button>
+          {isOpen && <Popup
+            content={<>
+              <ResizableBox width={600} height={900}>
+                <div>
+                  <ImageMapping
+                    active={true}
+                    imgWidth={700} // imgWidth: original image width
+                    src={originalUrl}
+                    map={{
+                        name: 'my-map',
+                        areas: [
+                          { shape: 'rect', coords: coordinate },
+                        ]
+                    }}
+                  />
+                </div>
+              </ResizableBox>
+            </>}
+            handleClose={togglePopup}
+            />
+          }
+      </div>
+    
   );
 }
 

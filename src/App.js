@@ -17,6 +17,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import { Dropdown } from 'react-bootstrap'
 import { IoChevronDown } from 'react-icons/io5'
 import UploadService from './services/UploadService';
+import OriginalService from './services/OriginalService';
 import Popup from './components/Popup';
 import Upload from "./components/Upload";
 import Coordinate from "./components/Coordinate";
@@ -51,6 +52,8 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setToTalPage] = useState(0);
+  const [originalImageId, setOriginalImageId] = useState('');
+  const [chosenImageId, setChosenImageId] = useState('');
 
   const prevPage = useRef();
 
@@ -66,11 +69,10 @@ function App() {
         if (didMount.current) func();
         else didMount.current = true;
     }, deps);
-}
+  }
 
   // Fetch image list related functions
   const fetchInitialUploads = useCallback(() => {
-    console.log('This part');
     getPage(0)
   }, []);
 
@@ -78,7 +80,7 @@ function App() {
     fetchInitialUploads();
   }, [fetchInitialUploads])
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     if (image.length > 0) {
       if (prevPage.current !== currentPage){
         handleListClick(0);
@@ -97,6 +99,16 @@ function App() {
     }
   }, [image]);
 
+  // const fetchOriginal = (upload_id, original_id) => {
+  //   OriginalService.getCoordinatesById(upload_id).then(data => {
+  //     setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
+  //   })
+  //   .catch(console.error)
+  //   OriginalService.getOriginalImageById(original_id).then(data => {
+  //     setOriginalUrl(data[0].imageUrl)
+  //   })
+  //   .catch(console.error)
+  // };
   function getPage(page){
     console.log("get page: " + page);
     console.log("current page: " + currentPage)
@@ -108,17 +120,19 @@ function App() {
   }
 
   const changePage = ({ selected: selectedPage }) => {
-    console.log("Selected page: " + selectedPage) 
+    // console.log(selectedPage) 
     setCurrentPage(selectedPage)
   };
 
   useEffect(() => {
-    getPage(currentPage)
+    if (totalPage > 0) {
+      getPage(currentPage)
+    }
   }, [currentPage]);
 
    // Handle when user click "Save Annotations"
   const handleClickSave = () => {
-    console.log(updateState);
+    // console.log(updateState);
     if (annotation !==  '') {
       if (updateState === 1 ) {
         //New Put to API
@@ -128,7 +142,7 @@ function App() {
           "confidence": confidenceState,
           "is_verified": checked
         }
-        console.log(updatedUpload);
+        // console.log(updatedUpload);
         UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
           console.log(res)
           getPage(currentPage)
@@ -144,13 +158,15 @@ function App() {
 
   // Handle when user click image on list
   const handleListClick = (id) => {
-    console.log(image.length)
+    // console.log(image.length)
     if (id <= image.length - 1) {
-       // Move to this image
+      // // Testing only
+      // Move to this image
      setCurrId(id);
      setCurrImagePath(image[id].imageUrl)
-
-     //Get the ground truth and default value for ground truth
+     setOriginalImageId( image[id].original_image_id)
+     setChosenImageId(image[id].image_id)
+     
      if (image[id].ground_truth === null)
       setAnnotation("");
      else
@@ -180,7 +196,7 @@ function App() {
       }
     }
     var data = temp;
-    console.log(data);
+    // console.log(data);
     const file = new Blob(data, {
       type: "text/plain"
     });
@@ -192,11 +208,11 @@ function App() {
 
   function handleDownload(eventKey) {
     const element = document.createElement("a");
-    console.log(image);
+    // console.log(image);
     let temp = [];
     let j = 0;
     // setDownloadOption(eventKey);
-    console.log(eventKey)
+    // console.log(eventKey)
     if (image.length === 0) {
       notiDownload();
     } else {
@@ -221,7 +237,7 @@ function App() {
           }
         }
         var data = temp;
-        console.log(data);
+        // console.log(data);
         const fileAll = new Blob(data, {
           type: "text/plain"
         });
@@ -369,7 +385,10 @@ function App() {
         <Row style={{marginTop: '7rem'}}>
           <Col style={{position : 'fixed', bottom: 0, marginBottom: '1rem'}}>
             <div style={{float: 'left'}}>
-              <OriginalView/>
+              <OriginalView image_id = {chosenImageId}
+                original_image_id = {originalImageId}
+              // url={originalUrl} coord={coordinate}
+              />
             </div>
             <div style={{float: 'right', marginRight: '46px'}}>
               <button className='save-btn' onClick={handleClickSave}>Save the annotation</button>{' '}
