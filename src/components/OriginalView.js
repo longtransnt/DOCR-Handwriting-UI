@@ -42,18 +42,7 @@ function OriginalView(props) {
 
   console.log(dimensions.width)
   
-  // create a preview as a side effect, whenever selected file is changed
-  // useEffect(() => {
-  //     console.log("original_url: " + originalUrl);
-  //     if (originalUrl == '') {
-  //         setPreview(undefined)
-  //         return
-  //     }
-  //     const objectUrl = URL.createObjectURL(originalUrl)
-  //     setPreview(objectUrl)
-  //     // free memory when ever this component is unmounted
-  //     return () => URL.revokeObjectURL(objectUrl)
-  // }, [originalUrl])
+
 
  
 
