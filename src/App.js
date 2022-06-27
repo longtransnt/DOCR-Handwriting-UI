@@ -102,7 +102,7 @@ function App() {
   function getPage(page){
     console.log("get page: " + page);
     console.log("current page: " + currentPage)
-    UploadService.getPage(page,10).then(data => {
+    UploadService.getPage(page,20).then(data => {
       setImage(data.rows)
       setToTalPage(data.totalPages)
     })
