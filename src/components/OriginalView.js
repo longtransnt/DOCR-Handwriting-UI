@@ -49,7 +49,6 @@ function OriginalView(props) {
   
   useEffect(() => {
     if (imageId !== '' && originalImageId !== '') {
-      console.log("here")
       fetchOriginal(imageId, originalImageId)
     }
   }, [isOpen])
