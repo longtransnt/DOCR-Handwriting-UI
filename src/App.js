@@ -99,7 +99,7 @@ function App() {
       prevPage.current = currentPage;
     } else {
       if (totalPage > 0 ){
-        setCurrentPage(currentPage -1)
+        setCurrentPage(totalPage -1)
       }
       setCurrId(null);
       setCurrImagePath(null)
@@ -108,16 +108,6 @@ function App() {
     }
   }, [image]);
 
-  // const fetchOriginal = (upload_id, original_id) => {
-  //   OriginalService.getCoordinatesById(upload_id).then(data => {
-  //     setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
-  //   })
-  //   .catch(console.error)
-  //   OriginalService.getOriginalImageById(original_id).then(data => {
-  //     setOriginalUrl(data[0].imageUrl)
-  //   })
-  //   .catch(console.error)
-  // };
 
   const changePage = ({ selected: selectedPage }) => {
     // console.log(selectedPage) 
