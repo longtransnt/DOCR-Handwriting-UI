@@ -27,7 +27,7 @@ const updateUploadById = (id, data) => {
 }
 
 async function getPage(pageNum, size) {
-    const image = await axios.get(DEPLOYED_UPLOAD_UNANNOTATED_URL + `?page=${pageNum}&size=${size}`, axiosConfig);
+    const image = await axios.get(DEPLOYED_UPLOAD_URL + `?page=${pageNum}&size=${size}`, axiosConfig);
     console.log('Image List By Page: ', image.data);
     return image.data;
 }

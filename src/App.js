@@ -54,8 +54,8 @@ function App() {
   const [totalPage, setToTalPage] = useState(0);
   const [originalImageId, setOriginalImageId] = useState('');
   const [chosenImageId, setChosenImageId] = useState('');
-
   const prevPage = useRef();
+  var mapData = [];
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -89,21 +89,29 @@ function App() {
       }
       prevPage.current = currentPage;
     } else {
-      if (totalPage > 0 ){
-        setCurrentPage(totalPage -1)
-      }
+      // if (totalPage > 0 ){
+      //   setCurrentPage(totalPage -1)
+      // }
       setCurrId(null);
       setCurrImagePath(null)
       setChecked(null);
-      setAnnotation(null);
+      setAnnotation(null)
     }
   }, [image]);
+
+  function loadImageList(rows){
+    mapData = rows.filter( function (up) {
+      return up.ground_truth === null
+    });
+
+      setImage(mapData)
+  }
 
   function getPage(page){
     console.log("get page: " + page);
     console.log("current page: " + currentPage)
-    UploadService.getPage(page,20).then(data => {
-      setImage(data.rows)
+    UploadService.getPage(page,100).then(data => {
+      loadImageList(data.rows)
       setToTalPage(data.totalPages)
     })
       .catch(console.error)
@@ -135,7 +143,9 @@ function App() {
         // console.log(updatedUpload);
         UploadService.updateUploadById(updatedUpload.id, updatedUpload).then(res =>{
           console.log(res)
-          getPage(currentPage)
+          image[currId].ground_truth = res.ground_truth
+          loadImageList(image)
+          // getPage(currentPage)
         })
         setUpdateState(0);
       }
@@ -340,7 +350,7 @@ function App() {
               <p style={{textAlign: 'center', fontWeight: 'bold'}}>Image List</p>
               <Scrollbars>
                 <div id="image-list">
-                  {image.map((im, id) => (
+                  {image.map((im, id) => ( 
                       <ListGroup.Item 
                         id={"image_" + id} 
                         key={id} 
