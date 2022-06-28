@@ -371,6 +371,7 @@ function App() {
                 </div>
               </Scrollbars>
               <ReactPaginate className='pagination'
+                pageRangeDisplayed = {15}
                 previousLabel={"←"}
                 nextLabel={"→"}
                 pageCount = {totalPage}
