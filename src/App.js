@@ -408,9 +408,8 @@ function App() {
                     <Dropdown.Item className='dropdown-item' eventKey="all">Download All</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                <Coordinate>
-                  
-                </Coordinate>
+                {/* <Coordinate>
+                </Coordinate> */}
               </div>
             </div>
           </Col>
