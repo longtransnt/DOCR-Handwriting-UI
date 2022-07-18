@@ -54,6 +54,7 @@ function App() {
   const [totalPage, setToTalPage] = useState(0);
   const [originalImageId, setOriginalImageId] = useState('');
   const [chosenImageId, setChosenImageId] = useState('');
+  const [chosenImageCords, setChosenImageCords] = useState([0,0,0,0]);
   const prevPage = useRef();
   var mapData = [];
 
@@ -166,7 +167,9 @@ function App() {
      setCurrImagePath(image[id].imageUrl)
      setOriginalImageId( image[id].original_image_id)
      setChosenImageId(image[id].image_id)
-     
+     var cords = [image[id].max_x, image[id].max_y, image[id].min_x, image[id].min_y];
+     setChosenImageCords(cords)
+          
      if (image[id].ground_truth === null)
       setAnnotation("");
      else
@@ -388,6 +391,7 @@ function App() {
             <div style={{float: 'left'}}>
               <OriginalView image_id = {chosenImageId}
                 original_image_id = {originalImageId}
+                chosen_image_cords = {chosenImageCords}
               // url={originalUrl} coord={coordinate}
               />
             </div>

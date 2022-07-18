@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import myJson from './../data.json';
+import {DEPLOYED_COORDINATE_URL, LOCAL_COORDINATE} from "../constant"
 
 import 'react-dropzone-uploader/dist/styles.css'
 import { Button } from 'react-bootstrap';
@@ -20,7 +21,7 @@ function Coordinate() {
                     min_y:obj.min_y
                 })
             };
-            fetch('http://annotationnode-env.eba-iv5i9cmp.us-west-2.elasticbeanstalk.com/api/coordinate', requestOptions)
+            fetch(DEPLOYED_COORDINATE_URL, requestOptions)
                 .then(response => response.json())
                 .then(data => console.log(data));
         }

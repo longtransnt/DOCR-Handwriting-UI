@@ -13,25 +13,19 @@ function OriginalView(props) {
   // const [selectedImage, setSelectedImage] = props.selectedImage
   const imageId = props.image_id
   const originalImageId = props.original_image_id
+  const chosenImageCords = props.chosen_image_cords
   const [preview, setPreview] = useState();
   const targetRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [originalUrl, setOriginalUrl] = useState('');
   const [coordinate, setCoordinate] = useState([]);
   const [updateLimit, setUpdateLimit] = useState(false);
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
-  //const forceUpdate = React.useReducer(() => ({}))[1]
-  //const forceUpdate = React.useState()[1].bind(null, {})  // see NOTE above
+  const [originalWidth, setOriginalWidth] = useState(0);
 
   const fetchOriginal = async (imageId, originalImageId) => {
    await OriginalService.getOriginalImageById(originalImageId).then(data => {
       setOriginalUrl(data[0].imageUrl)
-    })
-    .catch(console.error)
-
-   await OriginalService.getCoordinatesById(imageId).then(data => {
-      setCoordinate([data.max_x, data.max_y, data.min_x, data.min_y])
+      setCoordinate(chosenImageCords)
     })
     .catch(console.error)
   };
@@ -52,18 +46,23 @@ function OriginalView(props) {
       fetchOriginal(imageId, originalImageId)
     }
   }, [isOpen])
-  
+
   const togglePopup = () => {
     setIsOpen(!isOpen);
   }
 
-  const onImgLoad = () => {
-    if (updateLimit === false) {
-      console.log("Update Limit " + updateLimit)
-      forceUpdate()
-      setUpdateLimit(true);
-    }
+  function getMeta(url, callback) {
+    const img = new Image();
+    img.src = url;
+    img.onload = function() { callback(this.width, this.height); }
   }
+  getMeta(
+    originalUrl,
+    (width, height) => {
+      console.log(width)
+      setOriginalWidth(width)
+    }
+  );
 
   return (
     <div> 
@@ -77,8 +76,7 @@ function OriginalView(props) {
                 <div>
                   <ImageMapping
                     active={true} 
-                    onLoad={onImgLoad}
-                    imgWidth={700} // imgWidth: original image width
+                    imgWidth={originalWidth} width={1000} // imgWidth: original image width
                     src={originalUrl}
                     map={{
                         name: 'my-map',
