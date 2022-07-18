@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import myJson from './../data.json';
-import {DEPLOYED_COORDINATE_URL, LOCAL_COORDINATE} from "../constant"
+import {COORDINATE_URL} from "../constant"
 
 import 'react-dropzone-uploader/dist/styles.css'
 import { Button } from 'react-bootstrap';
@@ -21,7 +21,7 @@ function Coordinate() {
                     min_y:obj.min_y
                 })
             };
-            fetch(DEPLOYED_COORDINATE_URL, requestOptions)
+            fetch(COORDINATE_URL, requestOptions)
                 .then(response => response.json())
                 .then(data => console.log(data));
         }
