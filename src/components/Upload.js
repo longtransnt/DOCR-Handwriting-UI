@@ -34,7 +34,7 @@ function Upload({ fetchUploads }) {
         getUploadParams={getUploadParams}
         onSubmit={handleSubmit}
         accept="image/*"
-        maxFiles={10}
+        maxFiles={100}
         multiple={true}
         styles={{
           dropzone: { minHeight: 200, maxHeight: 250 }

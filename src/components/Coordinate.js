@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import myJson from './../data.json';
+import myJson from './../data1.json';
 import {COORDINATE_URL} from "../constant"
 
 import 'react-dropzone-uploader/dist/styles.css'
@@ -22,7 +22,7 @@ function Coordinate() {
                 })
             };
             fetch(COORDINATE_URL, requestOptions)
-                .then(response => response.json())
+                .then(response => console.log(response.json()))
                 .then(data => console.log(data));
         }
       }
@@ -30,7 +30,7 @@ function Coordinate() {
   return (
     <div>
         <Button onClick={getData}>
-
+        Post Coordinate
         </Button>
     </div>
   );
