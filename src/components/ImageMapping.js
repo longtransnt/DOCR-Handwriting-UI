@@ -1,5 +1,7 @@
 /* Reference: https://github.com/yj-ang/react-image-mapper2/blob/master/src/components/ImageMapper.tsx */
-import React, { useRef, useEffect } from "react"
+import React, { Component, useRef, useEffect } from "react";
+import { render } from "react-dom";
+const useMountEffect = fun => useEffect(fun, []);
 
 export default function ImageMapper ({
   src,
@@ -129,6 +131,13 @@ export default function ImageMapper ({
   const renderAreas = () => {
     return map.areas.map((area, index) => {
       const scaledCoords = scaleCoords(area.coords)
+      var mid_x = (scaledCoords[0] + scaledCoords[1])/2
+      var mid_y = (scaledCoords[2] + scaledCoords[3])/2
+      window.scroll({
+        top: mid_x,
+        left: mid_y,
+        behavior: 'smooth'
+      });
 
       return (
         <area
@@ -156,4 +165,7 @@ export default function ImageMapper ({
       </map>
     </div>
   )
+
+  
+  
 }
