@@ -76,7 +76,7 @@ function OriginalView(props) {
                 <div>
                   <ImageMapping
                     active={true} 
-                    imgWidth={originalWidth} width={1000} // imgWidth: original image width
+                    imgWidth={originalWidth} width={720} // imgWidth: original image width
                     src={originalUrl}
                     map={{
                         name: 'my-map',
