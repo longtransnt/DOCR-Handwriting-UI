@@ -8,6 +8,7 @@ import InnerImageZoom from "react-inner-image-zoom";
 import data from "../data.json";
 import { Resizable, ResizableBox } from "react-resizable";
 import OriginalService from "../services/OriginalService";
+
 function OriginalView(props) {
   const [isOpen, setIsOpen] = useState(false);
   // const [selectedImage, setSelectedImage] = props.selectedImage

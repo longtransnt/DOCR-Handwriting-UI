@@ -1,4 +1,8 @@
 import "../App.css";
+import "../styles/Popup.css";
+import "../styles/Pagination.css";
+import "../styles/Buttons.css";
+import "../styles/Checkbox.css";
 import "react-dropdown/style.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropzone-uploader/dist/styles.css";
