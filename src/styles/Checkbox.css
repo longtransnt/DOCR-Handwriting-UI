@@ -1,0 +1,23 @@
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      /* create custom checkbox appearance */
+      display: inline-block;
+      width: 1.25rem;
+      height: 1.25rem;
+      padding: 2px;
+      /* background-color only for content */
+      background-clip: content-box;
+      border: 1.5px solid #005477;
+      border-radius: 3px;
+  }
+  
+  input[type="checkbox"]:checked{
+    background-color: #005477;
+  }
+  
+  input[type="checkbox"]:focus{
+    outline: none !important;
+  }
