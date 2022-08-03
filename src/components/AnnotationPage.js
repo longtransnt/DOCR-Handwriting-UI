@@ -1,4 +1,8 @@
 import "../App.css";
+import "../styles/Popup.css";
+import "../styles/Pagination.css";
+import "../styles/Buttons.css";
+import "../styles/Checkbox.css";
 import "react-dropdown/style.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-dropzone-uploader/dist/styles.css";
@@ -26,8 +30,6 @@ import Popup from "../components/Popup";
 import Upload from "../components/Upload";
 import Coordinate from "../components/Coordinate";
 import ReactPaginate from "react-paginate";
-
-
 
 let notiFormat = {
     position: "top-right",

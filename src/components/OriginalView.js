@@ -8,6 +8,7 @@ import InnerImageZoom from 'react-inner-image-zoom'
 import data from "../data.json"
 import { Resizable, ResizableBox } from 'react-resizable';
 import OriginalService from '../services/OriginalService';
+
 function OriginalView(props) {
   const [isOpen, setIsOpen] = useState(false);
   // const [selectedImage, setSelectedImage] = props.selectedImage
@@ -66,33 +67,32 @@ function OriginalView(props) {
 
   return (
     <div> 
-          <button className='view-image-btn' onClick={() => {
-            setIsOpen(true)
-            setUpdateLimit(false)
-          }}>View the original image</button>
-          {isOpen && <Popup
-            content={<>
-              <ResizableBox width={800} height={1000}>
-                <div>
-                  <ImageMapping
-                    active={true} 
-                    imgWidth={originalWidth} width={1000} // imgWidth: original image width
-                    src={originalUrl}
-                    map={{
-                        name: 'my-map',
-                        areas: [
-                          { shape: 'rect', coords: coordinate },
-                        ]
-                    }}
-                  />
-                </div>
-              </ResizableBox>
-            </>}
-            handleClose={togglePopup}
-            />
-          }
-      </div>
-    
+      <button className='view-image-btn' onClick={() => {
+        setIsOpen(true)
+        setUpdateLimit(false)
+      }}>View the original image</button>
+      {isOpen && <Popup
+        content={<>
+          <ResizableBox width={800} height={1000}>
+            <div>
+              <ImageMapping
+                active={true} 
+                imgWidth={originalWidth} width={1000} // imgWidth: original image width
+                src={originalUrl}
+                map={{
+                    name: 'my-map',
+                    areas: [
+                      { shape: 'rect', coords: coordinate },
+                    ]
+                }}
+              />
+            </div>
+          </ResizableBox>
+        </>}
+        handleClose={togglePopup}
+        />
+      }
+    </div>
   );
 }
 
