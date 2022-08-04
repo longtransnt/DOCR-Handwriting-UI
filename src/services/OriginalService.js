@@ -20,4 +20,13 @@ async function getOriginalImageById(id) {
   return image_original.data;
 }
 
-export default { getOriginalImageById, getCoordinatesById };
+async function getAllOriginals(pageNum = 0, size = 10) {
+  const originalList = await axios.get(
+    ORIGINALS_URL + `?page=${pageNum}&size=${size}`,
+    axiosConfig
+  );
+  console.log("All original: ", originalList.data);
+  return originalList.data;
+}
+
+export default { getOriginalImageById, getCoordinatesById, getAllOriginals };
