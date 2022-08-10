@@ -62,7 +62,7 @@ function HomePage() {
         className="gallery-show"
         columnGutter={20}
         columnWidth={400} // Sets the minimum column width
-        items={originalList}
+        items={(originalList.rows ? originalList.rows : originalList)}
         render={RealImageCard}
       />
     </div>
