@@ -9,3 +9,5 @@ export const UPLOAD_UNANNOTATED_URL =
   CURRENT_HOST_URL + "api/uploads/unannotated";
 export const COORDINATE_URL = CURRENT_HOST_URL + "api/coordinate";
 export const ORIGINALS_URL = CURRENT_HOST_URL + "api/originals";
+export const UPLOAD_BY_ORIGINAL_ID_URL =
+  CURRENT_HOST_URL + "api/uploads/originals";

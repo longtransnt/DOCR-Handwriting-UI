@@ -30,6 +30,7 @@ import Popup from "../components/Popup";
 import Upload from "../components/Upload";
 import Coordinate from "../components/Coordinate";
 import ReactPaginate from "react-paginate";
+import { useParams } from "react-router-dom";
 
 let notiFormat = {
   position: "top-right",
@@ -64,6 +65,10 @@ export default function AnnotationPage() {
   const [chosenImageId, setChosenImageId] = useState("");
   const [chosenImageCords, setChosenImageCords] = useState([0, 0, 0, 0]);
   const prevPage = useRef();
+
+  const params = useParams();
+
+  console.log(params);
   var mapData = [];
 
   const togglePopup = () => {
@@ -72,7 +77,8 @@ export default function AnnotationPage() {
 
   // Fetch image list related functions
   const fetchInitialUploads = useCallback(() => {
-    getPage(0);
+    // getPage(0);
+    getByOriginal(params.id, 0);
   }, []);
 
   useEffect(() => {
@@ -118,13 +124,21 @@ export default function AnnotationPage() {
       .catch(console.error);
   }
 
+  function getByOriginal(id, page) {
+    UploadService.getByOriginalId(id, page).then((data) => {
+      console.log(data.rows);
+      loadImageList(data.rows);
+      setToTalPage(data.totalPages);
+    });
+  }
   const changePage = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
   };
 
   useEffect(() => {
     if (totalPage > 0) {
-      getPage(currentPage);
+      // getPage(currentPage);
+      getByOriginal(params.id, currentPage);
     }
   }, [currentPage]);
 
