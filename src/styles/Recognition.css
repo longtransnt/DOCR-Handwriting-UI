@@ -1,0 +1,22 @@
+.title-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #005477;
+}
+
+.image-title {
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #005477;
+}
+
+.image-area {
+    background: rgba(135, 206, 235, 0.2);
+}
+
+.image-show {
+    max-width: fit-content;
+}

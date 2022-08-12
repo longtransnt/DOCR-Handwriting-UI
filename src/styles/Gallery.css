@@ -14,6 +14,10 @@
     margin-top: 2rem;
 }
 
+.navigation {
+    text-decoration: none;
+}
+
 .original-image {
     display: flex;
     flex-direction: column;
