@@ -14,7 +14,7 @@ function App() {
       <Router history={customHistory}>
         <Routes>
           <Route path="/" element={<HomePage></HomePage>} />
-          <Route path="/annotation" element={<AnnotationPage />} />
+          {/* <Route path="/annotation/all" element={<AnnotationPage />} /> */}
           <Route path="/annotation/:id" element={<AnnotationPage />} />
         </Routes>
       </Router>
