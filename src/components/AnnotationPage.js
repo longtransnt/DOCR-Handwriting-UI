@@ -78,7 +78,8 @@ export default function AnnotationPage() {
   // Fetch image list related functions
   const fetchInitialUploads = useCallback(() => {
     // getPage(0);
-    getByOriginal(params.id, 0);
+    // getByOriginal(params.id, 0);
+    getAppropriateData(params.id, 0);
   }, []);
 
   useEffect(() => {
@@ -113,7 +114,16 @@ export default function AnnotationPage() {
     setImage(mapData);
   }
 
-  function getPage(page) {
+  function getAppropriateData(id, page) {
+    console.log(id);
+    if (id === "all") {
+      getAllByPage(page);
+    } else {
+      getByOriginal(id, page);
+    }
+  }
+
+  function getAllByPage(page) {
     console.log("get page: " + page);
     console.log("current page: " + currentPage);
     UploadService.getPage(page, 135)
@@ -138,7 +148,8 @@ export default function AnnotationPage() {
   useEffect(() => {
     if (totalPage > 0) {
       // getPage(currentPage);
-      getByOriginal(params.id, currentPage);
+      // getByOriginal(params.id, currentPage);
+      getAppropriateData(params.id, currentPage);
     }
   }, [currentPage]);
 
