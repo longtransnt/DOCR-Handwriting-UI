@@ -15,6 +15,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/annotation" element={<AnnotationPage />} /> 
           <Route path="/annotation/:id" element={<AnnotationPage />} />
+          <Route path="/recognition/" element={<RecognitionPage />} />
+          <Route path="/recognition/:file_name" element={<RecognitionPage />} />
         </Routes>
       </Router>
     </div>

@@ -1,4 +1,3 @@
-
 .save-btn,
 .view-image-btn {
   color: #005477;
@@ -87,10 +86,34 @@
 
 .dropdown-item {
     color: #005477 !important;
-  }
-  
-  .dropdown-item:focus {
-    color: #ffffff !important;
-    background-color: #005477 !important;
-  }
-  
+}
+
+.dropdown-item:focus {
+  color: #ffffff !important;
+  background-color: #005477 !important;
+}
+
+.navigation-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recognition-page-btn,
+.annotation-page-btn {
+  cursor: pointer;
+  padding: 8px 1rem;
+  margin: 10px;
+  display: inline-block;
+  line-height: 2em;
+  outline: none;
+  position: relative;
+  font-size: 18px;
+  border: none;
+  background-color: #0071a1;
+  color: #ffffff;
+  border-radius: 5px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
+}

@@ -1,22 +1,33 @@
 import "../styles/Gallery.css";
+import "../styles/Buttons.css"
 import React, {
   useState,
   useEffect,
 } from "react";
 import { Masonry } from "masonic";
 import OriginalService from "../services/OriginalService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function HomePage() {
   const navigate = useNavigate();
   const [originalList, setOriginalList] = useState([]);
 
   const RealImageCard = ({ data: { file_name, imageUrl, image_id } }) => (
-    <div
-      className="original-image"
-      onClick={(event) => onMasonryClick(event, image_id)}
-    >
+    <div className="original-image">
       <span children={file_name} />
+      <div className="navigation-btns">
+        <button className="annotation-page-btn"
+          onClick={(event) => onMasonryClick(event, image_id)}
+        >
+          Annotation
+        </button>
+        <Link className="recognition-page-btn" 
+          to={{pathname: `/recognition`}}
+          state={{file_name, imageUrl }}
+        >
+          Recognition
+        </Link>
+      </div>
       <img className="image-show" src={imageUrl} />
     </div>
   );

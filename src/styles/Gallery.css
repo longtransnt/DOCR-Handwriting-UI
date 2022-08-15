@@ -14,10 +14,6 @@
     margin-top: 2rem;
 }
 
-.navigation {
-    text-decoration: none;
-}
-
 .original-image {
     display: flex;
     flex-direction: column;
@@ -25,7 +21,6 @@
     min-height: 100px;
     background-color: #cccccc;
     border-radius: .5rem;
-    cursor: pointer;
     transition: transform .3s ease-in-out;
 }
 
@@ -42,7 +37,7 @@
     transition: transform .3s ease-in-out;
 }
 
-.original-image:hover {
+/* .original-image:hover {
     position: relative;
     color: #ffffff;
     background: #005477;
@@ -58,4 +53,4 @@
 .original-image:hover > span:last-of-type {
     color: #ffffff;
     transition: transform .3s ease-in-out;
-}
+} */
