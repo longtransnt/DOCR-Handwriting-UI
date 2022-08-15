@@ -108,7 +108,7 @@
   line-height: 2em;
   outline: none;
   position: relative;
-  font-size: 18px;
+  font-size: 1.5rem;
   border: none;
   background-color: #0071a1;
   color: #ffffff;
@@ -116,4 +116,10 @@
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   text-decoration: none;
+}
+
+.recognition-page-btn:hover,
+.annotation-page-btn:hover {
+  color: white;
+  background-color: #005477;
 }
