@@ -22,8 +22,8 @@ function HomePage() {
           Annotation
         </button>
         <Link className="recognition-page-btn" 
-          to={{pathname: `/recognition`}}
-          state={{file_name, imageUrl }}
+          to={{pathname: `/recognition/` + file_name}}
+          state={{file_name, imageUrl, image_id }}
         >
           Recognition
         </Link>

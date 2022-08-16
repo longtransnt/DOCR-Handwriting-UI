@@ -1,3 +1,18 @@
+.recognition-page-body {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 30px 0 30px;
+    width: 90vw;
+    height: 90vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(135, 206, 235, 0.2);
+    border: 2px dashed #005477;
+    border-radius: 24px;
+}
+
 .title-page {
     display: flex;
     align-items: center;
@@ -13,10 +28,8 @@
     color: #005477;
 }
 
-.image-area {
-    background: rgba(135, 206, 235, 0.2);
-}
-
-.image-show {
-    max-width: fit-content;
+.image-display {
+    width: 90vw;
+    height: 70vh;
+    object-fit: contain;
 }
