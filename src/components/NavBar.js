@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+import logo from "../logo.svg";
 import "../styles/NavBar.css";
+import oucru from "../oucru.png";
+
 // import { useEnv } from "../context/env.context";
 export default function NavBar() {
   const [currentPath, setCurrentPath] = useState("/");
@@ -13,8 +16,8 @@ export default function NavBar() {
     setCurrentPath(path);
   }, []);
 
-  const handleState = event => {
-    setAppState(event.target.value)
+  const handleState = (event) => {
+    setAppState(event.target.value);
   };
 
   return (
@@ -22,20 +25,32 @@ export default function NavBar() {
       <header className="header fixed-top">
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
           <a href="/" className="logo d-flex align-items-center">
-            {/* <img src={logo} alt="logo" /> */}
+            <img src={oucru} alt="logo" />
             <span>OUCRU</span>
           </a>
 
           <nav className="navbar">
-              <ul>
-                <li>
-                  <button class="btn btn-light" onClick={handleState} value="annotation">Annotation</button>
-                </li>
-                <li>
-                  <button class="btn btn-light" onClick={handleState} value="pipeline">Pipeline</button>
-                </li>
-              </ul>
-            </nav>
+            <ul>
+              <li>
+                <button
+                  class="btn btn-light"
+                  onClick={handleState}
+                  value="annotation"
+                >
+                  Annotation
+                </button>
+              </li>
+              <li>
+                <button
+                  class="btn btn-light"
+                  onClick={handleState}
+                  value="pipeline"
+                >
+                  Pipeline
+                </button>
+              </li>
+            </ul>
+          </nav>
 
           {appState != "pipeline" ? (
             <nav className="navbar">
