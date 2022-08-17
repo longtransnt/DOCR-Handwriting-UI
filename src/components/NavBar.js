@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import logo from "../logo.svg";
 import "../styles/NavBar.css";
 import oucru from "../oucru.png";
 
@@ -52,7 +51,7 @@ export default function NavBar() {
             </ul>
           </nav>
 
-          {appState != "pipeline" ? (
+          {appState !== "pipeline" ? (
             <nav className="navbar">
               <ul>
                 <li>

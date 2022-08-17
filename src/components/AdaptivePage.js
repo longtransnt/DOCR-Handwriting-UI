@@ -20,6 +20,7 @@ export default function AdaptivePage() {
   const [currImagePath, setCurrImagePath] = useState("");
   const [currId, setCurrId] = useState(0);
   const [image, setImage] = useState([]);
+  const [controlDisable, setControlDisable] = useState(1);
 
   const handleListClick = (id) => {
     // console.log(image.length)
@@ -29,6 +30,16 @@ export default function AdaptivePage() {
     } else {
     }
   };
+
+  const handleConfigCheck = (event) => {
+    if (event.target.checked === true) {
+      setControlDisable(1)
+    }
+    else {
+      setControlDisable(0)
+    }
+  };
+
   return (
     <div className="App-header">
       <Container>
@@ -81,6 +92,49 @@ export default function AdaptivePage() {
             <p style={{ textAlign: "center", fontWeight: "bold" }}>
               Adaptive Processing Control
             </p>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitch" onChange={handleConfigCheck}></input>
+              <label class="form-check-label" for="flexSwitch">Manual Configuration</label>
+            </div>
+            <form>
+              {controlDisable === 0 ? (
+                // Disabled form
+                <div>
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckClahe" disabled/>
+                  <label class="form-check-label" for="flexCheckClahe">
+                    Apply Clahe Equalization
+                  </label>
+                  <br/>
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckSauvola" disabled/>
+                  <label class="form-check-label" for="flexCheckSauvola" disabled>
+                    Apply Sauvola Thresholding
+                  </label>
+                  <br/>
+                  <label class="form-check-label" for="flexInput">
+                    Blur Metric Value
+                  </label>
+                  <input class="form-control" type="float" placeholder="i.e. 30.0 (Value from 1-40)" id="flexInput" aria-label="i.e. 30.0 (1-40)" disabled></input>
+                </div>
+              ) : (
+                // Enabled form
+                <div>
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckClahe"/>
+                  <label class="form-check-label" for="flexCheckClahe">
+                    Apply Clahe Equalization
+                  </label>
+                  <br/>
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckSauvola"/>
+                  <label class="form-check-label" for="flexCheckSauvola">
+                    Apply Sauvola Thresholding
+                  </label>
+                  <br/>
+                  <label class="form-check-label" for="flexInput">
+                    Blur Metric Value
+                  </label>
+                  <input class="form-control" type="float" placeholder="i.e. 30.0 (Value from 1-40)" id="flexInput" aria-label="i.e. 30.0 (1-40)"></input>
+                </div>
+              )}
+            </form>
           </Col>
         </Row>
       </Container>
