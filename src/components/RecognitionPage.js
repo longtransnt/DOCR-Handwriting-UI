@@ -11,6 +11,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import ListGroup from "react-bootstrap/ListGroup";
 import UploadService from "../services/UploadService";
 import ReactPaginate from "react-paginate";
+import { Col, Container, Row } from "react-bootstrap";
 
 export default function RecognitionPage() {
     const location = useLocation();
@@ -28,8 +29,6 @@ export default function RecognitionPage() {
 
     // Fetch image list related functions
     const fetchInitialUploads = useCallback(() => {
-        // getPage(0);
-        // getByOriginal(params.id, 0);
         getAppropriateData(data.image_id, 0);
     }, []);
 
@@ -89,8 +88,6 @@ export default function RecognitionPage() {
 
     useEffect(() => {
         if (totalPage > 0) {
-        // getPage(currentPage);
-        // getByOriginal(params.id, currentPage);
         getAppropriateData(data.image_id, currentPage);
         }
     }, [currentPage]);
@@ -118,37 +115,38 @@ export default function RecognitionPage() {
     return (
         <div className="recognition-page-body">
             <div className="title-page">Text Recognition</div>
-            <div className="main-area">
-                <div className="image-area">
-                    <div className="image-title">{data.file_name}</div>
-                    <img className="image-display" src={data.imageUrl}/>
-                </div>
-                <Scrollbars>
-                    {image.map((im, id) => (
-                    <ListGroup.Item
-                        id={"image_" + id}
-                        key={id}
-                        value={id}
-                        style={{ cursor: "pointer" }}
-                    >
-                        {/* {im.file_name && im.file_name.length ? (
-                        <img src={im.thumbnailUrl} />
-                        ) : null} */}
-                        {im.ground_truth}
-                    </ListGroup.Item>
-                    ))}
-                </Scrollbars>
-                <ReactPaginate
-                    className="pagination"
-                    pageRangeDisplayed={15}
-                    previousLabel={"←"}
-                    nextLabel={"→"}
-                    pageCount={totalPage}
-                    onPageChange={changePage}
-                    disabledClassName={"pagination__link--disabled"}
-                    activeClassName={"pagination__link--active"}
-                />
-            </div>
+            <Container className="main-area">
+                <Row>
+                    <Col className="image-area">
+                        <div className="image-title">{data.file_name}</div>
+                        <img className="image-display" src={data.imageUrl}/>
+                    </Col>
+                    <Col>
+                        <Scrollbars>
+                            {image.map((im, id) => (
+                            <ListGroup.Item
+                                id={"image_" + id}
+                                key={id}
+                                value={id}
+                                style={{ cursor: "pointer" }}
+                            >
+                                {im.ground_truth}
+                            </ListGroup.Item>
+                            ))}
+                        </Scrollbars>
+                        <ReactPaginate
+                            className="pagination"
+                            pageRangeDisplayed={15}
+                            previousLabel={"←"}
+                            nextLabel={"→"}
+                            pageCount={totalPage}
+                            onPageChange={changePage}
+                            disabledClassName={"pagination__link--disabled"}
+                            activeClassName={"pagination__link--active"}
+                        />
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

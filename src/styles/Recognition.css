@@ -28,6 +28,10 @@
     color: #005477;
 }
 
+.main-area {
+    display: flex;
+}
+
 .image-display {
     width: 90vw;
     height: 70vh;
