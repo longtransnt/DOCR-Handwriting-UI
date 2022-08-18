@@ -68,7 +68,6 @@ export default function AnnotationPage() {
 
   const params = useParams();
 
-  console.log(params);
   var mapData = [];
 
   const togglePopup = () => {
@@ -77,8 +76,6 @@ export default function AnnotationPage() {
 
   // Fetch image list related functions
   const fetchInitialUploads = useCallback(() => {
-    // getPage(0);
-    // getByOriginal(params.id, 0);
     getAppropriateData(params.id, 0);
   }, []);
 
