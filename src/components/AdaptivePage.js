@@ -7,7 +7,7 @@ import Stack from "react-bootstrap/Stack";
 import { Scrollbars } from "react-custom-scrollbars";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useParams } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import React, {
   useState,
   useCallback,
@@ -17,12 +17,18 @@ import React, {
 } from "react";
 import UploadService from "../services/UploadService";
 import PipelineService from "../services/PipelineService";
+import { toBeRequired } from "@testing-library/jest-dom/dist/matchers";
 
 export default function AdaptivePage() {
   const [adaptiveImageList, setAdaptiveImageList] = useState([]);
   const [currImagePath, setCurrImagePath] = useState("");
+  const [currFileName, setCurrFileName] = useState("");
   const [currId, setCurrId] = useState(0);
   const [image, setImage] = useState([]);
+
+  const [applyCLAHE, setApplyCLAHE] = useState(true);
+  const [denoisedSize, setDenoisedSize] = useState(null);
+  const [windowSize, setWindowize] = useState(null);
   const [controlDisable, setControlDisable] = useState(1);
 
   const params = useParams();
@@ -40,21 +46,30 @@ export default function AdaptivePage() {
     //   console.log(value);
     // });
 
-    PipelineService.getListOfImageNames("TextDetection", "21.000440 (33)pd")
-    .then( data => {
-      let imgName = data.data;
-      // console.log(imgName);
-
-      imgName.forEach(img => {
-        // console.log(img);
-        let url = PipelineService.getImageUrl("TextDetection", img, "21.000440 (33)pd");
-        setImage(oldList => [...oldList, {id: uuidv4(), file_name: img, imageUrl: url}]);
-        // console.log("IMG LIST: ");
-        console.log(image);
-      });
-    });
+    getImageList();
   }, []);
 
+  function getImageList() {
+    PipelineService.getListOfImageNames("Adaptive", "21.000440 (33)").then(
+      (data) => {
+        let imgName = data.data;
+        // console.log(imgName);
+
+        imgName.forEach((img) => {
+          // console.log(img);
+          let url = PipelineService.getImageUrl(
+            "Adaptive",
+            img,
+            "21.000440 (33)"
+          );
+          setImage((oldList) => [
+            ...oldList,
+            { id: uuidv4(), file_name: img, imageUrl: url, isManual: true },
+          ]);
+        });
+      }
+    );
+  }
   function getByOriginal(id, page) {
     UploadService.getByOriginalId(id, page).then((data) => {
       console.log(data.rows);
@@ -81,6 +96,8 @@ export default function AdaptivePage() {
     if (id <= image.length - 1) {
       setCurrId(id);
       setCurrImagePath(image[id].imageUrl);
+      setCurrFileName(image[id].file_name); //
+      console.log(image[id].file_name);
     } else {
       setCurrId(null);
       setCurrImagePath(null);
@@ -90,11 +107,26 @@ export default function AdaptivePage() {
   const handleConfigCheck = (event) => {
     if (event.target.checked === true) {
       setControlDisable(1);
+      image[currId].isManual = true;
     } else {
       setControlDisable(0);
+      image[currId].isManual = false;
     }
   };
 
+  const handlePreview = () => {
+    const query = {
+      file_name: currFileName + ".jpg",
+      apply_CLAHE: applyCLAHE,
+      window_size: parseInt(windowSize),
+      denoise_size: parseInt(denoisedSize),
+    };
+    console.log(query);
+    PipelineService.applyManualAdaptivePreprocesscing(query).then(() => {
+      getImageList();
+      console.log("DONE");
+    });
+  };
   return (
     <div className="App-header">
       <Container>
@@ -218,25 +250,31 @@ export default function AdaptivePage() {
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    value=""
                     id="flexCheckClahe"
+                    defaultChecked={applyCLAHE}
+                    value={applyCLAHE}
+                    onChange={() => setApplyCLAHE(!applyCLAHE)}
                   />
                   <label class="form-check-label" for="flexCheckClahe">
                     Apply Clahe Equalization
                   </label>
                   <br />
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckSauvola"
-                  />
-                  <label class="form-check-label" for="flexCheckSauvola">
-                    Apply Sauvola Thresholding
-                  </label>
                   <br />
                   <label class="form-check-label" for="flexInput">
-                    Blur Metric Value
+                    Sauvola Window Value
+                  </label>
+                  <input
+                    class="form-control"
+                    type="float"
+                    placeholder="i.e. 30 (Value from 20-70)"
+                    id="flexInput"
+                    aria-label="i.e. 30 (20-70)"
+                    value={windowSize}
+                    onInput={(e) => setWindowize(e.target.value)}
+                  ></input>
+                  <br />
+                  <label class="form-check-label" for="flexInput">
+                    Denoised Rate
                   </label>
                   <input
                     class="form-control"
@@ -244,6 +282,8 @@ export default function AdaptivePage() {
                     placeholder="i.e. 30.0 (Value from 1-40)"
                     id="flexInput"
                     aria-label="i.e. 30.0 (1-40)"
+                    value={denoisedSize}
+                    onInput={(e) => setDenoisedSize(e.target.value)}
                   ></input>
                 </div>
               )}
@@ -282,7 +322,9 @@ export default function AdaptivePage() {
         <Col style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}>
           <div style={{ float: "left" }}></div>
           <div style={{ float: "right", marginRight: "46px" }}>
-            <button className="save-btn">Preview</button>{" "}
+            <button className="save-btn" onClick={handlePreview}>
+              Preview
+            </button>{" "}
             <div style={{ float: "right" }}>
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic-button">
