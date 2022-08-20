@@ -7,6 +7,7 @@ import Stack from "react-bootstrap/Stack";
 import { Scrollbars } from "react-custom-scrollbars";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useParams } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 import React, {
   useState,
   useCallback,
@@ -15,6 +16,7 @@ import React, {
   useContext,
 } from "react";
 import UploadService from "../services/UploadService";
+import PipelineService from "../services/PipelineService";
 
 export default function AdaptivePage() {
   const [adaptiveImageList, setAdaptiveImageList] = useState([]);
@@ -26,7 +28,31 @@ export default function AdaptivePage() {
   const params = useParams();
 
   const fetchAdaptiveImages = useCallback(() => {
-    getByOriginal(params.id, 0);
+    // getByOriginal(params.id, 0);
+
+    // -------------- EXPERIMENTAL SHIT STARTS HERE-----------------
+
+    // PipelineService.getInputImageList()
+    // .then( data => {
+    //   // This is just a demo of get input function
+    //   // Take this value + path, name, etc to get repo list
+    //   let value = data.data;
+    //   console.log(value);
+    // });
+
+    PipelineService.getListOfImageNames("TextDetection", "21.000440 (33)pd")
+    .then( data => {
+      let imgName = data.data;
+      // console.log(imgName);
+
+      imgName.forEach(img => {
+        // console.log(img);
+        let url = PipelineService.getImageUrl("TextDetection", img, "21.000440 (33)pd");
+        setImage(oldList => [...oldList, {id: uuidv4(), file_name: img, imageUrl: url}]);
+        // console.log("IMG LIST: ");
+        console.log(image);
+      });
+    });
   }, []);
 
   function getByOriginal(id, page) {
@@ -98,7 +124,7 @@ export default function AdaptivePage() {
                     }}
                   >
                     {im.file_name && im.file_name.length ? (
-                      <img src={im.thumbnailUrl} />
+                      <img src={im.imageUrl} />
                     ) : null}
                     {im.file_name}
                   </ListGroup.Item>
