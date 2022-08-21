@@ -1,8 +1,8 @@
 import axios from "axios";
 import { PIPELINE_CHECK_DIR_URL } from "../constant";
 
-let STATIC_LIST_ENDPOINT = 'http://localhost:5000/get-static-list/';
-let STATIC_DISPLAY = 'http://localhost:5000/display/';
+let STATIC_LIST_ENDPOINT = "http://localhost:5000/get-static-list/";
+let STATIC_DISPLAY = "http://localhost:5000/display/";
 
 let axiosConfig = {
   headers: {
@@ -21,8 +21,8 @@ async function checkIfdirectoryExist(path) {
 
 async function getInputImageList() {
   const url = `http://localhost:5000/get-input-list`;
-    const imagelist = await axios.get(url, axiosConfig);
-    return imagelist;
+  const imagelist = await axios.get(url, axiosConfig);
+  return imagelist;
 }
 
 async function getListOfImageNames(path, category) {
@@ -30,8 +30,7 @@ async function getListOfImageNames(path, category) {
     const url = `http://localhost:5000/get-static-list/${path}`;
     const imagelist = await axios.get(url, axiosConfig);
     return imagelist;
-  }
-  else {
+  } else {
     const url = `http://localhost:5000/get-static-list/${path}/${category}`;
     const imagelist = await axios.get(url, axiosConfig);
     return imagelist;
@@ -42,12 +41,22 @@ function getImageUrl(path, name, category) {
   if (category === undefined) {
     const url = `http://localhost:5000/display-output/${path}/${name}.jpg`;
     return url;
-  }
-  else {
+  } else {
     const url = `http://localhost:5000/display-sub-output/${path}/${category}/${name}.jpg`;
-    // console.log(url)
     return url;
   }
 }
 
-export default { checkIfdirectoryExist, getInputImageList, getImageUrl, getListOfImageNames };
+async function applyManualAdaptivePreprocesscing(query) {
+  const url = `http://localhost:5000/manual_adaptive`;
+  const preprocess_result = await axios.post(url, query, axiosConfig);
+  return preprocess_result.data;
+}
+
+export default {
+  checkIfdirectoryExist,
+  getInputImageList,
+  getImageUrl,
+  getListOfImageNames,
+  applyManualAdaptivePreprocesscing,
+};
