@@ -11,22 +11,45 @@ function ModulePage() {
   const params = useParams();
 
   useEffect(() => {
-    PipelineService.getListOfImageNames(params.module).then((data) => {
-      let imgName = data.data;
-      console.log(imgName);
-      let imageList = [];
-      imgName.forEach((img) => {
-        let url = PipelineService.getImageUrl(params.module, img);
-        console.log(url);
-        imageList.push({
-          image_id: uuidv4(),
-          file_name: img,
-          imageUrl: url,
+    let imageList = [];
+    if (params.module === "TextDetection") {
+      PipelineService.getFoldersFromPath(params.module).then((data) => {
+        let folderName = data.data;
+
+        folderName.forEach((folder) => {
+          const url = PipelineService.getImageUrl(
+            params.module,
+            "visualize",
+            folder
+          );
+
+          console.log(url);
+          imageList.push({
+            image_id: uuidv4(),
+            file_name: folder + "/visualize.jpg",
+            imageUrl: url,
+          });
         });
+        setModuleFolderList(imageList);
+      }); //
+    } else {
+      PipelineService.getListOfImageNames(params.module).then((data) => {
+        let imgName = data.data;
+        console.log(imgName);
+        imgName.forEach((img) => {
+          const url = PipelineService.getImageUrl(params.module, img);
+
+          console.log(url);
+          imageList.push({
+            image_id: uuidv4(),
+            file_name: img,
+            imageUrl: url,
+          });
+        });
+        setModuleFolderList(imageList);
       });
-      setModuleFolderList(imageList);
-    }, []);
-  });
+    }
+  }, []);
 
   const onMasonryClick = (event, id) => {
     navigate("/annotation/" + id);
@@ -47,7 +70,7 @@ function ModulePage() {
       <Masonry
         className="gallery-show"
         columnGutter={20}
-        columnWidth={400} // Sets the minimum column width
+        columnWidth={600} // Sets the minimum column width
         items={moduleFolderList.rows ? moduleFolderList.rows : moduleFolderList}
         render={ModuleImageCard}
         click

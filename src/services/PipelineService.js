@@ -37,6 +37,12 @@ async function getListOfImageNames(path, category) {
   }
 }
 
+async function getFoldersFromPath(path) {
+  const url = `http://localhost:5000/get-static-folder/${path}`;
+  const folderList = await axios.get(url, axiosConfig);
+  return folderList;
+}
+
 function getImageUrl(path, name, category) {
   if (category === undefined) {
     const url = `http://localhost:5000/display-output/${path}/${name}.jpg`;
@@ -59,4 +65,5 @@ export default {
   getImageUrl,
   getListOfImageNames,
   applyManualAdaptivePreprocesscing,
+  getFoldersFromPath,
 };
