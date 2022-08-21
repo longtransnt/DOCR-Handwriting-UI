@@ -12,23 +12,34 @@ function ModulePage() {
 
   useEffect(() => {
     let imageList = [];
-    if (params.module === "TextDetection") {
+    if (params.module === "TextDetection" || params.module === "adaptive") {
       PipelineService.getFoldersFromPath(params.module).then((data) => {
         let folderName = data.data;
 
         folderName.forEach((folder) => {
-          const url = PipelineService.getImageUrl(
-            params.module,
-            "visualize",
-            folder
-          );
+          let url = "";
+          if (params.module === "adaptive") {
+            if (folder !== "Adaptive-Preview") {
+              url = PipelineService.getImageUrl(params.module, "folder");
 
-          console.log(url);
-          imageList.push({
-            image_id: uuidv4(),
-            file_name: folder + "/visualize.jpg",
-            imageUrl: url,
-          });
+              imageList.push({
+                image_id: uuidv4(),
+                file_name: folder,
+                imageUrl: url,
+              });
+            }
+          } else {
+            url = PipelineService.getImageUrl(
+              params.module,
+              "visualize",
+              folder
+            );
+            imageList.push({
+              image_id: uuidv4(),
+              file_name: folder + "/visualize.jpg",
+              imageUrl: url,
+            });
+          }
         });
         setModuleFolderList(imageList);
       }); //
