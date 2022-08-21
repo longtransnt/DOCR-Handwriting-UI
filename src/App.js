@@ -12,6 +12,7 @@ import NavBar from "./components/NavBar";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
+import ModulePage from "./components/ModulePage";
 
 const customHistory = createBrowserHistory({ forceRefresh: true });
 function App() {
@@ -26,6 +27,7 @@ function App() {
           {/* <Route path="/annotation/all" element={<AnnotationPage />} /> */}
           <Route path="/annotation/:id" element={<AnnotationPage />} />
           <Route path="/adaptive/:id" element={<AdaptivePage />} />
+          <Route path="/module/:module" element={<ModulePage />} />
         </Routes>
       </Router>
     </div>

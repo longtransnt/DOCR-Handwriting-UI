@@ -8,19 +8,10 @@ import { Scrollbars } from "react-custom-scrollbars";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useContext,
-} from "react";
-import UploadService from "../services/UploadService";
+import React, { useState, useCallback, useEffect } from "react";
 import PipelineService from "../services/PipelineService";
-import { toBeRequired } from "@testing-library/jest-dom/dist/matchers";
 
 export default function AdaptivePage() {
-  const [adaptiveImageList, setAdaptiveImageList] = useState([]);
   const [currImagePath, setCurrImagePath] = useState("");
   const [currFileName, setCurrFileName] = useState("");
   const [currId, setCurrId] = useState(0);
