@@ -11,12 +11,12 @@ function ModulePage() {
   const params = useParams();
 
   useEffect(() => {
-    PipelineService.getListOfImageNames("PaperDetection").then((data) => {
+    PipelineService.getListOfImageNames(params.module).then((data) => {
       let imgName = data.data;
       console.log(imgName);
       let imageList = [];
       imgName.forEach((img) => {
-        let url = PipelineService.getImageUrl("PaperDetection", img);
+        let url = PipelineService.getImageUrl(params.module, img);
         console.log(url);
         imageList.push({
           image_id: uuidv4(),
