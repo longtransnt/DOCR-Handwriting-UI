@@ -50,7 +50,7 @@ function getImageUrl(path, name, category) {
 async function applyManualAdaptivePreprocesscing(query) {
   const url = `http://localhost:5000/manual_adaptive`;
   const preprocess_result = await axios.post(url, query, axiosConfig);
-  return preprocess_result;
+  return preprocess_result.data;
 }
 
 export default {

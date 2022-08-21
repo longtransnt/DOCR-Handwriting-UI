@@ -29,7 +29,7 @@ export default function AdaptivePage() {
   const [applyCLAHE, setApplyCLAHE] = useState(true);
   const [denoisedSize, setDenoisedSize] = useState(null);
   const [windowSize, setWindowize] = useState(null);
-  const [controlDisable, setControlDisable] = useState(1);
+  const [controlDisable, setControlDisable] = useState(0);
 
   const params = useParams();
 
@@ -37,14 +37,6 @@ export default function AdaptivePage() {
     // getByOriginal(params.id, 0);
 
     // -------------- EXPERIMENTAL SHIT STARTS HERE-----------------
-
-    // PipelineService.getInputImageList()
-    // .then( data => {
-    //   // This is just a demo of get input function
-    //   // Take this value + path, name, etc to get repo list
-    //   let value = data.data;
-    //   console.log(value);
-    // });
 
     getImageList();
   }, []);
@@ -55,27 +47,28 @@ export default function AdaptivePage() {
         let imgName = data.data;
         // console.log(imgName);
 
+        let imageList = [];
         imgName.forEach((img) => {
-          // console.log(img);
           let url = PipelineService.getImageUrl(
             "Adaptive",
             img,
             "21.000440 (33)"
           );
-          setImage((oldList) => [
-            ...oldList,
-            { id: uuidv4(), file_name: img, imageUrl: url, isManual: true },
-          ]);
+          imageList.push({
+            id: uuidv4(),
+            file_name: img,
+            imageUrl: url,
+            isManual: true,
+          });
+          // setImage((oldList) => [
+          //   ...oldList,
+          //   { id: uuidv4(), file_name: img, imageUrl: url, isManual: true },
+          // ]);
         });
+
+        setImage(imageList);
       }
     );
-  }
-  function getByOriginal(id, page) {
-    UploadService.getByOriginalId(id, page).then((data) => {
-      console.log(data.rows);
-      setImage(data.rows);
-      // setToTalPage(data.totalPages);
-    });
   }
 
   useEffect(() => {
@@ -101,16 +94,17 @@ export default function AdaptivePage() {
     } else {
       setCurrId(null);
       setCurrImagePath(null);
+      setCurrFileName(null);
     }
   };
 
   const handleConfigCheck = (event) => {
     if (event.target.checked === true) {
       setControlDisable(1);
-      image[currId].isManual = true;
+      // image[currId].isManual = true;
     } else {
       setControlDisable(0);
-      image[currId].isManual = false;
+      // image[currId].isManual = false;
     }
   };
 
@@ -122,10 +116,22 @@ export default function AdaptivePage() {
       denoise_size: parseInt(denoisedSize),
     };
     console.log(query);
-    PipelineService.applyManualAdaptivePreprocesscing(query).then(() => {
-      getImageList();
-      console.log("DONE");
-    });
+    PipelineService.applyManualAdaptivePreprocesscing(query).then(
+      (preprocess_result) => {
+        let url = PipelineService.getImageUrl(
+          "Adaptive",
+          preprocess_result.file_name,
+          "Adaptive-Preview"
+        );
+
+        console.log(preprocess_result);
+        console.log(url);
+        setCurrImagePath(null);
+        setCurrImagePath(url);
+        setCurrId(currId);
+        console.log("DONE");
+      }
+    );
   };
   return (
     <div className="App-header">
@@ -171,7 +177,12 @@ export default function AdaptivePage() {
             </p>
             <Stack gap={2} className="col-md-11 mx-auto">
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <img className="img-display" id={currId} src={currImagePath} />
+                <img
+                  className="img-display"
+                  id={currId}
+                  src={currImagePath}
+                  // key={currImagePath}
+                />
               </div>
             </Stack>
           </Col>
@@ -203,21 +214,6 @@ export default function AdaptivePage() {
                   />
                   <label class="form-check-label" for="flexCheckClahe">
                     Apply Clahe Equalization
-                  </label>
-                  <br />
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckSauvola"
-                    disabled
-                  />
-                  <label
-                    class="form-check-label"
-                    for="flexCheckSauvola"
-                    disabled
-                  >
-                    Apply Sauvola Thresholding
                   </label>
                   <br />
                   <label class="form-check-label" for="flexInput">
