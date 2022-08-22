@@ -43,6 +43,11 @@ async function getFoldersFromPath(path) {
   return folderList;
 }
 
+function getInputImage(name) {
+  const url = `http://localhost:5000/display-input/${name}.jpg`;
+  return url;
+}
+
 function getImageUrl(path, name, category) {
   if (category === undefined) {
     const url = `http://localhost:5000/display-output/${path}/${name}.jpg`;
@@ -66,4 +71,5 @@ export default {
   getListOfImageNames,
   applyManualAdaptivePreprocesscing,
   getFoldersFromPath,
+  getInputImage
 };
