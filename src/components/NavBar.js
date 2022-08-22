@@ -102,7 +102,7 @@ export default function NavBar() {
                         ? "nav-link scrollto active"
                         : "nav-link scrollto"
                     }
-                    href="/paperdetection"
+                    href="/module/PaperDetection"
                   >
                     Paper Detection
                   </a>
@@ -114,9 +114,21 @@ export default function NavBar() {
                         ? "nav-link scrollto active"
                         : "nav-link scrollto"
                     }
-                    href="/preprocessing"
+                    href="/module/Preprocessing"
                   >
                     Preprocessing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className={
+                      currentPath === "/textdetection"
+                        ? "nav-link scrollto active"
+                        : "nav-link scrollto"
+                    }
+                    href="/module/TextDetection"
+                  >
+                    Text Detection
                   </a>
                 </li>
                 <li>
@@ -126,7 +138,7 @@ export default function NavBar() {
                         ? "nav-link scrollto active"
                         : "nav-link scrollto"
                     }
-                    href="/adaptive"
+                    href="/module/adaptive"
                   >
                     Adaptive Processing
                   </a>
@@ -134,23 +146,11 @@ export default function NavBar() {
                 <li>
                   <a
                     className={
-                      currentPath === "/textdetection"
+                      currentPath === "/textrecognition"
                         ? "nav-link scrollto active"
                         : "nav-link scrollto"
                     }
-                    href="/textdetection"
-                  >
-                    Text Detection
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={
-                      currentPath === "/textdetection"
-                        ? "nav-link scrollto active"
-                        : "nav-link scrollto"
-                    }
-                    href="/textdetection"
+                    href="/module/TextDetection"
                   >
                     Text Recognition
                   </a>
@@ -158,107 +158,6 @@ export default function NavBar() {
               </ul>
             </nav>
           )}
-
-          {/* <nav className="navbar">
-            <ul>
-              <li>
-                <a
-                  className={
-                    currentPath === "/"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  className={
-                    currentPath === "/annotation"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/annotation"
-                >
-                  Annotation
-                </a>
-              </li>
-              <li>
-                <a
-                  className={
-                    currentPath === "/annotation"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/annotation"
-                >
-                  Input
-                </a>
-              </li>
-              <li>
-                <a
-                  className={
-                    currentPath === "/paperdetection"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/paperdetection"
-                >
-                  Paper Detection
-                </a>
-              </li>
-              <li>
-                <a
-                  className={
-                    currentPath === "/preprocessing"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/preprocessing"
-                >
-                  Preprocessing
-                </a>
-              </li>
-              <li>
-                <a
-                  className={
-                    currentPath === "/adaptive"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/adaptive"
-                >
-                  Adaptive Processing
-                </a>
-              </li>
-              <li>
-                <a
-                  className={
-                    currentPath === "/textdetection"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/textdetection"
-                >
-                  Text Detection
-                </a>
-              </li>
-              <li>
-                <a
-                  className={
-                    currentPath === "/textdetection"
-                      ? "nav-link scrollto active"
-                      : "nav-link scrollto"
-                  }
-                  href="/textdetection"
-                >
-                  Text Recognition
-                </a>
-              </li>
-            </ul>
-          </nav>     */}
         </div>
       </header>
     </>

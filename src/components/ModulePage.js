@@ -46,11 +46,8 @@ function ModulePage() {
     } else {
       PipelineService.getListOfImageNames(params.module).then((data) => {
         let imgName = data.data;
-        console.log(imgName);
         imgName.forEach((img) => {
           const url = PipelineService.getImageUrl(params.module, img);
-
-          console.log(url);
           imageList.push({
             image_id: uuidv4(),
             file_name: img,
