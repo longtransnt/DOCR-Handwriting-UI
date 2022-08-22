@@ -24,41 +24,29 @@ export default function AdaptivePage() {
   const params = useParams();
 
   const fetchAdaptiveImages = useCallback(() => {
-    // getByOriginal(params.id, 0);
-
     // -------------- EXPERIMENTAL SHIT STARTS HERE-----------------
 
     getImageList();
   }, []);
 
   function getImageList() {
-    PipelineService.getListOfImageNames("Adaptive", params.id).then(
-      (data) => {
-        let imgName = data.data;
-        console.log(imgName);
+    PipelineService.getListOfImageNames("Adaptive", params.id).then((data) => {
+      let imgName = data.data;
+      console.log(imgName);
 
-        let imageList = [];
-        imgName.forEach((img) => {
-          let url = PipelineService.getImageUrl(
-            "Adaptive",
-            img,
-            params.id
-          );
-          imageList.push({
-            id: uuidv4(),
-            file_name: img,
-            imageUrl: url,
-            isManual: true,
-          });
-          // setImage((oldList) => [
-          //   ...oldList,
-          //   { id: uuidv4(), file_name: img, imageUrl: url, isManual: true },
-          // ]);
+      let imageList = [];
+      imgName.forEach((img) => {
+        let url = PipelineService.getImageUrl("Adaptive", img, params.id);
+        imageList.push({
+          id: uuidv4(),
+          file_name: img,
+          imageUrl: url,
+          isManual: true,
         });
+      });
 
-        setImage(imageList);
-      }
-    );
+      setImage(imageList);
+    });
   }
 
   useEffect(() => {
