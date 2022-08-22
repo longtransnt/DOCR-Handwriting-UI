@@ -21,7 +21,6 @@ export default function AdaptivePage() {
   const [denoisedSize, setDenoisedSize] = useState(null);
   const [windowSize, setWindowize] = useState(null);
   const [controlDisable, setControlDisable] = useState(0);
-
   const params = useParams();
 
   const fetchAdaptiveImages = useCallback(() => {
@@ -33,17 +32,17 @@ export default function AdaptivePage() {
   }, []);
 
   function getImageList() {
-    PipelineService.getListOfImageNames("Adaptive", "21.000440 (33)").then(
+    PipelineService.getListOfImageNames("Adaptive", params.id).then(
       (data) => {
         let imgName = data.data;
-        // console.log(imgName);
+        console.log(imgName);
 
         let imageList = [];
         imgName.forEach((img) => {
           let url = PipelineService.getImageUrl(
             "Adaptive",
             img,
-            "21.000440 (33)"
+            params.id
           );
           imageList.push({
             id: uuidv4(),
@@ -245,7 +244,6 @@ export default function AdaptivePage() {
                   <label class="form-check-label" for="flexCheckClahe">
                     Apply Clahe Equalization
                   </label>
-                  <br />
                   <br />
                   <label class="form-check-label" for="flexInput">
                     Sauvola Window Value

@@ -90,7 +90,7 @@ export default function NavBar() {
                         ? "nav-link scrollto active"
                         : "nav-link scrollto"
                     }
-                    href="/annotation"
+                    href="/input"
                   >
                     Input
                   </a>
