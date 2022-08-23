@@ -1,0 +1,27 @@
+.title-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #005477;
+}
+/* .main-area {
+  display: flex;
+  justify-content: space-between;
+} */
+
+.image-title {
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #005477;
+}
+
+#recognition-list {
+  font-size: 1.25rem;
+}
+
+.image-display {
+  max-width: 50vw;
+  max-height: 70vh;
+}

@@ -1,10 +1,9 @@
 import "./App.css";
-
 import React from "react";
-
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AnnotationPage from "./components/AnnotationPage";
 import HomePage from "./components/HomePage";
+import RecognitionPage from "./components/RecognitionPage";
 import AdaptivePage from "./components/AdaptivePage";
 import InputPage from "./components/InputPage"
 import { createBrowserHistory } from "history";
@@ -30,6 +29,7 @@ function App() {
           <Route path="/" element={<HomePage></HomePage>} />
           {/* <Route path="/annotation/all" element={<AnnotationPage />} /> */}
           <Route path="/annotation/:id" element={<AnnotationPage />} />
+          <Route path="/recognition/:file_name" element={<RecognitionPage />} />
           <Route path="/adaptive/:id" element={<AdaptivePage />} />
           <Route path="/module/:module" element={<ModulePage />} />
           <Route path="/input" element={<InputPage />} />
