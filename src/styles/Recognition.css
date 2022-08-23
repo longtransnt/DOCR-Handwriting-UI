@@ -5,10 +5,10 @@
   font-size: 2rem;
   color: #005477;
 }
-.main-area {
+/* .main-area {
   display: flex;
   justify-content: space-between;
-}
+} */
 
 .image-title {
   align-items: center;
@@ -17,7 +17,7 @@
   color: #005477;
 }
 
-.recognition-list {
+#recognition-list {
   font-size: 1.25rem;
 }
 
