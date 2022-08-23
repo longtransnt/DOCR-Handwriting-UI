@@ -17,9 +17,10 @@ export default function AdaptivePage() {
   const [currId, setCurrId] = useState(0);
   const [image, setImage] = useState([]);
 
-  const [applyCLAHE, setApplyCLAHE] = useState(true);
+  const [applyCLAHE, setApplyCLAHE] = useState(false);
   const [denoisedSize, setDenoisedSize] = useState(null);
   const [windowSize, setWindowize] = useState(null);
+  const [clipLimitValue, setclipLimitValue] = useState(null);
   const [controlDisable, setControlDisable] = useState(0);
   const params = useParams();
 
@@ -92,6 +93,7 @@ export default function AdaptivePage() {
       apply_CLAHE: applyCLAHE,
       window_size: parseInt(windowSize),
       denoise_size: parseInt(denoisedSize),
+      clip_limit: parseInt(clipLimitValue),
     };
     console.log(query);
     PipelineService.applyManualAdaptivePreprocesscing(query).then(
@@ -195,14 +197,26 @@ export default function AdaptivePage() {
                   </label>
                   <br />
                   <label class="form-check-label" for="flexInput">
+                    CLAHE ClipLimit Rate
+                  </label>
+                  <input
+                    class="form-control"
+                    type="float"
+                    placeholder="i.e. 5 (Odd Value from 5-7)"
+                    id="flexInput"
+                    aria-label="i.e. 5 (5-7)"
+                    disabled
+                  ></input>
+                  <br />
+                  <label class="form-check-label" for="flexInput">
                     Sauvola Window Value
                   </label>
                   <input
                     class="form-control"
                     type="float"
-                    placeholder="i.e. 30 (Value from 20-70)"
+                    placeholder="i.e. 51 (Odd Value from 51-71)"
                     id="flexInput"
-                    aria-label="i.e. 30 (20-70)"
+                    aria-label="i.e. 51 (51-71)"
                     disabled
                   ></input>
                   <br />
@@ -212,9 +226,9 @@ export default function AdaptivePage() {
                   <input
                     class="form-control"
                     type="float"
-                    placeholder="i.e. 30.0 (Value from 1-40)"
+                    placeholder="i.e. 30.0 (Value from 20-40)"
                     id="flexInput"
-                    aria-label="i.e. 30.0 (1-40)"
+                    aria-label="i.e. 30.0 (20-40)"
                     disabled
                   ></input>
                 </div>
@@ -226,7 +240,6 @@ export default function AdaptivePage() {
                     type="checkbox"
                     id="flexCheckClahe"
                     defaultChecked={applyCLAHE}
-                    value={applyCLAHE}
                     onChange={() => setApplyCLAHE(!applyCLAHE)}
                   />
                   <label class="form-check-label" for="flexCheckClahe">
@@ -234,14 +247,27 @@ export default function AdaptivePage() {
                   </label>
                   <br />
                   <label class="form-check-label" for="flexInput">
+                    CLAHE ClipLimit Rate
+                  </label>
+                  <input
+                    class="form-control"
+                    type="float"
+                    placeholder="i.e. 5 (Odd Value from 5-7)"
+                    id="flexInput"
+                    aria-label="i.e. 5 (5-7)"
+                    value={clipLimitValue}
+                    onInput={(e) => setclipLimitValue(e.target.value)}
+                  ></input>
+                  <br />
+                  <label class="form-check-label" for="flexInput">
                     Sauvola Window Value
                   </label>
                   <input
                     class="form-control"
                     type="float"
-                    placeholder="i.e. 30 (Value from 20-70)"
+                    placeholder="i.e. 51 (Odd Value from 51-71)"
                     id="flexInput"
-                    aria-label="i.e. 30 (20-70)"
+                    aria-label="i.e. 51 (51-71)"
                     value={windowSize}
                     onInput={(e) => setWindowize(e.target.value)}
                   ></input>
@@ -252,9 +278,9 @@ export default function AdaptivePage() {
                   <input
                     class="form-control"
                     type="float"
-                    placeholder="i.e. 30.0 (Value from 1-40)"
+                    placeholder="i.e. 30.0 (Value from 20-40)"
                     id="flexInput"
-                    aria-label="i.e. 30.0 (1-40)"
+                    aria-label="i.e. 30.0 (20-40)"
                     value={denoisedSize}
                     onInput={(e) => setDenoisedSize(e.target.value)}
                   ></input>
