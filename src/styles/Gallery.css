@@ -4,6 +4,12 @@
     max-width: 100%;
 }
 
+.module-gallery{
+    padding-top: 2.5rem;
+    margin: 3rem;
+    max-width: 50%;
+}
+
 .title {
     display: flex;
     align-items: center;
