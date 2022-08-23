@@ -7,7 +7,7 @@
             "max_x": 758,
             "max_y": 853,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' HA 140/80 mmHg'"
+            "ground_truth": "HA 170/80 mmHg"
         }
     ],
     [
@@ -18,7 +18,7 @@
             "max_x": 335,
             "max_y": 1080,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Ht'"
+            "ground_truth": "Hết"
         }
     ],
     [
@@ -29,7 +29,7 @@
             "max_x": 569,
             "max_y": 268,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Nm yn'"
+            "ground_truth": "Nằm yên"
         }
     ],
     [
@@ -40,7 +40,7 @@
             "max_x": 562,
             "max_y": 1163,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Nm yn'"
+            "ground_truth": "Nằm yên"
         }
     ],
     [
@@ -51,7 +51,7 @@
             "max_x": 551,
             "max_y": 1975,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Nm yn'"
+            "ground_truth": "Nằm yên"
         }
     ],
     [
@@ -62,7 +62,7 @@
             "max_x": 142,
             "max_y": 619,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' 21h'"
+            "ground_truth": "21h"
         }
     ],
     [
@@ -73,7 +73,7 @@
             "max_x": 123,
             "max_y": 231,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' 21h'"
+            "ground_truth": "21h"
         }
     ],
     [
@@ -84,7 +84,7 @@
             "max_x": 814,
             "max_y": 2041,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' mch, HA dao ng'"
+            "ground_truth": "mạch, HA dao động"
         }
     ],
     [
@@ -95,7 +95,7 @@
             "max_x": 540,
             "max_y": 1101,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Arduan'"
+            "ground_truth": "Arduan"
         }
     ],
     [
@@ -106,7 +106,7 @@
             "max_x": 593,
             "max_y": 1535,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' nm yn'"
+            "ground_truth": "nằm yên"
         }
     ],
     [
@@ -117,7 +117,7 @@
             "max_x": 688,
             "max_y": 1477,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Ht Magnesulfate'"
+            "ground_truth": "Hết Magnesulfate"
         }
     ],
     [
@@ -128,7 +128,7 @@
             "max_x": 706,
             "max_y": 225,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Midazolam'"
+            "ground_truth": "Midazolam"
         }
     ],
     [
@@ -139,7 +139,7 @@
             "max_x": 820,
             "max_y": 1600,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Mch 100l ln / ph'"
+            "ground_truth": "Mạch 100l ln / ph"
         }
     ],
     [
@@ -150,7 +150,7 @@
             "max_x": 538,
             "max_y": 1269,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' th m'"
+            "ground_truth": "thở êm"
         }
     ],
     [
@@ -161,7 +161,7 @@
             "max_x": 535,
             "max_y": 389,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Th m'"
+            "ground_truth": "Thở êm"
         }
     ],
     [
@@ -172,7 +172,7 @@
             "max_x": 131,
             "max_y": 1462,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' 8h'"
+            "ground_truth": "8h"
         }
     ],
     [
@@ -183,7 +183,7 @@
             "max_x": 709,
             "max_y": 1889,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Midazolam'"
+            "ground_truth": "Midazolam"
         }
     ],
     [
@@ -194,7 +194,7 @@
             "max_x": 668,
             "max_y": 668,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Ht Nagnesuyt'"
+            "ground_truth": "Hết Nagnesuyt"
         }
     ],
     [
@@ -205,7 +205,7 @@
             "max_x": 758,
             "max_y": 802,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' M,HA ng ng cn'"
+            "ground_truth": "M,HA dao động can"
         }
     ],
     [
@@ -216,7 +216,7 @@
             "max_x": 344,
             "max_y": 631,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Ht'"
+            "ground_truth": "Hết"
         }
     ],
     [
@@ -227,7 +227,7 @@
             "max_x": 372,
             "max_y": 1464,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Ht'"
+            "ground_truth": "Hết'"
         }
     ],
     [
@@ -238,7 +238,7 @@
             "max_x": 153,
             "max_y": 173,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' b/1/21'"
+            "ground_truth": "b/1/21"
         }
     ],
     [
@@ -249,7 +249,7 @@
             "max_x": 129,
             "max_y": 1077,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' 0h'"
+            "ground_truth": "0h"
         }
     ],
     [
@@ -260,7 +260,7 @@
             "max_x": 712,
             "max_y": 361,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' M HA dao ng'"
+            "ground_truth": "M HA dao động"
         }
     ],
     [
@@ -271,7 +271,7 @@
             "max_x": 362,
             "max_y": 185,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' ht'"
+            "ground_truth": "hết"
         }
     ],
     [
@@ -282,7 +282,7 @@
             "max_x": 144,
             "max_y": 1902,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' =13'"
+            "ground_truth": "=13"
         }
     ],
     [
@@ -293,7 +293,7 @@
             "max_x": 784,
             "max_y": 471,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' SpO2 98%/ FiO2 40%'"
+            "ground_truth": "SpO2 98%/ FiO2 40%"
         }
     ],
     [
@@ -304,7 +304,7 @@
             "max_x": 736,
             "max_y": 1232,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' M,HA dao ng'"
+            "ground_truth": "M,HA dao động"
         }
     ],
     [
@@ -315,7 +315,7 @@
             "max_x": 565,
             "max_y": 712,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Nm yn'"
+            "ground_truth": "Nằm yên"
         }
     ],
     [
@@ -326,7 +326,7 @@
             "max_x": 371,
             "max_y": 1908,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' Ht'"
+            "ground_truth": "Hết"
         }
     ],
     [
@@ -337,7 +337,7 @@
             "max_x": 831,
             "max_y": 1668,
             "original_image_name": "21.000440 (33)pdpd.jpg",
-            "ground_truth": "b' HAXL: 960/70 mmHg'"
+            "ground_truth": "HAXL: 160/70 mmHg'"
         }
     ]
 ]
