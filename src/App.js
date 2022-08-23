@@ -5,7 +5,7 @@ import AnnotationPage from "./components/AnnotationPage";
 import HomePage from "./components/HomePage";
 import RecognitionPage from "./components/RecognitionPage";
 import AdaptivePage from "./components/AdaptivePage";
-import InputPage from "./components/InputPage"
+import InputPage from "./components/InputPage";
 import { createBrowserHistory } from "history";
 import { Nav } from "react-bootstrap";
 import NavBar from "./components/NavBar";
@@ -13,9 +13,10 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import ModulePage from "./components/ModulePage";
-import PaperDetection from "./components/PaperDetection"
+import PaperDetection from "./components/PaperDetection";
 import PreProcessing from "./components/PreProcessing";
 import TextDetection from "./components/TextDetection";
+import ActivePage from "./components/ActivePage";
 
 const customHistory = createBrowserHistory({ forceRefresh: true });
 function App() {
@@ -30,6 +31,7 @@ function App() {
           {/* <Route path="/annotation/all" element={<AnnotationPage />} /> */}
           <Route path="/annotation/:id" element={<AnnotationPage />} />
           <Route path="/recognition/:file_name" element={<RecognitionPage />} />
+          <Route path="/active" element={<ActivePage />} />
           <Route path="/adaptive/:id" element={<AdaptivePage />} />
           <Route path="/module/:module" element={<ModulePage />} />
           <Route path="/input" element={<InputPage />} />
