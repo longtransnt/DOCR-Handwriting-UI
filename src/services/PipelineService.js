@@ -75,6 +75,14 @@ async function applyManualAdaptivePreprocesscing(query) {
 }
 
 
+async function fetchWERandCER(query) {
+  const url = `http://localhost:5000/text_recognition_eval`;
+  const result = await axios.post(url, query, axiosConfig);
+  return result.data;
+}
+
+
+
 async function callPipelinePrediction(filename) {
   const url = `${PIPELINE_LOCALHOST}input_to_adaptive/${filename}`;
   const response = await axios.get(url, axiosConfig);
@@ -90,5 +98,6 @@ export default {
   applyManualAdaptivePreprocesscing,
   getFoldersFromPath,
   getInputImage,
+  fetchWERandCER,
   callPipelinePrediction
 };
