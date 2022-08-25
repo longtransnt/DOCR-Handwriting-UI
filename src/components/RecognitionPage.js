@@ -10,12 +10,16 @@ import { Col, Container, Row, Stack } from "react-bootstrap";
 import ImageMapping from "./ImageMapping";
 import OriginalView from "./OriginalView";
 import myData from "../testFile.json";
+import myEvalData from "../testEvalFile.json";
 import testImage from "../21.000440 (33)pdpd.jpg";
+import PipelineService from "../services/PipelineService";
 
 export default function RecognitionPage() {
   const location = useLocation();
   const dataState = location.state;
   const [currId, setCurrId] = useState(0);
+  const [cer, setCER] = useState(1);
+  const [wer, setWER] = useState(1);
   const [currImagePath, setCurrImagePath] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setToTalPage] = useState(0);
@@ -23,10 +27,32 @@ export default function RecognitionPage() {
   const [originalUrl, setOriginalUrl] = useState("");
   const [originalWidth, setOriginalWidth] = useState(0);
 
+  const calculateMetrics = useCallback(() => {
+    console.log("stuff");
+    const predict = myData.map((im, id) => {
+      return im.ground_truth;
+    });
+
+    const expect = myEvalData.map((im, id) => {
+      return im.ground_truth;
+    });
+
+    console.log(predict);
+    console.log(expect);
+
+    const query = {
+      ground_truths: expect,
+      predicts: predict,
+    };
+    PipelineService.fetchWERandCER(query).then((results) => {
+      console.log(results);
+    });
+  }, []);
+
   useEffect(() => {
-    setToTalPage(myData.length / 10);
-    console.log(totalPage);
-  });
+    calculateMetrics();
+  }, [calculateMetrics]);
+
   const changePage = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
   };
@@ -66,7 +92,6 @@ export default function RecognitionPage() {
     };
   }
   getMeta(testImage, (width, height) => {
-    console.log(width);
     setOriginalWidth(width);
   });
 
@@ -128,7 +153,7 @@ export default function RecognitionPage() {
                     handleListClick(id);
                   }}
                 >
-                  {im[0].ground_truth}
+                  {im.ground_truth}
                 </ListGroup.Item>
               ))}
             </div>

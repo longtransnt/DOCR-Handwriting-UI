@@ -64,6 +64,12 @@ async function applyManualAdaptivePreprocesscing(query) {
   return preprocess_result.data;
 }
 
+async function fetchWERandCER(query) {
+  const url = `http://localhost:5000/text_recognition_eval`;
+  const result = await axios.post(url, query, axiosConfig);
+  return result.data;
+}
+
 export default {
   checkIfdirectoryExist,
   getInputImageList,
@@ -71,5 +77,6 @@ export default {
   getListOfImageNames,
   applyManualAdaptivePreprocesscing,
   getFoldersFromPath,
-  getInputImage
+  getInputImage,
+  fetchWERandCER,
 };
