@@ -34,8 +34,11 @@ const ImageCard = ({ data: { name, src } }) => (
       </div>
     );
   
-    const onMasonryClick = (event, id) => navigate("/paperdetection/" + id);
-  
+    const onMasonryClick = (event, id) => {
+      PipelineService.callPipelinePrediction(id)
+      navigate("/paperdetection/" + id); 
+    }
+    
     useEffect(() => {
         PipelineService.getInputImageList().then(
             (data) => {
