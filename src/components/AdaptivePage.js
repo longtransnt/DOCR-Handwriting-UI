@@ -31,13 +31,13 @@ export default function AdaptivePage() {
   }, []);
 
   function getImageList() {
-    PipelineService.getListOfImageNames("Adaptive", params.id).then((data) => {
+    PipelineService.getListOfImageNames("Adaptive", params.id, true).then((data) => {
       let imgName = data.data;
       console.log(imgName);
 
       let imageList = [];
       imgName.forEach((img) => {
-        let url = PipelineService.getImageUrl("Adaptive", img, params.id);
+        let url = PipelineService.getImageUrl("Adaptive", img, params.id, true);
         imageList.push({
           id: uuidv4(),
           file_name: img,

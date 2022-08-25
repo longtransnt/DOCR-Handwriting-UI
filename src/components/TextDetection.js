@@ -19,8 +19,11 @@ export default function TextDetection() {
   const [ppImagePath, setPPImagePath] = useState("");
   const [visualize, setVisualize] = useState("");
   const [currId, setCurrId] = useState(0);
-  const toAdaptive = (event, id) =>
-    navigate("/adaptive/" + params.id);
+  const toAdaptive = (event, id) => {
+    let name = params.id.slice(0, -2)
+    navigate("/adaptive/" + name);
+  }
+    
   const params = useParams();
 
   const fetchPPImages = useCallback(() => {
