@@ -17,13 +17,28 @@ export default function TextDetection() {
   const [currImagePath, setCurrImagePath] = useState("");
   const [originalImagePath, setOriginalImagePath] = useState("");
   const [ppImagePath, setPPImagePath] = useState("");
+  const [visualizeImagePath, setVisualizeImagePath] = useState("");
   const [visualize, setVisualize] = useState("");
+  const [visualizeNormal, setVisualizeNormal] = useState("");
+
   const [currId, setCurrId] = useState(0);
+
   const toAdaptive = (event, id) => {
-    let name = params.id.slice(0, -2)
+    let name = params.id.slice(0, -2);
     navigate("/adaptive/" + name);
-  }
-    
+  };
+
+  const toggleTextDetectionImageMode = (event) => {
+    console.log("In");
+    if (visualizeImagePath.includes("normal")) {
+      console.log("hasNormal");
+      setVisualizeImagePath(visualize);
+    } else {
+      console.log("None");
+      setVisualizeImagePath(visualizeNormal);
+    }
+  };
+
   const params = useParams();
 
   const fetchPPImages = useCallback(() => {
@@ -45,11 +60,18 @@ export default function TextDetection() {
     setPPImagePath(pp_url);
 
     let visualize_url = PipelineService.getImageUrl(
-        "TextDetection",
-        "visualize",
-        pd_name
-      );
-      setVisualize(visualize_url);
+      "TextDetection",
+      "visualize",
+      pd_name
+    );
+    let visualize_normal_url = PipelineService.getImageUrl(
+      "TextDetection",
+      "visualize-normal",
+      pd_name
+    );
+    setVisualizeNormal(visualize_normal_url);
+    setVisualize(visualize_url);
+    setVisualizeImagePath(visualize_url);
   }
 
   useEffect(() => {
@@ -121,8 +143,9 @@ export default function TextDetection() {
                 <img
                   className="img-display"
                   id={currId}
-                  src={visualize}
+                  src={visualizeImagePath}
                   height={480}
+                  onClick={() => toggleTextDetectionImageMode()}
                   // key={currImagePath}
                 />
               </div>
@@ -135,7 +158,11 @@ export default function TextDetection() {
         <Col style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}>
           <div style={{ float: "left" }}></div>
           <div style={{ float: "right", marginRight: "46px" }}>
-            <button className="save-btn" id="dropdown-basic-button" onClick={toAdaptive}>
+            <button
+              className="save-btn"
+              id="dropdown-basic-button"
+              onClick={toAdaptive}
+            >
               Next
             </button>{" "}
             {/* <div style={{ float: "right" }}>

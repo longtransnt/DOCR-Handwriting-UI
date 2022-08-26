@@ -29,13 +29,12 @@ async function getListOfImageNames(path, category, denoised) {
   if (category === undefined) {
     const url = `${PIPELINE_LOCALHOST}get-static-list/${path}`;
     const imagelist = await axios.get(url, axiosConfig);
-    return imagelist; 
+    return imagelist;
   } else if (denoised !== undefined) {
     const url = `${PIPELINE_LOCALHOST}get-static-denoised-list/${path}/${category}`;
     const imagelist = await axios.get(url, axiosConfig);
     return imagelist;
-  }
-  else {
+  } else {
     const url = `${PIPELINE_LOCALHOST}get-static-list/${path}/${category}`;
     const imagelist = await axios.get(url, axiosConfig);
     return imagelist;
@@ -57,12 +56,10 @@ function getImageUrl(path, name, category, denoise) {
   if (category === undefined) {
     const url = `${PIPELINE_LOCALHOST}display-output/${path}/${name}.jpg`;
     return url;
-  } 
-  else if (denoise !== undefined) {
+  } else if (denoise !== undefined) {
     const url = `${PIPELINE_LOCALHOST}display-adpt-denoised-output/${path}/${category}/${name}.jpg`;
     return url;
-  } 
-  else {
+  } else {
     const url = `${PIPELINE_LOCALHOST}display-sub-output/${path}/${category}/${name}.jpg`;
     return url;
   }
@@ -74,21 +71,23 @@ async function applyManualAdaptivePreprocesscing(query) {
   return preprocess_result.data;
 }
 
-
 async function fetchWERandCER(query) {
-  const url = `http://localhost:5000/text_recognition_eval`;
+  const url = `${PIPELINE_LOCALHOST}text_recognition_eval`;
   const result = await axios.post(url, query, axiosConfig);
   return result.data;
 }
 
-
+async function getBlur(file_name) {
+  const url = `${PIPELINE_LOCALHOST}get_blur/${file_name}`;
+  const result = await axios.get(url, axiosConfig);
+  return result.data;
+}
 
 async function callPipelinePrediction(filename) {
   const url = `${PIPELINE_LOCALHOST}input_to_adaptive/${filename}`;
   const response = await axios.get(url, axiosConfig);
   return response;
 }
-
 
 export default {
   checkIfdirectoryExist,
@@ -99,5 +98,6 @@ export default {
   getFoldersFromPath,
   getInputImage,
   fetchWERandCER,
-  callPipelinePrediction
+  callPipelinePrediction,
+  getBlur,
 };

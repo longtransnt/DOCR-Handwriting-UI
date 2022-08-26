@@ -45,6 +45,8 @@ export default function RecognitionPage() {
       predicts: predict,
     };
     PipelineService.fetchWERandCER(query).then((results) => {
+      setCER(results.cer);
+      setWER(results.wer);
       console.log(results);
     });
   }, []);

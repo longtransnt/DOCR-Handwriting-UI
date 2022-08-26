@@ -22,22 +22,27 @@ export default function AdaptivePage() {
   const [windowSize, setWindowize] = useState(null);
   const [clipLimitValue, setclipLimitValue] = useState(null);
   const [controlDisable, setControlDisable] = useState(0);
+
+  const [currentBlur, setCurrentBlur] = useState("");
+  const [currentBlurList, setCurrentBlurList] = useState([]);
   const params = useParams();
 
-  const fetchAdaptiveImages = useCallback(() => {
-    // -------------- EXPERIMENTAL SHIT STARTS HERE-----------------
+  // const fetchAdaptiveImages = useCallback(() => {
+  //   getImageAndBlur();
+  // }, []);
 
+  function getImageAndBlur() {
+    getBlurFile();
     getImageList();
-  }, []);
+  }
 
   function getImageList() {
-    PipelineService.getListOfImageNames("Adaptive", params.id, true).then((data) => {
+    PipelineService.getListOfImageNames("Adaptive", params.id).then((data) => {
       let imgName = data.data;
-      console.log(imgName);
 
       let imageList = [];
       imgName.forEach((img) => {
-        let url = PipelineService.getImageUrl("Adaptive", img, params.id, true);
+        let url = PipelineService.getImageUrl("Adaptive", img, params.id);
         imageList.push({
           id: uuidv4(),
           file_name: img,
@@ -50,9 +55,15 @@ export default function AdaptivePage() {
     });
   }
 
+  function getBlurFile() {
+    PipelineService.getBlur(params.id).then((data) => {
+      console.log(data);
+      setCurrentBlurList(data);
+    });
+  }
   useEffect(() => {
-    fetchAdaptiveImages();
-  }, [fetchAdaptiveImages]);
+    getImageAndBlur();
+  }, []);
 
   useEffect(() => {
     if (image.length > 0) {
@@ -69,6 +80,7 @@ export default function AdaptivePage() {
       setCurrId(id);
       setCurrImagePath(image[id].imageUrl);
       setCurrFileName(image[id].file_name); //
+      // setCurrentBlur(blurList[]);
       console.log(image[id].file_name);
     } else {
       setCurrId(null);
@@ -165,6 +177,7 @@ export default function AdaptivePage() {
                 />
               </div>
             </Stack>
+            <div>{currentBlur}</div>
           </Col>
           <Col>
             <p style={{ textAlign: "center", fontWeight: "bold" }}>
