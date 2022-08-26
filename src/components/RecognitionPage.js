@@ -13,6 +13,7 @@ import myData from "../testFile.json";
 import myEvalData from "../testEvalFile.json";
 import testImage from "../21.000440 (33)pdpd.jpg";
 import PipelineService from "../services/PipelineService";
+import { BsArrowReturnRight } from "react-icons/bs";
 
 export default function RecognitionPage() {
   const location = useLocation();
@@ -70,10 +71,10 @@ export default function RecognitionPage() {
       // Move to this image
       setCurrId(id);
       var cords = [
-        data[id][0].max_x,
-        data[id][0].max_y,
-        data[id][0].min_x,
-        data[id][0].min_y,
+        data[id].max_x,
+        data[id].max_y,
+        data[id].min_x,
+        data[id].min_y,
       ];
       setChosenImageCords(cords);
       console.log(cords);
@@ -101,29 +102,17 @@ export default function RecognitionPage() {
   /*----------------------------------- Render ---------------------------------*/
   /******************************************************************************/
   return (
-    <div className="App-header">
+    <div className="recognition-body">
       <Row className="main-area">
         <Col>
-          <p
-            style={{
-              display: "flex",
-              alignItem: "center",
-              justifyContent: "center",
-            }}
-          >
+          <p className="title1">
             Original Image
           </p>
-          <div
-            style={{
-              display: "flex",
-              alignItem: "center",
-              justifyContent: "center",
-            }}
-          >
+          <div className="image-display">
             <ImageMapping
               active={true}
               imgWidth={originalWidth}
-              width={300} // imgWidth: original image width
+              width={250} // imgWidth: original image width
               src={testImage}
               map={{
                 name: "my-map",
@@ -134,32 +123,40 @@ export default function RecognitionPage() {
         </Col>
         <Col>
           {/* Image List */}
-          <p
-            style={{
-              display: "flex",
-              alignItem: "center",
-              justifyContent: "center",
-            }}
-          >
-            Ground Truth
+          <p className="title2">
+            Text Recognition
           </p>
-          <Scrollbars style={{ width: 500, height: 500 }}>
-            <div id="recognition-list">
-              {myData.map((im, id) => (
-                <ListGroup.Item
-                  id={"image_" + id}
-                  key={id}
-                  value={id}
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => {
-                    handleListClick(id);
-                  }}
-                >
-                  {im.ground_truth}
-                </ListGroup.Item>
-              ))}
-            </div>
-          </Scrollbars>
+          <div className="text-list">
+            <Scrollbars style={{width: 400, height: 600 }}>
+              <div id="recognition-list">
+                {myData.map((im, id) => (
+                  <ListGroup.Item
+                    id={"image_" + id}
+                    key={id}
+                    value={id}
+                    style={{ color: "#005477", cursor: "pointer" }}
+                    onClick={(e) => {
+                      handleListClick(id);
+                    }}
+                  >
+                    Ground truth: {im.ground_truth}
+                    <div style={{display: "flex", margin: ".25rem 0 0 1.5rem"}}>
+                      <BsArrowReturnRight />
+                      <p className="prediction-box">Prediction: 
+                        <span className="predict-text"> Here is predicted text</span>
+                      </p>
+                    </div>
+                  </ListGroup.Item>
+                ))}
+              </div>
+            </Scrollbars>
+          </div>
+          <Row>
+            <p className="error-rate">
+              Error Rate:
+              <span> Put value here</span>
+            </p>
+          </Row>
         </Col>
       </Row>
     </div>

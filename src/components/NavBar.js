@@ -25,7 +25,6 @@ export default function NavBar() {
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
           <a href="/" className="logo d-flex align-items-center">
             <img src={oucru} alt="logo" />
-            <span>OUCRU</span>
           </a>
 
           <nav className="navbar">
