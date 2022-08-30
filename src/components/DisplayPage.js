@@ -12,12 +12,12 @@ import { v4 as uuidv4 } from "uuid";
 import React, { useState, useCallback, useEffect } from "react";
 import PipelineService from "../services/PipelineService";
 
-export default function TextDetection() {
+export default function DisplayPage() {
   const navigate = useNavigate();
-  const [currImagePath, setCurrImagePath] = useState("");
+  const [paperDetectionImagePath, setPaperDetectionImagePath] = useState("");
   const [originalImagePath, setOriginalImagePath] = useState("");
-  const [ppImagePath, setPPImagePath] = useState("");
-  const [visualizeImagePath, setVisualizeImagePath] = useState("");
+  const [preProcesscingImagePath, setPreProcesscingImagePath] = useState("");
+  const [textDetectionImagePath, setTextDetectionImagePath] = useState("");
   const [visualize, setVisualize] = useState("");
   const [visualizeNormal, setVisualizeNormal] = useState("");
 
@@ -30,12 +30,12 @@ export default function TextDetection() {
 
   const toggleTextDetectionImageMode = (event) => {
     console.log("In");
-    if (visualizeImagePath.includes("normal")) {
+    if (textDetectionImagePath.includes("normal")) {
       console.log("hasNormal");
-      setVisualizeImagePath(visualize);
+      setTextDetectionImagePath(visualize);
     } else {
       console.log("None");
-      setVisualizeImagePath(visualizeNormal);
+      setTextDetectionImagePath(visualizeNormal);
     }
   };
 
@@ -50,14 +50,14 @@ export default function TextDetection() {
     let pd_name = params.id + "pd";
     let url = PipelineService.getImageUrl("PaperDetection", pd_name);
     console.log(url);
-    setCurrImagePath(url);
+    setPaperDetectionImagePath(url);
     let org_url = PipelineService.getInputImage(params.id);
     setOriginalImagePath(org_url);
 
     let pp_name = pd_name + "_pp";
     let pp_url = PipelineService.getImageUrl("Preprocessing", pp_name);
     console.log(url);
-    setPPImagePath(pp_url);
+    setPreProcesscingImagePath(pp_url);
 
     let visualize_url = PipelineService.getImageUrl(
       "TextDetection",
@@ -71,7 +71,7 @@ export default function TextDetection() {
     );
     setVisualizeNormal(visualize_normal_url);
     setVisualize(visualize_url);
-    setVisualizeImagePath(visualize_url);
+    setTextDetectionImagePath(visualize_url);
   }
 
   useEffect(() => {
@@ -97,6 +97,9 @@ export default function TextDetection() {
                   // key={currImagePath}
                 />
               </div>
+              <div style={{ fontSize: 20, textAlign: "center" }}>
+                Raw medical record
+              </div>
             </Stack>
           </Col>
           <Col>
@@ -110,9 +113,12 @@ export default function TextDetection() {
                   className="img-display"
                   id={currId}
                   height={480}
-                  src={currImagePath}
+                  src={paperDetectionImagePath}
                   // key={currImagePath}
                 />
+              </div>
+              <div style={{ fontSize: 20, textAlign: "center" }}>
+                Result detected and cropped by Mask-RCNN model
               </div>
             </Stack>
           </Col>
@@ -126,10 +132,19 @@ export default function TextDetection() {
                 <img
                   className="img-display"
                   id={currId}
-                  src={ppImagePath}
+                  src={preProcesscingImagePath}
                   height={480}
                   // key={currImagePath}
                 />
+              </div>
+              <div style={{ fontSize: 20, textAlign: "center" }}>
+                1. Improve image contrast with CLAHE
+              </div>
+              <div style={{ fontSize: 20, textAlign: "center" }}>
+                2. Enhance handwriting stroke with Sauvola
+              </div>
+              <div style={{ fontSize: 20, textAlign: "center" }}>
+                3. Remove small objects with OpenCV's Denoised
               </div>
             </Stack>
           </Col>
@@ -139,15 +154,24 @@ export default function TextDetection() {
               TextDetection
             </p>
             <Stack gap={2} className="col-md-11 mx-auto">
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
                 <img
                   className="img-display"
                   id={currId}
-                  src={visualizeImagePath}
+                  src={textDetectionImagePath}
                   height={480}
                   onClick={() => toggleTextDetectionImageMode()}
                   // key={currImagePath}
                 />
+              </div>
+              <div style={{ fontSize: 20, textAlign: "center" }}>
+                Result detected and cropped by Fast-RCNN model
               </div>
             </Stack>
           </Col>

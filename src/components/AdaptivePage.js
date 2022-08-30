@@ -6,12 +6,14 @@ import Col from "react-bootstrap/Col";
 import Stack from "react-bootstrap/Stack";
 import { Scrollbars } from "react-custom-scrollbars";
 import ListGroup from "react-bootstrap/ListGroup";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import React, { useState, useCallback, useEffect } from "react";
 import PipelineService from "../services/PipelineService";
 
 export default function AdaptivePage() {
+  const navigate = useNavigate();
+
   const [currImagePath, setCurrImagePath] = useState("");
   const [currFileName, setCurrFileName] = useState("");
   const [currId, setCurrId] = useState(0);
@@ -42,13 +44,15 @@ export default function AdaptivePage() {
 
       let imageList = [];
       imgName.forEach((img) => {
-        let url = PipelineService.getImageUrl("Adaptive", img, params.id);
-        imageList.push({
-          id: uuidv4(),
-          file_name: img,
-          imageUrl: url,
-          isManual: true,
-        });
+        if (!img.includes("blur")) {
+          let url = PipelineService.getImageUrl("Adaptive", img, params.id);
+          imageList.push({
+            id: uuidv4(),
+            file_name: img,
+            imageUrl: url,
+            isManual: true,
+          });
+        }
       });
 
       setImage(imageList);
@@ -80,7 +84,15 @@ export default function AdaptivePage() {
       setCurrId(id);
       setCurrImagePath(image[id].imageUrl);
       setCurrFileName(image[id].file_name); //
-      // setCurrentBlur(blurList[]);
+
+      if (currentBlurList != null) {
+        const blurObject = Object.values(currentBlurList).find(
+          (e) => e.image_name + "-denoised" === image[id].file_name
+        );
+        console.log(blurObject);
+        setCurrentBlur(blurObject.blur.toFixed(2));
+      }
+
       console.log(image[id].file_name);
     } else {
       setCurrId(null);
@@ -125,6 +137,18 @@ export default function AdaptivePage() {
       }
     );
   };
+
+  function handleContinue(eventKey) {
+    switch (eventKey) {
+      case "continue":
+        navigate("/recognition/" + params.id);
+        break;
+      case "reapply":
+        break;
+      default:
+        return;
+    }
+  }
   return (
     <div className="App-header">
       <Container>
@@ -177,7 +201,9 @@ export default function AdaptivePage() {
                 />
               </div>
             </Stack>
-            <div>{currentBlur}</div>
+            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+              Blur Metric: {currentBlur}
+            </p>
           </Col>
           <Col>
             <p style={{ textAlign: "center", fontWeight: "bold" }}>
@@ -303,42 +329,15 @@ export default function AdaptivePage() {
           </Col>
         </Row>
       </Container>
-
-      {/* <Dropdown>
-        <Dropdown.Toggle id="dropdown-basic-button">
-          ADAPTIVE PREPROCESSING MODE
-          <IoChevronDown
-            style={{
-              width: "1.5rem",
-              height: "1.5rem",
-              marginLeft: "5px",
-            }}
-          />
-        </Dropdown.Toggle>
-        <Dropdown.Menu
-          style={{
-            position: "absolute",
-            minWidth: "100%",
-            textAlign: "center",
-          }}
-        >
-          <Dropdown.Item className="dropdown-item" eventKey="all">
-            Automatic
-          </Dropdown.Item>
-          <Dropdown.Item className="dropdown-item" eventKey="rest">
-            Manual
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown> */}
       <Row style={{ marginTop: "7rem" }}>
         <Col style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}>
           <div style={{ float: "left" }}></div>
           <div style={{ float: "right", marginRight: "46px" }}>
             <button className="save-btn" onClick={handlePreview}>
-              Preview
+              Apply
             </button>{" "}
             <div style={{ float: "right" }}>
-              <Dropdown>
+              <Dropdown onSelect={handleContinue}>
                 <Dropdown.Toggle id="dropdown-basic-button">
                   CONFIRM
                   <IoChevronDown
@@ -356,10 +355,10 @@ export default function AdaptivePage() {
                     textAlign: "center",
                   }}
                 >
-                  <Dropdown.Item className="dropdown-item" eventKey="all">
+                  <Dropdown.Item className="dropdown-item" eventKey="continue">
                     Continue
                   </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item" eventKey="rest">
+                  <Dropdown.Item className="dropdown-item" eventKey="reapply">
                     Continue with all Automatic
                   </Dropdown.Item>
                 </Dropdown.Menu>

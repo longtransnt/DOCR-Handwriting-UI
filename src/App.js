@@ -15,7 +15,7 @@ import { useState } from "react";
 import ModulePage from "./components/ModulePage";
 import PaperDetection from "./components/PaperDetection";
 import PreProcessing from "./components/PreProcessing";
-import TextDetection from "./components/TextDetection";
+import DisplayPage from "./components/DisplayPage";
 import ActivePage from "./components/ActivePage";
 
 const customHistory = createBrowserHistory({ forceRefresh: true });
@@ -30,14 +30,12 @@ function App() {
           <Route path="/" element={<HomePage></HomePage>} />
           {/* <Route path="/annotation/all" element={<AnnotationPage />} /> */}
           <Route path="/annotation/:id" element={<AnnotationPage />} />
-          <Route path="/recognition/:file_name" element={<RecognitionPage />} />
+          <Route path="/recognition/:id" element={<RecognitionPage />} />
           <Route path="/active" element={<ActivePage />} />
           <Route path="/adaptive/:id" element={<AdaptivePage />} />
           <Route path="/module/:module" element={<ModulePage />} />
           <Route path="/input" element={<InputPage />} />
-          <Route path="/paperdetection/:id" element={<PaperDetection />} />
-          <Route path="/preprocessing/:id" element={<PreProcessing />} />
-          <Route path="/textdetection/:id" element={<TextDetection />} />
+          <Route path="/display/:mode/:id" element={<DisplayPage />} />
         </Routes>
       </Router>
     </div>

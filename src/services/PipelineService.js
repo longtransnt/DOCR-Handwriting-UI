@@ -89,6 +89,11 @@ async function callPipelinePrediction(filename) {
   return response;
 }
 
+async function callTextRecognitionModule(filename) {
+  const url = `${PIPELINE_LOCALHOST}run_text_recognition/${filename}`;
+  const response = await axios.get(url, axiosConfig);
+  return response.data;
+}
 export default {
   checkIfdirectoryExist,
   getInputImageList,
@@ -100,4 +105,5 @@ export default {
   fetchWERandCER,
   callPipelinePrediction,
   getBlur,
+  callTextRecognitionModule,
 };
