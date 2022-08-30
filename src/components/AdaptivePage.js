@@ -27,6 +27,7 @@ export default function AdaptivePage() {
 
   const [currentBlur, setCurrentBlur] = useState("");
   const [currentBlurList, setCurrentBlurList] = useState([]);
+  const [currentIsManual, setCurrIsManual] = useState(false);
   const params = useParams();
 
   // const fetchAdaptiveImages = useCallback(() => {
@@ -50,7 +51,7 @@ export default function AdaptivePage() {
             id: uuidv4(),
             file_name: img,
             imageUrl: url,
-            isManual: true,
+            isManual: false,
           });
         }
       });
@@ -84,6 +85,7 @@ export default function AdaptivePage() {
       setCurrId(id);
       setCurrImagePath(image[id].imageUrl);
       setCurrFileName(image[id].file_name); //
+      setCurrIsManual(image[id].isManual);
 
       if (currentBlurList != null) {
         const blurObject = Object.values(currentBlurList).find(
@@ -104,10 +106,8 @@ export default function AdaptivePage() {
   const handleConfigCheck = (event) => {
     if (event.target.checked === true) {
       setControlDisable(1);
-      // image[currId].isManual = true;
     } else {
       setControlDisable(0);
-      // image[currId].isManual = false;
     }
   };
 
@@ -128,11 +128,11 @@ export default function AdaptivePage() {
           "Adaptive-Preview"
         );
 
-        console.log(preprocess_result);
-        console.log(url);
         setCurrImagePath(null);
         setCurrImagePath(url);
         setCurrId(currId);
+        image[currId].isManual = true;
+
         console.log("DONE");
       }
     );
@@ -144,6 +144,7 @@ export default function AdaptivePage() {
         navigate("/recognition/" + params.id);
         break;
       case "reapply":
+        console.log(image.filter((image) => image.isManual === true));
         break;
       default:
         return;
@@ -215,6 +216,7 @@ export default function AdaptivePage() {
                 type="checkbox"
                 id="flexSwitch"
                 onChange={handleConfigCheck}
+                defaultChecked={currentIsManual}
               ></input>
               <label class="form-check-label" for="flexSwitch">
                 Manual Configuration

@@ -24,7 +24,6 @@ export default function NavBar() {
       <header className="header fixed-top">
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
           <a href="/" className="logo d-flex align-items-center">
-            <img src={rmit} alt="logo" />
             <img src={oucru} alt="logo" />
           </a>
           <nav className="navbar">
@@ -157,6 +156,10 @@ export default function NavBar() {
               </ul>
             </nav>
           )}
+
+          <a href="/" className="logo d-flex align-items-center">
+            <img src={rmit} alt="logo" />
+          </a>
         </div>
       </header>
     </>

@@ -187,9 +187,9 @@ export default function RecognitionPage() {
             </Scrollbars>
           </div>
           <Row>
-            <p className="error-rate">Error Rate:</p>
-            <div className="error-rate">CER: {cer}</div>
-            <div className="error-rate">WER: {wer}</div>
+            <p className="error-rate">
+              Error Rate: CER: {cer} - WER: {wer}
+            </p>
           </Row>
         </Col>
       </Row>

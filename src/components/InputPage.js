@@ -61,7 +61,7 @@ function InputPage() {
 
   return (
     <div className="home-gallery">
-      <div className="title">Original Image Gallery</div>
+      <div className="title">Input Gallery</div>
       <Masonry
         className="gallery-show"
         columnGutter={20}
