@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import "../styles/Recognition.css";
 import "../App.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Scrollbars } from "react-custom-scrollbars";
 import ListGroup from "react-bootstrap/ListGroup";
 import UploadService from "../services/UploadService";
@@ -19,14 +19,23 @@ export default function RecognitionPage() {
   const location = useLocation();
   const dataState = location.state;
   const [currId, setCurrId] = useState(0);
-  const [cer, setCER] = useState(1);
-  const [wer, setWER] = useState(1);
+  const [cer, setCER] = useState(null);
+  const [wer, setWER] = useState(null);
   const [currImagePath, setCurrImagePath] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setToTalPage] = useState(0);
   const [chosenImageCords, setChosenImageCords] = useState([0, 0, 0, 0]);
   const [originalUrl, setOriginalUrl] = useState("");
   const [originalWidth, setOriginalWidth] = useState(0);
+  const [combineFile, setCombineFile] = useState([]);
+
+  const params = useParams();
+
+  const fetchTextRecognitionResults = useCallback(() => {
+    PipelineService.callTextRecognitionModule(params.id).then((results) => {
+      console.log(results);
+    });
+  });
 
   const calculateMetrics = useCallback(() => {
     console.log("stuff");
@@ -46,13 +55,40 @@ export default function RecognitionPage() {
       predicts: predict,
     };
     PipelineService.fetchWERandCER(query).then((results) => {
-      setCER(results.cer);
-      setWER(results.wer);
-      console.log(results);
+      setCER(results.cer.toFixed(3));
+      setWER(results.wer.toFixed(3));
     });
   }, []);
 
+  const combineEvalAndPredict = useCallback((evalFile, predictFile) => {
+    const arrayList = [];
+    for (var i in evalFile) {
+      var obj = {
+        image_name: evalFile[i].image_name,
+        min_x: evalFile[i].min_x,
+        min_y: evalFile[i].min_y,
+        max_x: evalFile[i].max_x,
+        max_y: evalFile[i].max_y,
+        original_image_name: evalFile[i].original_image_name,
+        ground_truth: evalFile[i].ground_truth,
+        prediction: "",
+      };
+
+      for (var j in predictFile) {
+        if (evalFile[i].image_name === predictFile[j].image_name) {
+          obj.prediction = predictFile[j].ground_truth;
+        }
+      }
+
+      arrayList.push(obj);
+    }
+
+    console.log("combine", arrayList);
+    setCombineFile(arrayList);
+  }, []);
   useEffect(() => {
+    fetchTextRecognitionResults();
+    combineEvalAndPredict(myEvalData, myData);
     calculateMetrics();
   }, [calculateMetrics]);
 
@@ -105,9 +141,7 @@ export default function RecognitionPage() {
     <div className="recognition-body">
       <Row className="main-area">
         <Col>
-          <p className="title1">
-            Original Image
-          </p>
+          <p className="title1">Original Image</p>
           <div className="image-display">
             <ImageMapping
               active={true}
@@ -123,13 +157,11 @@ export default function RecognitionPage() {
         </Col>
         <Col>
           {/* Image List */}
-          <p className="title2">
-            Text Recognition
-          </p>
+          <p className="title2">Text Recognition</p>
           <div className="text-list">
-            <Scrollbars style={{width: 400, height: 600 }}>
+            <Scrollbars style={{ width: 400, height: 600 }}>
               <div id="recognition-list">
-                {myData.map((im, id) => (
+                {combineFile.map((im, id) => (
                   <ListGroup.Item
                     id={"image_" + id}
                     key={id}
@@ -140,10 +172,13 @@ export default function RecognitionPage() {
                     }}
                   >
                     Ground truth: {im.ground_truth}
-                    <div style={{display: "flex", margin: ".25rem 0 0 1.5rem"}}>
+                    <div
+                      style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}
+                    >
                       <BsArrowReturnRight />
-                      <p className="prediction-box">Prediction: 
-                        <span className="predict-text"> Here is predicted text</span>
+                      <p className="prediction-box">
+                        Prediction:
+                        <span className="predict-text"> {im.prediction}</span>
                       </p>
                     </div>
                   </ListGroup.Item>
@@ -152,10 +187,9 @@ export default function RecognitionPage() {
             </Scrollbars>
           </div>
           <Row>
-            <p className="error-rate">
-              Error Rate:
-              <span> Put value here</span>
-            </p>
+            <p className="error-rate">Error Rate:</p>
+            <div className="error-rate">CER: {cer}</div>
+            <div className="error-rate">WER: {wer}</div>
           </Row>
         </Col>
       </Row>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/NavBar.css";
 import oucru from "../oucru.png";
-
+import rmit from "../rmit.png";
 // import { useEnv } from "../context/env.context";
 export default function NavBar() {
   const [currentPath, setCurrentPath] = useState("/");
@@ -24,9 +24,9 @@ export default function NavBar() {
       <header className="header fixed-top">
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
           <a href="/" className="logo d-flex align-items-center">
+            <img src={rmit} alt="logo" />
             <img src={oucru} alt="logo" />
           </a>
-
           <nav className="navbar">
             <ul>
               <li>
