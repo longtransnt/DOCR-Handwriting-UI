@@ -4,7 +4,6 @@
 .header {
     transition: all 0.5s;
     z-index: 997;
-    padding: 20px 0;
     background: #fff;
   }
   
@@ -14,13 +13,14 @@
     box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   }
   
-  .header .logo {
-    line-height: 0;
+  .header .logo #oucru {
+    max-height: 3.5rem;
+    margin-bottom: 10px;
   }
-  
-  .header .logo img {
-    max-height: 40px;
-    margin-right: 6px;
+
+  .header .logo #rmit {
+    max-height: 6rem;
+    margin-right: 1rem;
   }
   
   .header .logo span {
