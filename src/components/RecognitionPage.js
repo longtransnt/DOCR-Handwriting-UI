@@ -28,6 +28,7 @@ export default function RecognitionPage() {
   const [originalUrl, setOriginalUrl] = useState("");
   const [originalWidth, setOriginalWidth] = useState(0);
   const [combineFile, setCombineFile] = useState([]);
+  const [clicked, setClicked] = useState(0);
 
   const params = useParams();
 
@@ -101,6 +102,7 @@ export default function RecognitionPage() {
   /******************************************************************************/
   const handleListClick = (id) => {
     var data = require("../testFile.json");
+    setClicked(id);
     // console.log(image.length)
     if (id <= data.length - 1) {
       // // Testing only
@@ -158,39 +160,60 @@ export default function RecognitionPage() {
         <Col>
           {/* Image List */}
           <p className="title2">Text Recognition</p>
-          <div className="text-list">
-            <Scrollbars style={{ width: 400, height: 600 }}>
-              <div id="recognition-list">
-                {combineFile.map((im, id) => (
-                  <ListGroup.Item
-                    id={"image_" + id}
-                    key={id}
-                    value={id}
-                    style={{ color: "#005477", cursor: "pointer" }}
-                    onClick={(e) => {
-                      handleListClick(id);
-                    }}
-                  >
-                    Ground truth: {im.ground_truth}
-                    <div
-                      style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}
+          <div>
+            <div className="text-list">
+              <Scrollbars style={{ width: 400, height: 600 }}>
+                <div id="recognition-list">
+                  {combineFile.map((im, id) => (
+                    <ListGroup.Item
+                      id={"image_" + id}
+                      key={id}
+                      value={id}
+                      style={{
+                        color: "#005477",
+                        cursor: "pointer",
+                        backgroundColor: clicked === id ? "#cce6ff" : "",
+                      }}
+                      onClick={(e) => {
+                        handleListClick(id);
+                      }}
                     >
-                      <BsArrowReturnRight />
-                      <p className="prediction-box">
-                        Prediction:
-                        <span className="predict-text"> {im.prediction}</span>
-                      </p>
-                    </div>
-                  </ListGroup.Item>
-                ))}
+                      Ground truth: {im.ground_truth}
+                      <div
+                        style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}
+                      >
+                        <BsArrowReturnRight />
+                        <p className="prediction-box">
+                          Prediction:
+                          <span className="prediction-text">
+                            {" "}
+                            {im.prediction}
+                          </span>
+                        </p>
+                      </div>
+                    </ListGroup.Item>
+                  ))}
+                </div>
+              </Scrollbars>
+            </div>
+            <div className="error-display-outbound">
+              <div className="error-display-inbound">
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "#005477",
+                    display: "flex",
+                    alignItem: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Error Rate
+                </div>
+                <div className="error-rate">CER: {cer}</div>
+                <div className="error-rate">WER: {wer}</div>
               </div>
-            </Scrollbars>
+            </div>
           </div>
-          <Row>
-            <p className="error-rate">
-              Error Rate: CER: {cer} - WER: {wer}
-            </p>
-          </Row>
         </Col>
       </Row>
     </div>

@@ -21,10 +21,11 @@ export default function NavBar() {
 
   return (
     <>
-      <header className="header fixed-top">
+      <header className="header">
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-          <a href="/" className="logo d-flex align-items-center">
-            <img src={oucru} alt="logo" />
+          <a href="/" className="logo">
+            <img src={rmit} id="rmit" />
+            <img src={oucru} id="oucru" />
           </a>
           <nav className="navbar">
             <ul>
@@ -156,10 +157,6 @@ export default function NavBar() {
               </ul>
             </nav>
           )}
-
-          <a href="/" className="logo d-flex align-items-center">
-            <img src={rmit} alt="logo" />
-          </a>
         </div>
       </header>
     </>
