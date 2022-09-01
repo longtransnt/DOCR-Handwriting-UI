@@ -29,6 +29,11 @@ export default function RecognitionPage() {
   const [clicked, setClicked] = useState(0);
 
   const params = useParams();
+  const fetchImage = useCallback(() => {
+    let image_name = params.id + "pdpd";
+    let url = PipelineService.getImageUrl("PaperDetection", image_name);
+    setCurrImagePath(url);
+  }, []);
 
   const fetchTextRecognitionResults = useCallback(() => {
     PipelineService.callTextRecognitionModule(params.id).then((results) => {
@@ -90,10 +95,9 @@ export default function RecognitionPage() {
     fetchTextRecognitionResults();
   }, [fetchTextRecognitionResults]);
 
-  const changePage = ({ selected: selectedPage }) => {
-    setCurrentPage(selectedPage);
-  };
-
+  useEffect(() => {
+    fetchImage();
+  }, [fetchImage]);
   /******************************************************************************/
   /*---------------- Handle when user click image on list ----------------------*/
   /******************************************************************************/
@@ -129,7 +133,7 @@ export default function RecognitionPage() {
       callback(this.width, this.height);
     };
   }
-  getMeta(testImage, (width, height) => {
+  getMeta(currImagePath, (width, height) => {
     setOriginalWidth(width);
   });
 
@@ -146,7 +150,7 @@ export default function RecognitionPage() {
               active={true}
               imgWidth={originalWidth}
               width={250} // imgWidth: original image width
-              src={testImage}
+              src={currImagePath}
               map={{
                 name: "my-map",
                 areas: [{ shape: "rect", coords: chosenImageCords }],
