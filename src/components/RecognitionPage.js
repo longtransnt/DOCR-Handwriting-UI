@@ -8,9 +8,6 @@ import UploadService from "../services/UploadService";
 import ReactPaginate from "react-paginate";
 import { Col, Container, Row, Stack } from "react-bootstrap";
 import ImageMapping from "./ImageMapping";
-import OriginalView from "./OriginalView";
-import myData from "../testFile.json";
-import myEvalData from "../testEvalFile.json";
 import testImage from "../21.000440 (33)pdpd.jpg";
 import PipelineService from "../services/PipelineService";
 import { BsArrowReturnRight } from "react-icons/bs";
@@ -21,9 +18,10 @@ export default function RecognitionPage() {
   const [currId, setCurrId] = useState(0);
   const [cer, setCER] = useState(null);
   const [wer, setWER] = useState(null);
+  const [predictData, setPredictData] = useState([]);
+  const [evalData, setEvalData] = useState([]);
   const [currImagePath, setCurrImagePath] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const [totalPage, setToTalPage] = useState(0);
   const [chosenImageCords, setChosenImageCords] = useState([0, 0, 0, 0]);
   const [originalUrl, setOriginalUrl] = useState("");
   const [originalWidth, setOriginalWidth] = useState(0);
@@ -34,17 +32,17 @@ export default function RecognitionPage() {
 
   const fetchTextRecognitionResults = useCallback(() => {
     PipelineService.callTextRecognitionModule(params.id).then((results) => {
-      console.log(results);
+      combineEvalAndPredict(results.predict_info, results.eval_info);
+      calculateMetrics(results.predict_info, results.eval_info);
     });
-  });
+  }, []);
 
-  const calculateMetrics = useCallback(() => {
-    console.log("stuff");
-    const predict = myData.map((im, id) => {
+  const calculateMetrics = useCallback((predictData, evalData) => {
+    const predict = predictData.map((im, id) => {
       return im.ground_truth;
     });
 
-    const expect = myEvalData.map((im, id) => {
+    const expect = evalData.map((im, id) => {
       return im.ground_truth;
     });
 
@@ -87,11 +85,10 @@ export default function RecognitionPage() {
     console.log("combine", arrayList);
     setCombineFile(arrayList);
   }, []);
+
   useEffect(() => {
     fetchTextRecognitionResults();
-    combineEvalAndPredict(myEvalData, myData);
-    calculateMetrics();
-  }, [calculateMetrics]);
+  }, [fetchTextRecognitionResults]);
 
   const changePage = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
@@ -102,7 +99,7 @@ export default function RecognitionPage() {
   /******************************************************************************/
   const handleListClick = (id) => {
     var data = require("../testFile.json");
-    setClicked(id)
+    setClicked(id);
     // console.log(image.length)
     if (id <= data.length - 1) {
       // // Testing only
@@ -169,10 +166,10 @@ export default function RecognitionPage() {
                       id={"image_" + id}
                       key={id}
                       value={id}
-                      style={{ 
-                        color: "#005477", 
-                        cursor: "pointer", 
-                        backgroundColor: clicked === id ? "#cce6ff" : ""
+                      style={{
+                        color: "#005477",
+                        cursor: "pointer",
+                        backgroundColor: clicked === id ? "#cce6ff" : "",
                       }}
                       onClick={(e) => {
                         handleListClick(id);
@@ -185,7 +182,10 @@ export default function RecognitionPage() {
                         <BsArrowReturnRight />
                         <p className="prediction-box">
                           Prediction:
-                          <span className="prediction-text"> {im.prediction}</span>
+                          <span className="prediction-text">
+                            {" "}
+                            {im.prediction}
+                          </span>
                         </p>
                       </div>
                     </ListGroup.Item>
@@ -195,7 +195,17 @@ export default function RecognitionPage() {
             </div>
             <div className="error-display-outbound">
               <div className="error-display-inbound">
-                <div style={{fontWeight: "bold", color: "#005477", display: "flex", alignItem: "center", justifyContent: "center"}}>Error Rate</div>
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "#005477",
+                    display: "flex",
+                    alignItem: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Error Rate
+                </div>
                 <div className="error-rate">CER: {cer}</div>
                 <div className="error-rate">WER: {wer}</div>
               </div>

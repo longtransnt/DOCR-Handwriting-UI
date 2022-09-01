@@ -174,7 +174,7 @@ export default function AnnotationPage() {
             console.log(res);
             image[currId].ground_truth = res.ground_truth;
             loadImageList(image);
-            // getPage(currentPage)
+            getAppropriateData(params.id, currentPage);
           }
         );
         setUpdateState(0);
