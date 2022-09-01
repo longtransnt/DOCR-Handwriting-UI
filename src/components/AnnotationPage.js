@@ -92,9 +92,6 @@ export default function AnnotationPage() {
       }
       prevPage.current = currentPage;
     } else {
-      // if (totalPage > 0 ){
-      //   setCurrentPage(totalPage -1)
-      // }
       setCurrId(null);
       setCurrImagePath(null);
       setChecked(null);
