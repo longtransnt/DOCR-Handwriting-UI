@@ -11,6 +11,7 @@ import ImageMapping from "./ImageMapping";
 import testImage from "../21.000440 (33)pdpd.jpg";
 import PipelineService from "../services/PipelineService";
 import { BsArrowReturnRight } from "react-icons/bs";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function RecognitionPage() {
   const location = useLocation();
@@ -21,12 +22,12 @@ export default function RecognitionPage() {
   const [predictData, setPredictData] = useState([]);
   const [evalData, setEvalData] = useState([]);
   const [currImagePath, setCurrImagePath] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
   const [chosenImageCords, setChosenImageCords] = useState([0, 0, 0, 0]);
-  const [originalUrl, setOriginalUrl] = useState("");
   const [originalWidth, setOriginalWidth] = useState(0);
   const [combineFile, setCombineFile] = useState([]);
+  const [isEval, setIsEval] = useState(false);
   const [clicked, setClicked] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams();
   const fetchImage = useCallback(() => {
@@ -37,8 +38,15 @@ export default function RecognitionPage() {
 
   const fetchTextRecognitionResults = useCallback(() => {
     PipelineService.callTextRecognitionModule(params.id).then((results) => {
-      combineEvalAndPredict(results.predict_info, results.eval_info);
-      calculateMetrics(results.predict_info, results.eval_info);
+      console.log(results);
+      setIsEval(results.eval_exist);
+
+      setCombineFile(results.predict_info);
+      if (results.eval_exist) {
+        combineEvalAndPredict(results.eval_info, results.predict_info);
+        calculateMetrics(results.predict_info, results.eval_info);
+      }
+      setIsLoading(true);
     });
   }, []);
 
@@ -50,9 +58,6 @@ export default function RecognitionPage() {
     const expect = evalData.map((im, id) => {
       return im.ground_truth;
     });
-
-    console.log(predict);
-    console.log(expect);
 
     const query = {
       ground_truths: expect,
@@ -98,6 +103,107 @@ export default function RecognitionPage() {
   useEffect(() => {
     fetchImage();
   }, [fetchImage]);
+
+  const renderResult = () => {
+    if (!isLoading) {
+      return <Spinner animation="border" variant="info" />;
+    } else {
+      return (
+        <div>
+          <div className="text-list">
+            <Scrollbars style={{ width: 400, height: 600 }}>
+              {renderTextRecognitionBox()}
+            </Scrollbars>
+          </div>
+          {renderMetricsBox()}
+        </div>
+      );
+    }
+  };
+  const renderTextRecognitionBox = () => {
+    if (isEval) {
+      return (
+        <div id="recognition-list">
+          {combineFile.map((im, id) => (
+            <ListGroup.Item
+              id={"image_" + id}
+              key={id}
+              value={id}
+              style={{
+                color: "#005477",
+                cursor: "pointer",
+                backgroundColor: clicked === id ? "#cce6ff" : "",
+              }}
+              onClick={(e) => {
+                handleListClick(id);
+              }}
+            >
+              Ground truth: {im.ground_truth}
+              <div style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}>
+                <BsArrowReturnRight />
+                <p className="prediction-box">
+                  Prediction:
+                  <span className="prediction-text"> {im.prediction}</span>
+                </p>
+              </div>
+            </ListGroup.Item>
+          ))}
+        </div>
+      );
+    } else {
+      return (
+        <div id="recognition-list">
+          {combineFile.map((im, id) => (
+            <ListGroup.Item
+              id={"image_" + id}
+              key={id}
+              value={id}
+              style={{
+                color: "#005477",
+                cursor: "pointer",
+                backgroundColor: clicked === id ? "#cce6ff" : "",
+              }}
+              onClick={(e) => {
+                handleListClick(id);
+              }}
+            >
+              <div style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}>
+                <p className="prediction-box">
+                  <span className="prediction-text"> {im.ground_truth}</span>
+                </p>
+              </div>
+            </ListGroup.Item>
+          ))}
+        </div>
+      );
+    }
+  };
+
+  const renderMetricsBox = () => {
+    if (isEval) {
+      return (
+        <div className="error-display-outbound">
+          <div className="error-display-inbound">
+            <div
+              style={{
+                fontWeight: "bold",
+                color: "#005477",
+                display: "flex",
+                alignItem: "center",
+                justifyContent: "center",
+              }}
+            >
+              Error Rate
+            </div>
+            <div className="error-rate">CER: {cer}</div>
+            <div className="error-rate">WER: {wer}</div>
+          </div>
+        </div>
+      );
+    } else {
+      return;
+    }
+  };
   /******************************************************************************/
   /*---------------- Handle when user click image on list ----------------------*/
   /******************************************************************************/
@@ -161,60 +267,7 @@ export default function RecognitionPage() {
         <Col>
           {/* Image List */}
           <p className="title2">Text Recognition</p>
-          <div>
-            <div className="text-list">
-              <Scrollbars style={{ width: 400, height: 600 }}>
-                <div id="recognition-list">
-                  {combineFile.map((im, id) => (
-                    <ListGroup.Item
-                      id={"image_" + id}
-                      key={id}
-                      value={id}
-                      style={{
-                        color: "#005477",
-                        cursor: "pointer",
-                        backgroundColor: clicked === id ? "#cce6ff" : "",
-                      }}
-                      onClick={(e) => {
-                        handleListClick(id);
-                      }}
-                    >
-                      Ground truth: {im.ground_truth}
-                      <div
-                        style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}
-                      >
-                        <BsArrowReturnRight />
-                        <p className="prediction-box">
-                          Prediction:
-                          <span className="prediction-text">
-                            {" "}
-                            {im.prediction}
-                          </span>
-                        </p>
-                      </div>
-                    </ListGroup.Item>
-                  ))}
-                </div>
-              </Scrollbars>
-            </div>
-            <div className="error-display-outbound">
-              <div className="error-display-inbound">
-                <div
-                  style={{
-                    fontWeight: "bold",
-                    color: "#005477",
-                    display: "flex",
-                    alignItem: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Error Rate
-                </div>
-                <div className="error-rate">CER: {cer}</div>
-                <div className="error-rate">WER: {wer}</div>
-              </div>
-            </div>
-          </div>
+          {renderResult()}
         </Col>
       </Row>
     </div>
