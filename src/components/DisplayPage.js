@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import React, { useState, useCallback, useEffect } from "react";
 import PipelineService from "../services/PipelineService";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function DisplayPage() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function DisplayPage() {
   const [textDetectionImagePath, setTextDetectionImagePath] = useState("");
   const [visualize, setVisualize] = useState("");
   const [visualizeNormal, setVisualizeNormal] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currId, setCurrId] = useState(0);
 
@@ -82,9 +84,11 @@ export default function DisplayPage() {
     fetchPPImages();
   }, [fetchPPImages]);
 
-  return (
-    <div className="App-header">
-      <Container>
+  const renderResults = () => {
+    if (!isLoading) {
+      return <Spinner animation="border" variant="info" />;
+    } else {
+      return (
         <Row xs={1} md={4}>
           <Col>
             {/* Displaying Image */}
@@ -180,7 +184,12 @@ export default function DisplayPage() {
             </Stack>
           </Col>
         </Row>
-      </Container>
+      );
+    }
+  };
+  return (
+    <div className="App-header">
+      <Container>{renderResults()}</Container>
 
       <Row style={{ marginTop: "7rem" }}>
         <Col style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}>
