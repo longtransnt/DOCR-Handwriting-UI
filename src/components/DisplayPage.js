@@ -72,6 +72,10 @@ export default function DisplayPage() {
     setVisualizeNormal(visualize_normal_url);
     setVisualize(visualize_url);
     setTextDetectionImagePath(visualize_url);
+
+    if (visualizeNormal === "" || visualize === "" || textDetectionImagePath == "") {
+      PipelineService.callPipelinePrediction(params.id);
+    }
   }
 
   useEffect(() => {

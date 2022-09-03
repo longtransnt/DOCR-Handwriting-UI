@@ -57,10 +57,6 @@ function InputPage() {
 
       setOriginalList(imageList);
     });
-
-    if (params.id !== undefined) {
-      PipelineService.callPipelinePrediction(params.id);
-    }
   }, []);
 
   return (
