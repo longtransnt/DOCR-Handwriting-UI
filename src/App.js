@@ -35,6 +35,7 @@ function App() {
           <Route path="/adaptive/:id" element={<AdaptivePage />} />
           <Route path="/module/:module" element={<ModulePage />} />
           <Route path="/input" element={<InputPage />} />
+          <Route path="/input/:id" element={<InputPage />} />
           <Route path="/display/:mode/:id" element={<DisplayPage />} />
         </Routes>
       </Router>

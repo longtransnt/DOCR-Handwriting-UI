@@ -11,6 +11,7 @@ import OriginalService from "../services/OriginalService";
 import { useNavigate } from "react-router-dom";
 import PipelineService from "../services/PipelineService";
 import { v4 as uuidv4 } from "uuid";
+import { useLocation, useParams } from "react-router-dom";
 
 const ImageCard = ({ data: { name, src } }) => (
   <div className="original-image">
@@ -20,6 +21,7 @@ const ImageCard = ({ data: { name, src } }) => (
 );
 
 function InputPage() {
+  const params = useParams();
   const navigate = useNavigate();
   const [originalList, setOriginalList] = useState([]);
 
@@ -41,12 +43,10 @@ function InputPage() {
   useEffect(() => {
     PipelineService.getInputImageList().then((data) => {
       let imgName = data.data;
-      console.log(imgName);
 
       let imageList = [];
       imgName.forEach((img) => {
         let url = PipelineService.getInputImage(img);
-        console.log(url);
         imageList.push({
           id: uuidv4(),
           file_name: img,
@@ -57,11 +57,25 @@ function InputPage() {
 
       setOriginalList(imageList);
     });
+
+    if (params.id !== undefined) {
+      PipelineService.callPipelinePrediction(params.id);
+    }
   }, []);
 
   return (
     <div className="home-gallery">
       <div className="title">Input Gallery</div>
+      <form method="post" action="http://localhost:5000/input" enctype="multipart/form-data">
+        <dl>
+          <p>
+            <input type="file" name="file" autocomplete="off" required />
+          </p>
+        </dl>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
       <Masonry
         className="gallery-show"
         columnGutter={20}
