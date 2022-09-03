@@ -75,8 +75,14 @@ export default function DisplayPage() {
     setVisualize(visualize_url);
     setTextDetectionImagePath(visualize_url);
 
-    if (visualizeNormal === "" || visualize === "" || textDetectionImagePath == "") {
-      PipelineService.callPipelinePrediction(params.id);
+    if (
+      visualizeNormal === "" ||
+      visualize === "" ||
+      textDetectionImagePath == ""
+    ) {
+      PipelineService.callPipelinePrediction(params.id).then(() => {
+        setIsLoading(true);
+      });
     }
   }
 
