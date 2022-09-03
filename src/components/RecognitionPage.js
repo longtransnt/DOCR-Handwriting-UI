@@ -36,8 +36,9 @@ export default function RecognitionPage() {
     setCurrImagePath(url);
   }, []);
 
-  const fetchTextRecognitionResults = useCallback(() => {
+  const fetchTextRecognitionResults = useCallback((e) => {
     PipelineService.callTextRecognitionModule(params.id).then((results) => {
+      e.preventDefault();
       console.log(results);
       setIsEval(results.eval_exist);
 
