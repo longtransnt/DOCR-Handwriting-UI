@@ -168,6 +168,7 @@ export default function RecognitionPage() {
             >
               <div style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}>
                 <p className="prediction-box">
+                  Prediction:
                   <span className="prediction-text"> {im.ground_truth}</span>
                 </p>
               </div>
@@ -207,7 +208,7 @@ export default function RecognitionPage() {
   /*---------------- Handle when user click image on list ----------------------*/
   /******************************************************************************/
   const handleListClick = (id) => {
-    var data = require("../testFile.json");
+    var data = combineFile;
     setClicked(id);
     // console.log(image.length)
     if (id <= data.length - 1) {
