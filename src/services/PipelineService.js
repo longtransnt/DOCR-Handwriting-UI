@@ -71,6 +71,11 @@ async function applyManualAdaptivePreprocesscing(query) {
   return preprocess_result.data;
 }
 
+async function applyAutomaticAdaptivePreprocesscing(query) {
+  const url = `${PIPELINE_LOCALHOST}automatic_adaptive`;
+  const preprocess_result = await axios.post(url, query, axiosConfig);
+  return preprocess_result.data;
+}
 async function fetchWERandCER(query) {
   const url = `${PIPELINE_LOCALHOST}text_recognition_eval`;
   const result = await axios.post(url, query, axiosConfig);
@@ -106,4 +111,5 @@ export default {
   callPipelinePrediction,
   getBlur,
   callTextRecognitionModule,
+  applyAutomaticAdaptivePreprocesscing,
 };

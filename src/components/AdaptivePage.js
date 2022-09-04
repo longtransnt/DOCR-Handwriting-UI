@@ -144,7 +144,19 @@ export default function AdaptivePage() {
         navigate("/recognition/" + params.id);
         break;
       case "reapply":
-        console.log(image.filter((image) => image.isManual === true));
+        const manualImageList = image.filter(
+          (image) => image.isManual === true
+        );
+        const file_names = [];
+        manualImageList.forEach((image) => file_names.push(image.file_name));
+
+        const query = {
+          file_names: file_names,
+        };
+
+        PipelineService.applyAutomaticAdaptivePreprocesscing(query).then(() =>
+          navigate("/recognition/" + params.id)
+        );
         break;
       default:
         return;
