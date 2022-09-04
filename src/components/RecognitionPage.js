@@ -8,7 +8,6 @@ import UploadService from "../services/UploadService";
 import ReactPaginate from "react-paginate";
 import { Col, Container, Row, Stack } from "react-bootstrap";
 import ImageMapping from "./ImageMapping";
-import testImage from "../21.000440 (33)pdpd.jpg";
 import PipelineService from "../services/PipelineService";
 import { BsArrowReturnRight } from "react-icons/bs";
 import Spinner from "react-bootstrap/Spinner";
@@ -38,7 +37,6 @@ export default function RecognitionPage() {
 
   const fetchTextRecognitionResults = useCallback((e) => {
     PipelineService.callTextRecognitionModule(params.id).then((results) => {
-      e.preventDefault();
       console.log(results);
       setIsEval(results.eval_exist);
 
@@ -226,7 +224,7 @@ export default function RecognitionPage() {
       console.log(cords);
     } else {
       setCurrId(null);
-      // setCurrImagePath(null);
+      setCurrImagePath(null);
     }
   };
 
@@ -241,6 +239,7 @@ export default function RecognitionPage() {
     };
   }
   getMeta(currImagePath, (width, height) => {
+    console.log(width);
     setOriginalWidth(width);
   });
 

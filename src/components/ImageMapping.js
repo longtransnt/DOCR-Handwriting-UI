@@ -96,6 +96,7 @@ export default function ImageMapper({
   const scaleCoords = (coords) => {
     // calculate scale based on current 'width' and the original 'imgWidth'
     const scale = width && imgWidth && imgWidth > 0 ? width / imgWidth : 1;
+    console.log("Scale: " + scale);
     return coords.map((coord) => coord * scale);
   };
 
