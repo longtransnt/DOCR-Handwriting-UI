@@ -1,11 +1,9 @@
 .home-gallery {
-    padding-top: 2.5rem;
-    margin: 3rem;
+    margin: 0 3rem 3rem 3rem;
     max-width: 100%;
 }
 
 .module-gallery{
-    padding-top: 2.5rem;
     margin: 3rem;
     max-width: 50%;
 }
