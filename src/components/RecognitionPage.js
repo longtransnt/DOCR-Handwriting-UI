@@ -8,7 +8,6 @@ import UploadService from "../services/UploadService";
 import ReactPaginate from "react-paginate";
 import { Col, Container, Row, Stack } from "react-bootstrap";
 import ImageMapping from "./ImageMapping";
-import testImage from "../21.000440 (33)pdpd.jpg";
 import PipelineService from "../services/PipelineService";
 import { BsArrowReturnRight } from "react-icons/bs";
 import Spinner from "react-bootstrap/Spinner";
@@ -38,7 +37,6 @@ export default function RecognitionPage() {
 
   const fetchTextRecognitionResults = useCallback((e) => {
     PipelineService.callTextRecognitionModule(params.id).then((results) => {
-      e.preventDefault();
       console.log(results);
       setIsEval(results.eval_exist);
 
@@ -170,6 +168,7 @@ export default function RecognitionPage() {
             >
               <div style={{ display: "flex", margin: ".25rem 0 0 1.5rem" }}>
                 <p className="prediction-box">
+                  Prediction:
                   <span className="prediction-text"> {im.ground_truth}</span>
                 </p>
               </div>
@@ -209,7 +208,7 @@ export default function RecognitionPage() {
   /*---------------- Handle when user click image on list ----------------------*/
   /******************************************************************************/
   const handleListClick = (id) => {
-    var data = require("../testFile.json");
+    var data = combineFile;
     setClicked(id);
     // console.log(image.length)
     if (id <= data.length - 1) {
@@ -226,7 +225,7 @@ export default function RecognitionPage() {
       console.log(cords);
     } else {
       setCurrId(null);
-      // setCurrImagePath(null);
+      setCurrImagePath(null);
     }
   };
 
@@ -241,6 +240,7 @@ export default function RecognitionPage() {
     };
   }
   getMeta(currImagePath, (width, height) => {
+    console.log(width);
     setOriginalWidth(width);
   });
 
