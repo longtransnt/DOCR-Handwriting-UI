@@ -1,0 +1,12 @@
+.col-title {
+    font-weight: bold;
+    text-align: center;
+}
+.col-content {
+    font-size: 20px;
+    text-align: center;
+}
+.image-area {
+    display: flex;
+    justify-content: center;
+}

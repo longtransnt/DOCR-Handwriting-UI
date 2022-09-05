@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo&display=swap');
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
@@ -28,7 +29,7 @@
     font-weight: 700;
     letter-spacing: 1px;
     color: #012970;
-    font-family: "Nunito", sans-serif;
+    font-family: "Archivo", sans-serif;
     margin-top: 3px;
   }
   
@@ -59,8 +60,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 0 10px 30px;
-    font-family: "Nunito", sans-serif;
-    font-size: 16px;
+    font-family: "Archivo", sans-serif;
+    font-size: 18px;
     font-weight: 700;
     color: #013289;
     white-space: nowrap;

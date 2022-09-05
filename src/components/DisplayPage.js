@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import React, { useState, useCallback, useEffect } from "react";
 import PipelineService from "../services/PipelineService";
 import Spinner from "react-bootstrap/Spinner";
+import "../styles/Display.css";
 
 export default function DisplayPage() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function DisplayPage() {
   const [textDetectionImagePath, setTextDetectionImagePath] = useState("");
   const [visualize, setVisualize] = useState("");
   const [visualizeNormal, setVisualizeNormal] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [currId, setCurrId] = useState(0);
 
@@ -101,14 +102,14 @@ export default function DisplayPage() {
       return <Spinner animation="border" variant="info" />;
     } else {
       return (
-        <Row xs={1} md={4}>
-          <Col>
-            {/* Displaying Image */}
-            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+        <Row>
+        {/* Input Image */}
+          <Col md={2}>
+            <p className="col-title">
               Input Image
             </p>
             <Stack gap={2} className="col-md-11 mx-auto">
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div className="image-area">
                 <img
                   className="img-display"
                   id={currId}
@@ -117,18 +118,18 @@ export default function DisplayPage() {
                   // key={currImagePath}
                 />
               </div>
-              <div style={{ fontSize: 20, textAlign: "center" }}>
+              <p className="col-content">
                 Raw medical record
-              </div>
+              </p>
             </Stack>
           </Col>
-          <Col>
-            {/* Displaying Image */}
-            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+          {/* Paper Detection */}
+          <Col md={3}>
+            <p className="col-title">
               Paper Detection
             </p>
             <Stack gap={2} className="col-md-11 mx-auto">
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div className="image-area">
                 <img
                   className="img-display"
                   id={currId}
@@ -137,18 +138,18 @@ export default function DisplayPage() {
                   // key={currImagePath}
                 />
               </div>
-              <div style={{ fontSize: 20, textAlign: "center" }}>
+              <p className="col-content">
                 Result detected and cropped by Mask-RCNN model
-              </div>
+              </p>
             </Stack>
           </Col>
-          <Col>
-            {/* Displaying Image */}
-            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+          {/* PreProcessing */}
+          <Col md={4}>
+            <p className="col-title">
               PreProcessing
             </p>
             <Stack gap={2} className="col-md-11 mx-auto">
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div className="image-area">
                 <img
                   className="img-display"
                   id={currId}
@@ -157,20 +158,16 @@ export default function DisplayPage() {
                   // key={currImagePath}
                 />
               </div>
-              <div style={{ fontSize: 20, textAlign: "center" }}>
-                1. Improve image contrast with CLAHE
-              </div>
-              <div style={{ fontSize: 20, textAlign: "center" }}>
-                2. Enhance handwriting stroke with Sauvola
-              </div>
-              <div style={{ fontSize: 20, textAlign: "center" }}>
+              <p className="col-content">
+                1. Improve image contrast with CLAHE<br/>
+                2. Enhance handwriting stroke with Sauvola<br/>
                 3. Remove small objects with OpenCV's Denoised
-              </div>
+              </p>
             </Stack>
           </Col>
-          <Col>
-            {/* Displaying Image */}
-            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+          {/* TextDetection */}
+          <Col md={3}>
+            <p className="col-title">
               TextDetection
             </p>
             <Stack gap={2} className="col-md-11 mx-auto">
@@ -190,9 +187,9 @@ export default function DisplayPage() {
                   // key={currImagePath}
                 />
               </div>
-              <div style={{ fontSize: 20, textAlign: "center" }}>
+              <p className="col-content">
                 Result detected and cropped by Fast-RCNN model
-              </div>
+              </p>
             </Stack>
           </Col>
         </Row>
@@ -201,8 +198,7 @@ export default function DisplayPage() {
   };
   return (
     <div className="App-header">
-      <Container>{renderResults()}</Container>
-
+      <Container fluid={true}>{renderResults()}</Container>
       <Row style={{ marginTop: "7rem" }}>
         <Col style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}>
           <div style={{ float: "left" }}></div>
