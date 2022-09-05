@@ -1,38 +1,33 @@
 import "../styles/Gallery.css";
-import "../styles/Buttons.css"
-import React, {
-  useState,
-  useEffect,
-} from "react";
+import "../styles/Buttons.css";
+import React, { useState, useEffect } from "react";
 import { Masonry } from "masonic";
 import OriginalService from "../services/OriginalService";
 import { Link, useNavigate } from "react-router-dom";
+import Upload from "../components/Upload";
+import Popup from "../components/Popup";
 
 function HomePage() {
   const navigate = useNavigate();
   const [originalList, setOriginalList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const RealImageCard = ({ data: { file_name, imageUrl, image_id } }) => (
     <div className="original-image">
       <span children={file_name} />
-      <div className="navigation-btns">
-        <button className="annotation-page-btn"
-          onClick={(event) => onMasonryClick(event, image_id)}
-        >
-          Annotation
-        </button>
-        <Link className="recognition-page-btn" 
-          to={{pathname: `/recognition/` + file_name}}
-          state={{file_name, imageUrl, image_id }}
-        >
-          Recognition
-        </Link>
-      </div>
-      <img className="image-show" src={imageUrl} />
+      <img
+        className="image-show"
+        src={imageUrl}
+        onClick={(event) => onMasonryClick(event, image_id)}
+      />
     </div>
   );
 
   const onMasonryClick = (event, id) => navigate("/annotation/" + id);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     OriginalService.getAllOriginals().then((originalList) => {
@@ -43,6 +38,24 @@ function HomePage() {
   return (
     <div className="home-gallery">
       <div className="title">Original Image Gallery</div>
+      <input
+        className="upload-btn"
+        type="button"
+        value="Upload"
+        onClick={togglePopup}
+      />
+      {isOpen && (
+        <Popup
+          content={
+            <>
+              <div className="upload-container">
+                {/* <Upload fetchUploads={fetchInitialUploads} /> */}
+              </div>
+            </>
+          }
+          handleClose={togglePopup}
+        />
+      )}
       <Masonry
         className="gallery-show"
         columnGutter={20}
