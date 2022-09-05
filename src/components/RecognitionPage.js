@@ -204,6 +204,23 @@ export default function RecognitionPage() {
       return;
     }
   };
+
+  const handleRerunTextRecognition = (event, id) => {
+    setIsLoading(false);
+    PipelineService.callTextRecognitionModule(params.id, true).then(
+      (results) => {
+        console.log(results);
+        setIsEval(results.eval_exist);
+
+        setCombineFile(results.predict_info);
+        if (results.eval_exist) {
+          combineEvalAndPredict(results.eval_info, results.predict_info);
+          calculateMetrics(results.predict_info, results.eval_info);
+        }
+        setIsLoading(true);
+      }
+    );
+  };
   /******************************************************************************/
   /*---------------- Handle when user click image on list ----------------------*/
   /******************************************************************************/
@@ -269,6 +286,20 @@ export default function RecognitionPage() {
           {/* Image List */}
           <p className="title2">Text Recognition</p>
           {renderResult()}
+        </Col>
+      </Row>
+      <Row style={{ marginTop: "7rem" }}>
+        <Col style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}>
+          <div style={{ float: "left" }}></div>
+          <div style={{ float: "right", marginRight: "46px" }}>
+            <button
+              className="save-btn"
+              id="dropdown-basic-button"
+              onClick={handleRerunTextRecognition}
+            >
+              Rerun Text Recognition
+            </button>
+          </div>
         </Col>
       </Row>
     </div>

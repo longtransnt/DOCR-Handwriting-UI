@@ -88,14 +88,14 @@ async function getBlur(file_name) {
   return result.data;
 }
 
-async function callPipelinePrediction(filename) {
-  const url = `${PIPELINE_LOCALHOST}input_to_adaptive/${filename}`;
+async function callPipelinePrediction(filename, isRerun = false) {
+  const url = `${PIPELINE_LOCALHOST}input_to_adaptive/${filename}/${isRerun}`;
   const response = await axios.get(url, axiosConfig);
   return response;
 }
 
-async function callTextRecognitionModule(filename) {
-  const url = `${PIPELINE_LOCALHOST}run_text_recognition/${filename}`;
+async function callTextRecognitionModule(filename, isRerun = false) {
+  const url = `${PIPELINE_LOCALHOST}run_text_recognition/${filename}/${isRerun}`;
   const response = await axios.get(url, axiosConfig);
   return response.data;
 }

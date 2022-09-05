@@ -31,8 +31,14 @@ export default function DisplayPage() {
     navigate("/adaptive/" + name);
   };
 
+  const handleRerunPipeline = (event, id) => {
+    setIsLoading(false);
+    PipelineService.callPipelinePrediction(params.id, true).then(() => {
+      setIsLoading(true);
+    });
+  };
+
   const toggleTextDetectionImageMode = (event) => {
-    console.log("In");
     if (textDetectionImagePath.includes("normal")) {
       console.log("hasNormal");
       setTextDetectionImagePath(visualize);
@@ -197,41 +203,16 @@ export default function DisplayPage() {
         <Col style={{ position: "fixed", bottom: 0, marginBottom: "1rem" }}>
           <div style={{ float: "left" }}></div>
           <div style={{ float: "right", marginRight: "46px" }}>
+            <button className="save-btn" onClick={handleRerunPipeline}>
+              Rerun
+            </button>
             <button
               className="save-btn"
               id="dropdown-basic-button"
               onClick={toAdaptive}
             >
               Next
-            </button>{" "}
-            {/* <div style={{ float: "right" }}>
-              <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic-button">
-                  NEXT
-                  <IoChevronDown
-                    style={{
-                      width: "1.5rem",
-                      height: "1.5rem",
-                      marginLeft: "5px",
-                    }}
-                  />
-                </Dropdown.Toggle>
-                <Dropdown.Menu
-                  style={{
-                    position: "absolute",
-                    minWidth: "100%",
-                    textAlign: "center",
-                  }}
-                >
-                  <Dropdown.Item className="dropdown-item" eventKey="all">
-                    Continue
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item" eventKey="rest">
-                    Continue with all Automatic
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div> */}
+            </button>
           </div>
         </Col>
       </Row>
