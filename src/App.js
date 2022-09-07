@@ -28,16 +28,14 @@ function App() {
       <Router history={customHistory}>
         <Routes>
           <Route path="/" element={<HomePage></HomePage>} />
+          <Route path="/annotation/:id" element={<AnnotationPage />} />
+          <Route path="/recognition/:id" element={<RecognitionPage />} />
           <Route path="/active" element={<ActivePage />} />
           <Route path="/adaptive/:id" element={<AdaptivePage />} />
           <Route path="/module/:module" element={<ModulePage />} />
           <Route path="/input" element={<InputPage />} />
           <Route path="/input/:id" element={<InputPage />} />
           <Route path="/display/:mode/:id" element={<DisplayPage />} />
-          {/* <Route path="/annotation/all" element={<AnnotationPage />} /> */}
-          <Route path="/annotation/:id" element={<AnnotationPage />} />
-          <Route path="/recognition/:id" element={<RecognitionPage />} />
-        
         </Routes>
       </Router>
     </div>
