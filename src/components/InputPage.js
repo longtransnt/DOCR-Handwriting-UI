@@ -6,6 +6,7 @@ import React, {
   useRef,
   useContext,
 } from "react";
+import { PIPELINE_LOCALHOST } from "../constant"
 import { Masonry } from "masonic";
 import OriginalService from "../services/OriginalService";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +63,7 @@ function InputPage() {
   return (
     <div className="home-gallery">
       <div className="title">Input Gallery</div>
-      <form method="post" action="http://localhost:5000/input" enctype="multipart/form-data">
+      <form method="post" action="https://127.0.0.1:5000/input" enctype="multipart/form-data">
         <dl>
           <p>
             <input type="file" name="file" autocomplete="off" required />
