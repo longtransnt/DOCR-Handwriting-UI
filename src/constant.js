@@ -1,10 +1,10 @@
 const PRIVATE_BEANSTALK_URL =
   "http://annotationnode-env.eba-iv5i9cmp.us-west-2.elasticbeanstalk.com/";
 const RMIT_BEANSTALK_URL =
-  "https://d2l8kftjg25p1s.cloudfront.net/";
+  "https://annotationnode-env.eba-fpskjd3h.us-west-2.elasticbeanstalk.com/";
 const LOCALHOST = "http://localhost:8080/";
 export const PIPELINE_LOCALHOST = "https://127.0.0.1:5000/";
-const CURRENT_HOST_URL = RMIT_BEANSTALK_URL;
+const CURRENT_HOST_URL = PRIVATE_BEANSTALK_URL;
 export const UPLOAD_URL = CURRENT_HOST_URL + "api/uploads";
 export const UPLOAD_UNANNOTATED_URL =
   CURRENT_HOST_URL + "api/uploads/unannotated";
