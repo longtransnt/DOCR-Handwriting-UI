@@ -1,9 +1,5 @@
 import axios from "axios";
 import { PIPELINE_CHECK_DIR_URL, PIPELINE_LOCALHOST } from "../constant";
-
-let STATIC_LIST_ENDPOINT = "http://localhost:5000/get-static-list/";
-let STATIC_DISPLAY = "http://localhost:5000/display/";
-
 let axiosConfig = {
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
