@@ -22,7 +22,7 @@ export default function DisplayPage() {
   const [textDetectionImagePath, setTextDetectionImagePath] = useState("");
   const [visualize, setVisualize] = useState("");
   const [visualizeNormal, setVisualizeNormal] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currId, setCurrId] = useState(0);
 
@@ -103,11 +103,9 @@ export default function DisplayPage() {
     } else {
       return (
         <Row>
-        {/* Input Image */}
+          {/* Input Image */}
           <Col md={2}>
-            <p className="col-title">
-              Input Image
-            </p>
+            <p className="col-title">Input Image</p>
             <Stack gap={2} className="col-md-11 mx-auto">
               <div className="image-area">
                 <img
@@ -118,16 +116,12 @@ export default function DisplayPage() {
                   // key={currImagePath}
                 />
               </div>
-              <p className="col-content">
-                Raw medical record
-              </p>
+              <p className="col-content">Raw medical record</p>
             </Stack>
           </Col>
           {/* Paper Detection */}
           <Col md={3}>
-            <p className="col-title">
-              Paper Detection
-            </p>
+            <p className="col-title">Paper Detection</p>
             <Stack gap={2} className="col-md-11 mx-auto">
               <div className="image-area">
                 <img
@@ -145,9 +139,7 @@ export default function DisplayPage() {
           </Col>
           {/* PreProcessing */}
           <Col md={4}>
-            <p className="col-title">
-              PreProcessing
-            </p>
+            <p className="col-title">PreProcessing</p>
             <Stack gap={2} className="col-md-11 mx-auto">
               <div className="image-area">
                 <img
@@ -159,17 +151,17 @@ export default function DisplayPage() {
                 />
               </div>
               <p className="col-content">
-                1. Improve image contrast with CLAHE<br/>
-                2. Enhance handwriting stroke with Sauvola<br/>
+                1. Improve image contrast with CLAHE
+                <br />
+                2. Enhance handwriting stroke with Sauvola
+                <br />
                 3. Remove small objects with OpenCV's Denoised
               </p>
             </Stack>
           </Col>
           {/* TextDetection */}
           <Col md={3}>
-            <p className="col-title">
-              TextDetection
-            </p>
+            <p className="col-title">TextDetection</p>
             <Stack gap={2} className="col-md-11 mx-auto">
               <div
                 style={{
