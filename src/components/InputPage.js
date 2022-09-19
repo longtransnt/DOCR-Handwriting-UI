@@ -63,7 +63,7 @@ function InputPage() {
   return (
     <div className="home-gallery">
       <div className="title">Input Gallery</div>
-      <form method="post" action="https://127.0.0.1:5000/input" enctype="multipart/form-data">
+      <form method="post" action="http://44.237.77.251:5000/input" enctype="multipart/form-data">
         <dl>
           <p>
             <input type="file" name="file" autocomplete="off" required />
