@@ -48,7 +48,7 @@ To install all the packages for this FrontEnd website application:
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your ./config/config.json file:
+To run this project, you will need to add the following environment variables to your ./src/constant.js file:
 
 `PIPELINE_LOCALHOST = [PIPELINE HOST ADDRESS]`
 
