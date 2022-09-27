@@ -27,7 +27,7 @@ export default function DisplayPage() {
   const [currId, setCurrId] = useState(0);
 
   const toAdaptive = (event, id) => {
-    let name = params.id.slice(0, -2);
+    let name = params.id;
     navigate("/adaptive/" + name);
   };
 
@@ -71,12 +71,12 @@ export default function DisplayPage() {
     let visualize_url = PipelineService.getImageUrl(
       "TextDetection",
       "visualize",
-      pd_name
+      params.id
     );
     let visualize_normal_url = PipelineService.getImageUrl(
       "TextDetection",
       "visualize-normal",
-      pd_name
+      params.id
     );
     setVisualizeNormal(visualize_normal_url);
     setVisualize(visualize_url);

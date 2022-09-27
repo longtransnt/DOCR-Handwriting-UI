@@ -4,8 +4,6 @@ import "../App.css";
 import { useLocation, useParams } from "react-router-dom";
 import { Scrollbars } from "react-custom-scrollbars";
 import ListGroup from "react-bootstrap/ListGroup";
-import UploadService from "../services/UploadService";
-import ReactPaginate from "react-paginate";
 import { Col, Container, Row, Stack } from "react-bootstrap";
 import ImageMapping from "./ImageMapping";
 import PipelineService from "../services/PipelineService";
@@ -18,8 +16,6 @@ export default function RecognitionPage() {
   const [currId, setCurrId] = useState(0);
   const [cer, setCER] = useState(null);
   const [wer, setWER] = useState(null);
-  const [predictData, setPredictData] = useState([]);
-  const [evalData, setEvalData] = useState([]);
   const [currImagePath, setCurrImagePath] = useState("");
   const [chosenImageCords, setChosenImageCords] = useState([0, 0, 0, 0]);
   const [originalWidth, setOriginalWidth] = useState(0);
@@ -30,7 +26,7 @@ export default function RecognitionPage() {
 
   const params = useParams();
   const fetchImage = useCallback(() => {
-    let image_name = params.id + "pdpd";
+    let image_name = params.id + "pd";
     let url = PipelineService.getImageUrl("PaperDetection", image_name);
     setCurrImagePath(url);
   }, []);
@@ -42,6 +38,7 @@ export default function RecognitionPage() {
 
       setCombineFile(results.predict_info);
       if (results.eval_exist) {
+        console.log(results.predict_info);
         combineEvalAndPredict(results.eval_info, results.predict_info);
         calculateMetrics(results.predict_info, results.eval_info);
       }
@@ -51,7 +48,7 @@ export default function RecognitionPage() {
 
   const calculateMetrics = useCallback((predictData, evalData) => {
     const predict = predictData.map((im, id) => {
-      return im.ground_truth;
+      return im.predict;
     });
 
     const expect = evalData.map((im, id) => {
@@ -84,7 +81,7 @@ export default function RecognitionPage() {
 
       for (var j in predictFile) {
         if (evalFile[i].image_name === predictFile[j].image_name) {
-          obj.prediction = predictFile[j].ground_truth;
+          obj.prediction = predictFile[j].predict;
         }
       }
 
@@ -191,6 +188,7 @@ export default function RecognitionPage() {
                 display: "flex",
                 alignItem: "center",
                 justifyContent: "center",
+                marginLeft: "2rem",
               }}
             >
               Error Rate
