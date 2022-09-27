@@ -31,7 +31,7 @@ export default function AdaptivePage() {
   const params = useParams();
 
   // const fetchAdaptiveImages = useCallback(() => {
-  //   getImageAndBlur();
+  //   getImageAndBlur();p
   // }, []);
 
   function getImageAndBlur() {
@@ -127,7 +127,6 @@ export default function AdaptivePage() {
           preprocess_result.file_name,
           "Adaptive-Preview"
         );
-
         setCurrImagePath(null);
         setCurrImagePath(url);
         setCurrId(currId);
